@@ -1,0 +1,8 @@
+interface:
+  display_name: "OpenClaw 联邦协作"
+  short_description: "在同一个 Telegram 群中协调多个独立 OpenClaw bot，并通过 Redis 做路由与在线感知"
+  triggers:
+    - "联邦"
+    - "federation"
+    - "多 bot 协作"
+    - "协调"
