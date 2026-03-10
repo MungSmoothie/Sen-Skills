@@ -67,6 +67,9 @@ class TaskWorker:
         self.running = False
         self.consumer_id = f"{config.bot_config.bot_id}-{uuid.uuid4().hex[:8]}"
         
+        # Fallback coordinator - 当 Telegram 不可用时，结果由此 bot 代发
+        self.fallback_coordinator = getattr(config.telegram, 'fallback_coordinator', None)
+        
         # 状态
         self.dedup_cache: Dict[str, str] = {}  # task_id -> status
     
@@ -225,6 +228,41 @@ class TaskWorker:
         )
         
         logger.info(f"Result sent for task {result.get('task_id')}")
+        
+        # 尝试通知（通过 Telegram 或 fallback）
+        await self._notify_result(result)
+    
+    async def _notify_result(self, result: Dict) -> None:
+        """通知结果给用户"""
+        task_id = result.get("task_id", "unknown")
+        summary = result.get("summary", "任务完成")
+        status = result.get("status", "ok")
+        
+        # 构建消息
+        emoji = "✅" if status == "ok" else "❌"
+        message = f"{emoji} 任务 [{task_id}] {summary}"
+        
+        # 尝试直接发送 Telegram
+        if self.telegram:
+            try:
+                await self.telegram.send_message(message)
+                return
+            except Exception as e:
+                logger.warning(f"Failed to send Telegram directly: {e}")
+        
+        # 如果配置了 fallback coordinator，写入待通知队列
+        if self.fallback_coordinator:
+            notify_stream = "claw:notifications"
+            notify_data = {
+                "type": "notification",
+                "from_bot": self.config.bot_config.bot_id,
+                "target_bot": self.fallback_coordinator,
+                "message": message,
+                "chat_id": self.config.telegram.chat_id,
+                "task_id": task_id,
+            }
+            await self.redis.xadd(notify_stream, {"data": json.dumps(notify_data, ensure_ascii=False)})
+            logger.info(f"Notification queued for fallback coordinator: {self.fallback_coordinator}")
     
     async def _send_error(self, envelope: Dict, error: str) -> None:
         """发送错误到错误流"""
