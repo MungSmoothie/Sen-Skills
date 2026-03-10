@@ -1,0 +1,14 @@
+name: openclaw-federation
+version: 1.0.0
+description: 构建并维护由多个独立 OpenClaw gateway 组成的联邦协作体系，这些实例在同一个 Telegram 群中协作，并通过 Redis 进行可靠协调。
+author: MungSmoothie
+tags:
+  - federation
+  - multi-bot
+  - redis
+  - coordination
+  - telegram
+entry: SKILL.md
+requires:
+  - redis
+  - python3

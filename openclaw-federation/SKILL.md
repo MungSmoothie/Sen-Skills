@@ -227,9 +227,6 @@ description: 构建并维护由多个独立 openclaw gateway 组成的联邦协�
 - `references/examples.md`：具体行为示例
 - `references/edge-cases.md`：边界情况与故障处理（并发、可靠性、恢复）
 - `scripts/render_federation_defaults.py`：生成统一的 bot id、角色、stream 名称和入门 JSON 配置
-- `references/message-schemas.md`：消息格式和路由规则
-- `references/examples.md`：具体行为示例
-- `scripts/render_federation_defaults.py`：生成统一的 bot id、角色、stream 名称和入门 JSON 配置
 - `scripts/validate_envelope.py`：校验 task、result 和 heartbeat payload
 
 需要稳定脚手架或确定性校验时调用脚本；否则优先直接推理处理。
