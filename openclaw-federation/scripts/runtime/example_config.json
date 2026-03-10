@@ -15,7 +15,8 @@
   "telegram": {
     "bot_token": "123456789:ABCdefGHIjklMNOpqrsTUVwxyz",
     "chat_id": "-1001234567890",
-    "allowed_chat_ids": ["-1001234567890"]
+    "allowed_chat_ids": ["-1001234567890"],
+    "fallback_coordinator": null
   },
   "streams": {
     "tasks": "claw:tasks",

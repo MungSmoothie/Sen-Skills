@@ -228,5 +228,35 @@ description: 构建并维护由多个独立 openclaw gateway 组成的联邦协�
 - `references/edge-cases.md`：边界情况与故障处理（并发、可靠性、恢复）
 - `scripts/render_federation_defaults.py`：生成统一的 bot id、角色、stream 名称和入门 JSON 配置
 - `scripts/validate_envelope.py`：校验 task、result 和 heartbeat payload
+- `scripts/runtime/`: Python 运行时实现（包含心跳、任务 worker、路由）
 
 需要稳定脚手架或确定性校验时调用脚本；否则优先直接推理处理。
+
+## 快速启动
+```bash
+# 1. 安装依赖
+pip install -r scripts/runtime/requirements.txt
+
+# 2. 复制配置模板
+cp scripts/runtime/example_config.json federation_config.json
+
+# 3. 修改配置（填写自己的 bot token、redis 地址等）
+vim federation_config.json
+
+# 4. 启动
+python -m scripts.runtime federation_config.json
+```
+
+## 故障处理补充
+### Telegram 不可达 Fallback
+如果 bot 无法直接访问 Telegram API（如被墙），可以配置 `fallback_coordinator`：
+```json
+{
+  "telegram": {
+    "bot_token": "xxx",
+    "chat_id": "-100xxx",
+    "fallback_coordinator": "cloud-coordinator"
+  }
+}
+```
+当 worker 完成任务但无法发送 Telegram 时，结果会写入 `claw:results` 流，由 coordinator 代发消息。

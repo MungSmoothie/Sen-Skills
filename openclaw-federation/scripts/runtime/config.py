@@ -41,6 +41,7 @@ class TelegramConfig:
     bot_token: str
     chat_id: str
     allowed_chat_ids: List[str] = field(default_factory=list)
+    fallback_coordinator: Optional[str] = None  # 当 Telegram 不可用时，结果由此 bot 代发
 
 
 @dataclass
@@ -100,6 +101,7 @@ def load_config(config_path: str = "federation_config.json") -> FederationConfig
         bot_token=telegram_data.get("bot_token", ""),
         chat_id=telegram_data.get("chat_id", ""),
         allowed_chat_ids=telegram_data.get("allowed_chat_ids", []),
+        fallback_coordinator=telegram_data.get("fallback_coordinator"),
     )
     
     # Streams 配置
