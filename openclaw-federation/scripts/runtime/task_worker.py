@@ -172,10 +172,54 @@ class TaskWorker:
             logger.error(f"Claim error for {task_id}: {e}")
             return None
     
-    async def _process_task(self, envelope: Dict) -> Dict:
+    def _check_ttl(self, envelope: Dict, stream_id: str = None) -> bool:
+        """检查任务是否已过期
+        
+        TTL 检查逻辑：
+        - 优先使用 envelope 中的 timestamps.created_at
+        - 备选：从 Redis Stream ID 解析时间戳（格式：毫秒时间戳-序列号）
+        """
+        ttl = envelope.get("ttl", 4)  # 默认 TTL 4 秒
+        if ttl <= 0:
+            return True  # TTL <= 0 表示不过期
+        
+        # 尝试从 timestamps 获取创建时间
+        timestamps = envelope.get("timestamps", {})
+        created_at = timestamps.get("created_at")
+        
+        if created_at:
+            try:
+                created_dt = datetime.fromisoformat(created_at.replace("Z", "+00:00"))
+                created_ts = created_dt.timestamp()
+            except (ValueError, TypeError):
+                created_ts = 0
+        elif stream_id:
+            # 从 Stream ID 解析：格式 "1773138193970-0" -> 毫秒时间戳
+            try:
+                ms_ts = int(stream_id.split("-")[0])
+                created_ts = ms_ts / 1000
+            except (ValueError, IndexError):
+                created_ts = 0
+        else:
+            created_ts = 0
+        
+        if created_ts > 0:
+            now_ts = datetime.now(timezone.utc).timestamp()
+            elapsed = now_ts - created_ts
+            if elapsed > ttl:
+                logger.info(f"Task {envelope.get('task_id')} expired ({elapsed:.1f}s > {ttl}s), skipping")
+                return False
+        
+        return True
+    
+    async def _process_task(self, envelope: Dict, stream_id: str = None) -> Dict:
         """处理单个任务"""
         task_id = envelope.get("task_id")
         origin_bot = envelope.get("origin_bot")
+        
+        # TTL 检查
+        if not self._check_ttl(envelope, stream_id):
+            return None
         
         # 去重检查
         if self._is_duplicate(task_id, origin_bot):
@@ -325,8 +369,8 @@ class TaskWorker:
         if not claimed:
             return
         
-        # 处理任务
-        result = await self._process_task(claimed)
+        # 处理任务（传入 stream_id 用于 TTL 检查）
+        result = await self._process_task(claimed, stream_id=message_id)
         
         if result:
             # 发送结果
