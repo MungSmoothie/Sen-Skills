@@ -1,0 +1,10 @@
+name: federation-evolution
+description: 联邦协同进化 - 经验同步共享
+version: 0.1.0
+tags:
+  - federation
+  - evolution
+  - sync
+  - knowledge-sharing
+requires:
+  - openclaw-federation
