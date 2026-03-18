@@ -37,12 +37,8 @@ python3 scripts/send_newsletter.py <html_file> [recipient_email]
 - 移除 Google Fonts `@import`（邮件客户端不支持外部字体）
 - 移除 `<link>` 字体引用
 - 移除 `<script>` 标签
-- 保留 `<style>` 内嵌 CSS（邮件客户端通常支持 `<style>` 标签）
-- body 添加内联 margin/padding 样式
+- **保留 `<style>` 内嵌 CSS**（邮件客户端通常支持）
+- body 添加基础内联 margin/padding
 - 主题和发件人显示名使用 `=?UTF-8?B?...?=` 格式编码
 
-## 注意事项
-
-- 邮件不支持 JavaScript，tab 切换频道功能在邮件中无效
-- 邮件内容以五频道平铺形式展示
-- 如需全内联 CSS 版本，需手动为每个标签添加 `style=""` 属性
+> ⚠️ 邮件不支持 JavaScript，tab 切换频道功能在邮件中无效，内容以五频道平铺形式展示。
