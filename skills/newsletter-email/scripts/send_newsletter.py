@@ -10,7 +10,7 @@ import base64
 import os
 
 # 默认收件人
-DEFAULT_RECIPIENTS = ["179621078@qq.com", "hakusai22@qq.com"]
+DEFAULT_RECIPIENTS = ["179621078@qq.com", "hakusai22@qq.com", "536074781@qq.com"]
 SENDER_EMAIL = "2323831454@qq.com"
 SENDER_DISPLAY = "村口情报社"
 
