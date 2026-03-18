@@ -18,19 +18,31 @@ def encode_header(s):
     """RFC 2047 UTF-8 Base64 编码"""
     return "=?UTF-8?B?" + base64.b64encode(s.encode("utf-8")).decode("ascii") + "?="
 
+CSS_VAR_MAP = {
+    "--wine-red": "#8b2635", "--charcoal": "#1a1a1a",
+    "--warm-gray": "#6b6560", "--light-warm": "#f0ebe3",
+    "--paper": "#faf8f3", "--navy": "#1a3a5c",
+    "--text": "#222222", "--text-light": "#5a5a5a",
+    "--border": "#d4cfc5",
+    "--tl": "#5a5a5a", "--t": "#222222",
+    "--c": "#1a1a1a", "--wg": "#6b6560",
+    "--lw": "#f0ebe3", "--p": "#faf8f3",
+    "--wr": "#8b2635", "--n": "#1a3a5c", "--b": "#d4cfc5",
+}
+
 def make_email_safe(html):
     """
-    将 HTML 转换为邮件安全版本：
-    - 移除 Google Fonts @import
-    - 移除 <link> 字体引用
-    - 移除 <script> 标签
-    - body 添加基础内联样式
+    Convert HTML to email-safe version:
+    - Expand CSS variables (email clients don't support var() syntax)
+    - Remove @import / <link> external fonts
+    - Remove <script> tags
+    - Add body inline style
     """
-    # 只移除外部字体引用，保留 <style> 标签（邮件客户端通常支持内嵌 CSS）
-    html = re.sub(r'@import\s+url\([^)]+\);?', '', html, flags=re.IGNORECASE)
-    html = re.sub(r'<link[^>]*fonts[^>]*>', '', html, flags=re.IGNORECASE)
-    html = re.sub(r'<script[^>]*>.*?</script>', '', html, flags=re.DOTALL)
-    # body 加基础内联
+    for var, val in CSS_VAR_MAP.items():
+        html = html.replace(f"var({var})", val)
+    html = re.sub(r"@import\s+url\([^)]+\);?\s*", "", html, flags=re.IGNORECASE)
+    html = re.sub(r"<link[^>]*fonts[^>]*>", "", html, flags=re.IGNORECASE)
+    html = re.sub(r"<script[^>]*>.*?</script>", "", html, flags=re.DOTALL)
     html = html.replace("<body>", '<body style="margin:0;padding:20px;background:#c9c3b8;">', 1)
     return html
 
