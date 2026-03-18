@@ -1,7 +1,7 @@
 #!/usr/bin/env python3
 """
 send_newsletter.py — 将日报 HTML 发送至 QQ 邮箱
-用法: python3 send_newsletter.py <html_file> [recipient_email]
+用法: python3 send_newsletter.py <html_file> [recipient_email]...
 """
 import sys
 import subprocess
@@ -10,7 +10,7 @@ import base64
 import os
 
 # 默认收件人
-DEFAULT_RECIPIENT = "179621078@qq.com"
+DEFAULT_RECIPIENTS = ["179621078@qq.com", "hakusai22@qq.com"]
 SENDER_EMAIL = "2323831454@qq.com"
 SENDER_DISPLAY = "村口情报社"
 
@@ -71,11 +71,11 @@ def send_email(html_content, subject, to_email):
 
 def main():
     if len(sys.argv) < 2:
-        print("用法: python3 send_newsletter.py <html_file> [recipient_email]", file=sys.stderr)
+        print("用法: python3 send_newsletter.py <html_file> [recipient_email]...", file=sys.stderr)
         sys.exit(1)
 
     html_file = sys.argv[1]
-    recipient = sys.argv[2] if len(sys.argv) > 2 else DEFAULT_RECIPIENT
+    recipients = sys.argv[2:] if len(sys.argv) > 2 else DEFAULT_RECIPIENTS
 
     if not os.path.exists(html_file):
         print(f"错误: 文件不存在 {html_file}", file=sys.stderr)
@@ -94,12 +94,15 @@ def main():
         subject = f"村口情报社 AI日报 {today}"
 
     email_html = make_email_safe(raw_html)
-    result = send_email(email_html, subject, recipient)
-
-    if result.returncode == 0:
-        print(f"发送成功: {subject} -> {recipient}")
-    else:
-        print(f"发送失败: {result.stderr.decode()}", file=sys.stderr)
+    success = True
+    for r in recipients:
+        result = send_email(email_html, subject, r)
+        if result.returncode == 0:
+            print(f"发送成功: {subject} -> {r}")
+        else:
+            print(f"发送失败 {r}: {result.stderr.decode()}", file=sys.stderr)
+            success = False
+    if not success:
         sys.exit(1)
 
 if __name__ == "__main__":

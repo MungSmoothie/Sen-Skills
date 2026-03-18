@@ -3,3 +3,5 @@ FROM_DISPLAY=村口情报社
 TO_EMAIL=179621078@qq.com
 SMTP_HOST=smtp.qq.com
 SMTP_PORT=587
+
+TO_EMAIL=179621078@qq.com,hakusai22@qq.com
