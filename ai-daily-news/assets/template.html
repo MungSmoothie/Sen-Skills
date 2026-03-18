@@ -1,0 +1,148 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>{{page_title}}</title>
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+  <div class="paper">
+    <header class="masthead">
+      <div class="masthead-left">
+        <h1>{{paper_name}}</h1>
+        <div class="edition">{{edition_subtitle}}</div>
+        <div class="identity-tag">{{identity_tag}}</div>
+      </div>
+      <div class="masthead-right">
+        <div class="date">{{date_text}}</div>
+        <div class="issue">{{issue_text}}</div>
+        <div class="original-tag">{{original_tag}}</div>
+      </div>
+    </header>
+
+    <nav class="top-nav">
+      <div class="nav-item active" data-channel="news" onclick="switchChannel('news')">今日要闻</div>
+      <div class="nav-item" data-channel="deep" onclick="switchChannel('deep')">深度报道</div>
+      <div class="nav-item" data-channel="global" onclick="switchChannel('global')">国际焦点</div>
+      <div class="nav-item" data-channel="tech" onclick="switchChannel('tech')">科技前沿</div>
+      <div class="nav-item" data-channel="finance" onclick="switchChannel('finance')">财经观察</div>
+    </nav>
+
+    <div class="main-content">
+      <!-- 今日要闻 -->
+      <div id="news" class="content-section active">
+        <div class="lead-row">
+          <div class="lead-main">
+            <span class="lead-tag">{{news_lead_tag}}</span>
+            <h2 class="lead-title">{{news_lead_title}}</h2>
+            <p class="lead-subtitle">{{news_lead_subtitle}}</p>
+            <p class="lead-summary">{{news_lead_summary}}</p>
+
+            <div class="data-strip">
+              <div class="data-item"><span class="data-num">{{news_data_1_num}}</span><span class="data-label">{{news_data_1_label}}</span></div>
+              <div class="data-item"><span class="data-num">{{news_data_2_num}}</span><span class="data-label">{{news_data_2_label}}</span></div>
+              <div class="data-item"><span class="data-num">{{news_data_3_num}}</span><span class="data-label">{{news_data_3_label}}</span></div>
+              <div class="data-item"><span class="data-num">{{news_data_4_num}}</span><span class="data-label">{{news_data_4_label}}</span></div>
+              <div class="data-item"><span class="data-num">{{news_data_5_num}}</span><span class="data-label">{{news_data_5_label}}</span></div>
+            </div>
+
+            <div class="extend-box">
+              <div class="extend-item">
+                <span class="extend-label">{{news_extend_1_title}}</span>
+                <p>{{news_extend_1_text}}</p>
+              </div>
+              <div class="extend-item">
+                <span class="extend-label">{{news_extend_2_title}}</span>
+                <p>{{news_extend_2_text}}</p>
+              </div>
+              <div class="extend-item">
+                <span class="extend-label">{{news_extend_3_title}}</span>
+                <p>{{news_extend_3_text}}</p>
+              </div>
+            </div>
+
+            <div class="ergou-box">
+              <h4>📣 二狗点评</h4>
+              <p>{{news_comment}}</p>
+            </div>
+          </div>
+
+          <aside class="lead-sidebar">
+            <div class="sidebar-block">
+              <h4>{{news_sidebar_1_title}}</h4>
+              <ul class="brief-list">
+                <li><span class="time">{{news_sidebar_1_item_1_prefix}}</span>{{news_sidebar_1_item_1_text}}</li>
+                <li><span class="time">{{news_sidebar_1_item_2_prefix}}</span>{{news_sidebar_1_item_2_text}}</li>
+                <li><span class="time">{{news_sidebar_1_item_3_prefix}}</span>{{news_sidebar_1_item_3_text}}</li>
+                <li><span class="time">{{news_sidebar_1_item_4_prefix}}</span>{{news_sidebar_1_item_4_text}}</li>
+                <li><span class="time">{{news_sidebar_1_item_5_prefix}}</span>{{news_sidebar_1_item_5_text}}</li>
+                <li><span class="time">{{news_sidebar_1_item_6_prefix}}</span>{{news_sidebar_1_item_6_text}}</li>
+              </ul>
+            </div>
+
+            <div class="sidebar-block">
+              <h4>{{news_sidebar_2_title}}</h4>
+              <ul class="market-list">
+                <li><span>{{market_1_name}}</span><span class="{{market_1_class}}">{{market_1_value}}</span></li>
+                <li><span>{{market_2_name}}</span><span class="{{market_2_class}}">{{market_2_value}}</span></li>
+                <li><span>{{market_3_name}}</span><span class="{{market_3_class}}">{{market_3_value}}</span></li>
+                <li><span>{{market_4_name}}</span><span class="{{market_4_class}}">{{market_4_value}}</span></li>
+                <li><span>{{market_5_name}}</span><span class="{{market_5_class}}">{{market_5_value}}</span></li>
+                <li><span>{{market_6_name}}</span><span class="{{market_6_class}}">{{market_6_value}}</span></li>
+              </ul>
+            </div>
+
+            <div class="sidebar-block">
+              <h4>💕 每日治愈</h4>
+              <p class="sidebar-text sidebar-quote">{{healing_quote}}</p>
+            </div>
+
+            <div class="sidebar-block">
+              <h4>😂 每日笑料</h4>
+              <p class="sidebar-text">{{daily_joke}}</p>
+            </div>
+          </aside>
+        </div>
+
+        <div class="mid-section">
+          <div class="mid-card"><div class="tag">{{news_mid_1_tag}}</div><h3>{{news_mid_1_title}}</h3><p>{{news_mid_1_text}}</p></div>
+          <div class="mid-card"><div class="tag">{{news_mid_2_tag}}</div><h3>{{news_mid_2_title}}</h3><p>{{news_mid_2_text}}</p></div>
+          <div class="mid-card"><div class="tag">{{news_mid_3_tag}}</div><h3>{{news_mid_3_title}}</h3><p>{{news_mid_3_text}}</p></div>
+          <div class="mid-card"><div class="tag">{{news_mid_4_tag}}</div><h3>{{news_mid_4_title}}</h3><p>{{news_mid_4_text}}</p></div>
+        </div>
+      </div>
+
+      <!-- 其他频道：复制同一结构，只替换内容 -->
+      <div id="deep" class="content-section">
+        {{deep_section_html}}
+      </div>
+      <div id="global" class="content-section">
+        {{global_section_html}}
+      </div>
+      <div id="tech" class="content-section">
+        {{tech_section_html}}
+      </div>
+      <div id="finance" class="content-section">
+        {{finance_section_html}}
+      </div>
+    </div>
+
+    <footer class="footer">
+      <div>{{footer_left}}</div>
+      <div>{{footer_right}}</div>
+    </footer>
+  </div>
+
+  <script>
+    function switchChannel(channel) {
+      document.querySelectorAll('.nav-item').forEach(item => {
+        item.classList.remove('active');
+        if (item.dataset.channel === channel) item.classList.add('active');
+      });
+      document.querySelectorAll('.content-section').forEach(section => section.classList.remove('active'));
+      document.getElementById(channel).classList.add('active');
+    }
+  </script>
+</body>
+</html>
