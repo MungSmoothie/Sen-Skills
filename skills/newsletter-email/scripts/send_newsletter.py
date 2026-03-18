@@ -26,10 +26,10 @@ def make_email_safe(html):
     - 移除 <script> 标签
     - body 添加基础内联样式
     """
+    # 只移除外部字体引用，保留 <style> 标签（邮件客户端通常支持内嵌 CSS）
     html = re.sub(r'@import\s+url\([^)]+\);?', '', html, flags=re.IGNORECASE)
     html = re.sub(r'<link[^>]*fonts[^>]*>', '', html, flags=re.IGNORECASE)
     html = re.sub(r'<script[^>]*>.*?</script>', '', html, flags=re.DOTALL)
-    html = re.sub(r'<style[^>]*>.*?</style>', '', html, flags=re.DOTALL)
     # body 加基础内联
     html = html.replace("<body>", '<body style="margin:0;padding:20px;background:#c9c3b8;">', 1)
     return html
