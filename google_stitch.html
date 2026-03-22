@@ -1,0 +1,274 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Google Stitch 深度解析 · 村口情报社</title>
+  <style>
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+    body {
+      background: #c9c3b8;
+      font-family: "Noto Serif SC", "Noto Sans SC", serif;
+      padding: 30px 20px;
+      color: #222;
+    }
+    .page {
+      max-width: 900px;
+      margin: 0 auto;
+      background: #faf8f3;
+      box-shadow: 0 8px 40px rgba(0,0,0,0.12);
+      border-radius: 2px;
+    }
+    header {
+      padding: 32px 50px 24px;
+      border-bottom: 3px solid #1a1a1a;
+      display: flex;
+      justify-content: space-between;
+      align-items: flex-end;
+    }
+    header .logo { font-size: 44px; font-weight: 900; letter-spacing: 6px; color: #1a1a1a; }
+    header .subtitle { font-size: 11px; color: #6b6560; letter-spacing: 2px; margin-top: 6px; }
+    header .source { font-size: 10px; color: #1a3a5c; margin-top: 8px; letter-spacing: 1px; }
+    header .meta { text-align: right; }
+    header .date { font-size: 15px; font-weight: 500; color: #1a1a1a; }
+    header .tag { font-size: 10px; color: #8b2635; margin-top: 8px; }
+    .hero {
+      padding: 40px 50px 30px;
+      border-bottom: 1px solid #d4cfc5;
+    }
+    .hero .overline {
+      font-size: 10px; font-weight: 600; color: #8b2635; letter-spacing: 2px; margin-bottom: 14px;
+    }
+    .hero h1 {
+      font-size: 36px; font-weight: 700; line-height: 1.2; color: #1a1a1a; margin-bottom: 16px;
+    }
+    .hero .subtitle {
+      font-size: 16px; color: #5a5a5a; line-height: 1.6; margin-bottom: 20px;
+    }
+    .hero .desc {
+      font-size: 14px; line-height: 1.8; color: #222;
+    }
+    .links {
+      display: flex; gap: 16px; margin-top: 20px; flex-wrap: wrap;
+    }
+    .links a {
+      display: inline-block; padding: 8px 16px; background: #1a1a1a; color: #faf8f3;
+      font-size: 12px; text-decoration: none; border-radius: 2px; letter-spacing: 1px;
+    }
+    .links a:hover { background: #8b2635; }
+
+    .section {
+      padding: 30px 50px;
+      border-bottom: 1px solid #d4cfc5;
+    }
+    .section h2 {
+      font-size: 20px; font-weight: 700; color: #1a1a1a; margin-bottom: 6px;
+      padding-bottom: 8px; border-bottom: 2px solid #8b2635; display: inline-block;
+    }
+    .section h3 {
+      font-size: 15px; font-weight: 600; color: #1a1a1a; margin-top: 18px; margin-bottom: 8px;
+    }
+    .section p {
+      font-size: 13px; line-height: 1.75; color: #444; margin-bottom: 10px;
+    }
+    .features {
+      display: grid; grid-template-columns: 1fr 1fr; gap: 16px; margin-top: 16px;
+    }
+    .feature {
+      background: #f0ebe3; padding: 16px 18px; border-radius: 3px; border-left: 3px solid #8b2635;
+    }
+    .feature h4 {
+      font-size: 12px; font-weight: 700; color: #8b2635; margin-bottom: 6px; letter-spacing: 1px;
+    }
+    .feature p { font-size: 12px; line-height: 1.6; color: #5a5a5a; margin: 0; }
+    .feature.highlight {
+      background: #1a1a1a; border-left-color: #8b2635;
+    }
+    .feature.highlight h4 { color: #faf8f3; }
+    .feature.highlight p { color: #c9c3b8; }
+
+    .quote-box {
+      background: #f0ebe3; padding: 20px 24px; border-radius: 3px; margin-top: 16px;
+      border-left: 4px solid #8b2635;
+    }
+    .quote-box p {
+      font-size: 13px; line-height: 1.75; color: #5a5a5a; font-style: italic;
+    }
+    .quote-box .author {
+      font-size: 11px; color: #8b2635; margin-top: 8px; font-style: normal; font-weight: 600;
+    }
+
+    .comparison {
+      margin-top: 16px; background: #f0ebe3; padding: 20px 24px; border-radius: 3px;
+    }
+    .comparison table { width: 100%; border-collapse: collapse; font-size: 13px; }
+    .comparison th {
+      text-align: left; padding: 8px 12px; border-bottom: 2px solid #8b2635;
+      color: #8b2635; font-weight: 600; letter-spacing: 1px; font-size: 11px;
+    }
+    .comparison td { padding: 8px 12px; border-bottom: 1px solid #d4cfc5; color: #444; }
+    .comparison tr:last-child td { border-bottom: none; }
+
+    .ergou-box {
+      background: #f0ebe3; padding: 18px 22px; border-radius: 3px;
+      border-left: 4px solid #8b2635; margin-top: 16px;
+    }
+    .ergou-box h4 {
+      font-size: 11px; font-weight: 600; color: #8b2635; letter-spacing: 1px; margin-bottom: 8px;
+    }
+    .ergou-box p { font-size: 13px; line-height: 1.7; color: #5a5a5a; font-style: italic; }
+
+    footer {
+      padding: 14px 50px; border-top: 1px solid #d4cfc5;
+      display: flex; justify-content: space-between; font-size: 10px; color: #6b6560;
+    }
+
+    @media (max-width: 700px) {
+      .features { grid-template-columns: 1fr; }
+      header { flex-direction: column; gap: 16px; }
+      header .meta { text-align: left; }
+      .section { padding: 24px 24px; }
+      .hero { padding: 24px 24px; }
+      header { padding: 24px 24px; }
+      footer { padding: 14px 24px; flex-direction: column; gap: 4px; }
+    }
+  </style>
+</head>
+<body>
+<div class="page">
+
+  <header>
+    <div>
+      <div class="logo">情报社内参</div>
+      <div class="subtitle">VILLAGE INTELLIGENCE AGENCY · DEEP ANALYSIS</div>
+      <div class="source">📌 信息来源：Google 官方博客 · TechCrunch · HN</div>
+    </div>
+    <div class="meta">
+      <div class="date">2026年3月20日</div>
+      <div class="tag">Google · AI Design · Labs</div>
+    </div>
+  </header>
+
+  <div class="hero">
+    <div class="overline">▌深度解析</div>
+    <h1>Google Stitch：AI 正在重写设计行业的游戏规则</h1>
+    <p class="subtitle">从"画图工具"到"对话式设计伙伴"——Google Stitch 全面升级，用自然语言就能做高保真 UI</p>
+    <p class="desc">
+      2026年3月，Google Labs 发布 Stitch 重大版本更新。这个曾经定位为"AI 驱动的设计工具"的产品，如今演变为一个<strong>AI 原生软件设计平台</strong>——任何人都可以用自然语言创建、迭代和协作高保真 UI，并直接导出为可运行原型。
+    </p>
+    <div class="links">
+      <a href="https://blog.google/innovation-and-ai/models-and-research/google-labs/stitch-ai-ui-design/" target="_blank">📄 Google 官方博客原文</a>
+      <a href="https://stitch.withgoogle.com/" target="_blank">🚀 体验 Stitch</a>
+      <a href="https://github.com/google/stitch" target="_blank">⭐ GitHub (2.4k stars)</a>
+    </div>
+  </div>
+
+  <div class="section">
+    <h2>📱 Stitch 是什么</h2>
+    <p>Google Stitch 是一个 <strong>AI 原生软件设计画布</strong>，核心理念是：把"想法"直接变成"设计稿"，不需要学习 Figma、不需要会代码。</p>
+    <p>用 Google 官方博客的话说：<em>"无论你是想探索几十种方案的专业设计师，还是想快速把第一个软件想法变成现实的人——Stitch 的目标是让你在几分钟而不是几天内把想法变成现实。"</em></p>
+  </div>
+
+  <div class="section">
+    <h2>🆕 8 大核心更新</h2>
+    <div class="features">
+      <div class="feature highlight">
+        <h4>① 无限画布（Infinite Canvas）</h4>
+        <p>全新的 AI 原生无限画布，给创意足够的空间从早期构思延伸到可运行原型。设计过程不再受限于固定画板大小。</p>
+      </div>
+      <div class="feature">
+        <h4>② 设计 Agent</h4>
+        <p>能跨整个项目演进过程进行推理，理解设计意图，自动补全、合理化设计方案。</p>
+      </div>
+      <div class="feature">
+        <h4>③ Agent 管理器</h4>
+        <p>同时并行探索多个方向并保持条理清晰——相当于有多个设计师同时工作，互不干扰。</p>
+      </div>
+      <div class="feature highlight">
+        <h4>④ 语音交互（Voice）</h4>
+        <p>直接对着画布说话，Agent 实时给设计建议和批评反馈。实时更新："给我三个菜单选项"、"换这套配色方案"——边说边改。</p>
+      </div>
+      <div class="feature">
+        <h4>⑤ 自然语言 → 高保真 UI</h4>
+        <p>输入业务目标、用户感受描述，甚至示例图片，Stitch 自动生成高保真 UI 设计稿。</p>
+      </div>
+      <div class="feature">
+        <h4>⑥ 设计系统工具包</h4>
+        <p>从任意 URL 提取设计系统；新推出 DESIGN.md（Agent 友好格式），可与其他设计和编码工具导入/导出。</p>
+      </div>
+      <div class="feature">
+        <h4>⑦ 一键交互原型</h4>
+        <p>静态设计秒变交互原型，点击"播放"直接预览完整应用流程。自动生成逻辑跳转，一键预览用户旅程。</p>
+      </div>
+      <div class="feature highlight">
+        <h4>⑧ MCP Server + SDK</h4>
+        <p>刚发布即获 2.4k GitHub stars。通过 MCP 协议接入，可调用 Stitch 能力，导出到 AI Studio 和 Antigravity。</p>
+      </div>
+    </div>
+  </div>
+
+  <div class="section">
+    <h2>💡 核心使用场景</h2>
+    <div class="comparison">
+      <table>
+        <tr><th>场景</th><th>传统方式</th><th>Stitch 方式</th></tr>
+        <tr><td>生成设计稿</td><td>Figma + 手动绘制，耗时数小时</td><td>用自然语言描述，分钟级生成</td></tr>
+        <tr><td>多方案对比</td><td>手动绘制多个版本</td><td>Agent 并行生成多个方向</td></tr>
+        <tr><td>设计迭代</td><td>设计师反复修改</td><td>语音指令实时更新</td></tr>
+        <tr><td>设计系统</td><td>人工整理组件库</td><td>URL 一键提取，DESIGN.md 导出</td></tr>
+        <tr><td>交互原型</td><td>Figma + ProtoPie，需时数天</td><td>一键生成可交互原型，秒级预览</td></tr>
+        <tr><td>开发者交接</td><td>设计稿 + 标注文档</td><td>MCP SDK 直连 AI Studio / Antigravity</td></tr>
+      </table>
+    </div>
+  </div>
+
+  <div class="section">
+    <h2>🔗 技术生态</h2>
+    <h3>MCP Server &amp; SDK</h3>
+    <p>Stitch MCP Server 已发布 GitHub，2.4k stars。通过 Model Context Protocol（MCP），开发者可以用技能（Skills）和工具（Tools）调用 Stitch 的设计能力，实现与现有 AI 工具链的深度集成。</p>
+    <h3>导出目标</h3>
+    <p>Stitch 设计稿可直接导出到 <strong>Google AI Studio</strong> 和 <strong>Antigravity</strong>，实现设计到代码的端到端无缝衔接。这意味着从想法到可运行代码的路径被大幅缩短。</p>
+    <h3>DESIGN.md</h3>
+    <p>一种 Agent 友好的 Markdown 格式，用于描述设计规则、组件规范和品牌指南。可与其他设计工具（Figma、Sketch）和编码工具双向导入导出，打通设计资产的流转。</p>
+  </div>
+
+  <div class="section">
+    <h2>🎯 对行业的影响</h2>
+    <p>Stitch 的野心不只是"更快的设计工具"，而是重新定义<strong>人机协作设计</strong>的范式：</p>
+    <div class="quote-box">
+      <p>"Instead of starting with a wireframe, you can start by explaining the business objective you're hoping to achieve, what you want your users to feel, or even examples of what's currently inspiring you."</p>
+      <div class="author">— Google Stitch 官方博客</div>
+    </div>
+    <p style="margin-top: 16px;">这意味着：<strong>设计的入口从"视觉操作"变成了"语言表达"</strong>。设计师的价值从"画图"转向"审美判断"和"策略思维"，而 AI 承担执行层的工作。</p>
+    <p>对于独立开发者和创业者，这意味着可以在几分钟内把产品想法变成高保真 UI 原型，大大降低 MVP 的验证门槛。</p>
+  </div>
+
+  <div class="section">
+    <h2>🏆 与竞品对比</h2>
+    <div class="comparison">
+      <table>
+        <tr><th>产品</th><th>核心能力</th><th>AI 深度</th><th>接入生态</th></tr>
+        <tr><td><strong>Google Stitch</strong></td><td>自然语言 UI 生成</td><td>设计 Agent + 语音</td><td>MCP / AI Studio</td></tr>
+        <tr><td>Figma AI</td><td>设计辅助（填充、布局）</td><td>有限</td><td>Figma 生态</td></tr>
+        <tr><td>Framer AI</td><td>生成式网站设计</td><td>中等</td><td>Web 发布</td></tr>
+        <tr><td>Galileo AI</td><td>UI 生成</td><td>中等</td><td>有限</td></tr>
+        <tr><td>V0 (Vercel)</td><td>代码生成</td><td>强</td><td>Vercel 生态</td></tr>
+      </table>
+    </div>
+    <p style="margin-top: 12px; font-size: 12px; color: #6b6560;">注：Stitch 的差异化在于"AI 原生设计画布 + Agent 推理 + 语音交互 + MCP 生态接入"的完整闭环，而非单纯的 UI 生成。</p>
+  </div>
+
+  <div class="section">
+    <div class="ergou-box">
+      <h4>📣 二狗点评</h4>
+      <p>Google Stitch 这一波更新，俺觉得最值得关注的不是"无限画布"或者"一键原型"，而是<strong>语音交互</strong>——直接对着画布说话，AI 实时给你改设计。这意味着"设计"这件事的入口彻底变了：以前是鼠标键盘操作，以后是自然语言描述。设计师的核心竞争力不再是"画得漂亮"，而是"说清楚要什么"。当然，Figma 的地位短期不会动摇——工具惯性是真实的。但对于独立开发者和产品经理，Stitch 可能是一个绕过设计团队直接出稿的捷径。俺的建议是：先上手试试，说不定哪天就能省下一笔设计外包费。</p>
+    </div>
+  </div>
+
+  <footer>
+    <div>村口情报社 · 情报社内参</div>
+    <div>信息来源：Google 官方博客 · TechCrunch · Hacker News · @来一杯绿豆冰沙 & 二狗</div>
+  </footer>
+</div>
+</body>
+</html>

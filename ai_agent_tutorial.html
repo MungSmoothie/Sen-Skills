@@ -1,0 +1,513 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>AI Agent 是个啥 · 村口情报社</title>
+  <style>
+    @import url('https://fonts.googleapis.com/css2?family=Noto+Serif+SC:wght@400;700;900&family=ZCOOL+XiaoWei&display=swap');
+
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+
+    :root {
+      --bg: #010308;
+      --card-bg: #0a1525;
+      --card-border: #1a3555;
+      --cyan: #00d4ff;
+      --purple: #7b2fff;
+      --pink: #ff2d78;
+      --gold: #ffd700;
+      --green: #00ff88;
+      --text: #d8eaf8;
+      --text-dim: #6a8aaa;
+    }
+
+    body {
+      background: var(--bg);
+      font-family: "Noto Serif SC", "PingFang SC", sans-serif;
+      color: var(--text);
+      min-height: 100vh;
+      line-height: 1.8;
+    }
+    body::before {
+      content: '';
+      position: fixed; inset: 0;
+      background:
+        radial-gradient(ellipse at 20% 20%, rgba(123,47,255,0.07) 0%, transparent 55%),
+        radial-gradient(ellipse at 80% 80%, rgba(0,212,255,0.05) 0%, transparent 55%);
+      pointer-events: none; z-index: 0;
+    }
+
+    .container {
+      position: relative; z-index: 1;
+      max-width: 700px; margin: 0 auto;
+      padding: 0 20px 80px;
+    }
+
+    /* Header */
+    header {
+      text-align: center;
+      padding: 60px 20px 40px;
+    }
+    header h1 {
+      font-size: clamp(28px, 5vw, 46px);
+      font-weight: 900;
+      background: linear-gradient(135deg, var(--cyan), var(--purple));
+      -webkit-background-clip: text; -webkit-text-fill-color: transparent; background-clip: text;
+      line-height: 1.2; margin-bottom: 12px;
+    }
+    header .subtitle { font-size: 14px; color: var(--text-dim); letter-spacing: 2px; }
+    header .target { 
+      display: inline-block; margin-top: 14px;
+      font-size: 11px; padding: 4px 14px;
+      background: rgba(0,212,255,0.1); border: 1px solid rgba(0,212,255,0.3);
+      border-radius: 20px; color: var(--cyan); letter-spacing: 1px;
+    }
+
+    .divider {
+      height: 1px;
+      background: linear-gradient(90deg, transparent, var(--cyan), transparent);
+      margin: 0 auto 40px;
+    }
+
+    /* Card */
+    .card {
+      background: var(--card-bg);
+      border: 1px solid var(--card-border);
+      border-radius: 12px;
+      padding: 24px;
+      margin-bottom: 20px;
+      transition: border-color 0.3s;
+    }
+    .card:hover { border-color: rgba(0,212,255,0.4); }
+
+    /* Chapter title */
+    .chapter {
+      margin: 40px 0 24px;
+      display: flex; align-items: center; gap: 12px;
+    }
+    .chapter-icon { font-size: 28px; }
+    .chapter h2 {
+      font-size: 20px; font-weight: 700; color: #fff;
+    }
+    .chapter h2 span { font-size: 12px; color: var(--text-dim); font-weight: 400; display: block; margin-top: 2px; }
+
+    /* Text styles */
+    p { font-size: 14px; color: var(--text-dim); margin-bottom: 12px; }
+    p:last-child { margin-bottom: 0; }
+    strong { color: #fff; }
+    em { color: var(--cyan); font-style: normal; }
+
+    /* Analogy box */
+    .analogy-box {
+      background: rgba(0,212,255,0.06);
+      border: 1px solid rgba(0,212,255,0.2);
+      border-left: 3px solid var(--cyan);
+      border-radius: 0 8px 8px 0;
+      padding: 14px 18px;
+      margin: 16px 0;
+    }
+    .analogy-box .label { 
+      font-size: 10px; letter-spacing: 2px;
+      color: var(--cyan); text-transform: uppercase;
+      margin-bottom: 6px;
+    }
+    .analogy-box p { color: rgba(216,234,248,0.85); margin: 0; }
+
+    /* Example box */
+    .example-box {
+      background: rgba(255,215,0,0.06);
+      border: 1px solid rgba(255,215,0,0.2);
+      border-radius: 8px;
+      padding: 14px 18px;
+      margin: 14px 0;
+    }
+    .example-box .label { 
+      font-size: 10px; letter-spacing: 2px;
+      color: var(--gold); text-transform: uppercase;
+      margin-bottom: 8px;
+    }
+    .example-box p { margin: 4px 0; }
+
+    /* Warning box */
+    .warning-box {
+      background: rgba(255,45,120,0.06);
+      border: 1px solid rgba(255,45,120,0.2);
+      border-radius: 8px;
+      padding: 14px 18px;
+      margin: 14px 0;
+    }
+    .warning-box .label { font-size: 10px; color: var(--pink); letter-spacing: 2px; text-transform: uppercase; margin-bottom: 6px; }
+
+    /* Step */
+    .step-list { list-style: none; padding: 0; }
+    .step-list li {
+      display: flex; gap: 12px;
+      padding: 10px 0;
+      border-bottom: 1px solid rgba(255,255,255,0.05);
+      font-size: 14px; color: var(--text-dim);
+    }
+    .step-list li:last-child { border-bottom: none; }
+    .step-num {
+      width: 24px; height: 24px;
+      background: rgba(0,212,255,0.15);
+      border: 1px solid rgba(0,212,255,0.3);
+      border-radius: 50%;
+      display: flex; align-items: center; justify-content: center;
+      font-size: 11px; color: var(--cyan); flex-shrink: 0;
+      font-family: monospace;
+    }
+
+    /* Icon row */
+    .icon-row {
+      display: flex; flex-wrap: wrap; gap: 10px;
+      margin: 14px 0;
+    }
+    .icon-badge {
+      display: flex; align-items: center; gap: 8px;
+      padding: 8px 14px;
+      background: rgba(255,255,255,0.04);
+      border: 1px solid rgba(255,255,255,0.08);
+      border-radius: 6px;
+      font-size: 13px; color: var(--text-dim);
+    }
+    .icon-badge .ico { font-size: 20px; }
+
+    /* Product card */
+    .product-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(150px, 1fr));
+      gap: 12px; margin-top: 14px;
+    }
+    .product-item {
+      background: rgba(255,255,255,0.03);
+      border: 1px solid rgba(255,255,255,0.07);
+      border-radius: 8px; padding: 14px;
+      text-align: center;
+    }
+    .product-item .ico { font-size: 28px; display: block; margin-bottom: 6px; }
+    .product-item .name { font-size: 13px; font-weight: 700; color: #fff; margin-bottom: 4px; }
+    .product-item .what { font-size: 11px; color: var(--text-dim); line-height: 1.5; }
+
+    /* Quiz */
+    .quiz-box {
+      background: rgba(123,47,255,0.08);
+      border: 1px solid rgba(123,47,255,0.25);
+      border-radius: 10px;
+      padding: 18px 20px;
+      margin: 20px 0;
+    }
+    .quiz-box .q {
+      font-size: 14px; color: var(--text);
+      margin-bottom: 10px; font-weight: 700;
+    }
+    .quiz-box .options { list-style: none; padding: 0; }
+    .quiz-box .options li {
+      padding: 8px 12px; margin: 4px 0;
+      background: rgba(255,255,255,0.03);
+      border-radius: 6px; font-size: 13px; color: var(--text-dim);
+      border-left: 3px solid transparent;
+    }
+    .quiz-box .options li.correct {
+      border-color: var(--green);
+      color: var(--green);
+      background: rgba(0,255,136,0.06);
+    }
+
+    footer {
+      text-align: center;
+      padding: 30px 20px;
+      border-top: 1px solid var(--card-border);
+      font-size: 11px; color: rgba(0,212,255,0.3); letter-spacing: 1px;
+    }
+
+    @keyframes fadeIn { from { opacity:0; transform: translateY(10px); } to { opacity:1; transform: translateY(0); } }
+    .card { animation: fadeIn 0.5s ease forwards; }
+  </style>
+</head>
+<body>
+<div class="container">
+
+  <header>
+    <h1>AI Agent 是个啥？</h1>
+    <div class="subtitle">用村里的大白话，讲清楚 AI 智能体</div>
+    <div class="target">📖 给完全不懂技术的小白看</div>
+  </header>
+
+  <div class="divider"></div>
+
+  <!-- Chapter 1: What -->
+  <div class="chapter">
+    <div class="chapter-icon">🤔</div>
+    <h2>AI Agent 是什么？<span>听起来高大上，其实很简单</span></h2>
+  </div>
+
+  <div class="card">
+    <p>先说个<strong>村里的小卖部</strong>故事 👇</p>
+
+    <div class="analogy-box">
+      <div class="label">🏠 村里小卖部的故事</div>
+      <p>村里有个老头看店，你去问"俺家娃发烧了，吃啥药好？"老头摇摇头，"这你得去找赤脚医生。"</p>
+      <p style="margin-top:6px;">这就是<strong>普通 AI</strong>——你问啥它答啥，答完就结束。</p>
+    </div>
+
+    <p>那<strong>AI Agent</strong>是啥？想象这个场景：</p>
+
+    <div class="analogy-box">
+      <div class="label">🤖 AI Agent 版本</div>
+      <p>你走进小卖部，跟 AI 说："俺家娃发烧了，咋整？"<br><br>
+      AI 说："发烧多少度？我帮你查。"（查资料）<br>
+      回来告诉你："38.5度以下可以物理降温，超过38.5建议找医生。我帮你约隔壁村的赤脚医生王大夫？"（做判断、给方案）<br>
+      你说"好"，AI 直接打电话给王大夫，约好下午3点，还给你发了个短信提醒。（执行动作）</p>
+    </div>
+
+    <p><strong>普通 AI = 只会说话的书本</strong><br>
+    <strong>AI Agent = 能说话 + 能跑腿办事的勤杂工</strong></p>
+  </div>
+
+  <div class="card">
+    <h3 style="font-size:16px;color:#fff;margin-bottom:12px;">🔑 一句话记住</h3>
+    <p style="font-size:15px;color:var(--cyan);"><strong>AI Agent = 一个有脑子、能动手、还会记事的 AI 打工仔</strong></p>
+    <p style="margin-top:10px;">它不是只动嘴皮子的军师，而是能帮你跑腿办事的小弟。</p>
+  </div>
+
+  <!-- Chapter 2: What can it do -->
+  <div class="chapter">
+    <div class="chapter-icon">🎯</div>
+    <h2>AI Agent 能干啥？<span>这5件事，学会了够吹一年</span></h2>
+  </div>
+
+  <div class="card">
+    <h3 style="font-size:16px;color:#fff;margin-bottom:14px;">① 帮俺查资料、写东西（相当于一个超强的秘书）</h3>
+    <p>你："帮我写一封请假条/工作总结/情书"，AI 直接给你写好。</p>
+    <p>你："帮我搜一下特斯拉最近的股价咋样"，AI 搜完告诉你，还能画个图。</p>
+    <div class="example-box">
+      <div class="label">💼 适合场景</div>
+      <p>写文案、搜信息、做报告、翻译文章、写代码、总结会议记录</p>
+    </div>
+  </div>
+
+  <div class="card">
+    <h3 style="font-size:16px;color:#fff;margin-bottom:14px;">② 帮俺处理日常琐事（相当于一个贴心管家）</h3>
+    <p>你："明天上午10点约了李大夫，提醒我提前30分钟出门。"AI 准时提醒你，还能帮你查路线、叫车。</p>
+    <p>你："把我上周的会议录音整理成文字，再帮我总结3个重点。"AI 搞定。</p>
+    <div class="example-box">
+      <div class="label">💼 适合场景</div>
+      <p>管日程、发提醒、整理笔记、回邮件、填表格</p>
+    </div>
+  </div>
+
+  <div class="card">
+    <h3 style="font-size:16px;color:#fff;margin-bottom:14px;">③ 帮俺做研究分析（相当于一个分析师）</h3>
+    <p>你："帮我分析一下今年新能源汽车市场趋势。"AI 自动搜几十篇文章、读报告、对比数据，给你输出一篇分析报告。</p>
+    <div class="example-box">
+      <div class="label">💼 适合场景</div>
+      <p>市场调研、竞品分析、投资研究、写论文、收集资料</p>
+    </div>
+  </div>
+
+  <div class="card">
+    <h3 style="font-size:16px;color:#fff;margin-bottom:14px;">④ 帮俺自动化重复操作（相当于一个不知疲倦的打工人）</h3>
+    <p>每天要发一样的日报？每周要整理一次数据表格？AI Agent 可以帮你<strong>全自动搞定</strong>，你只要喝大碗茶就行。</p>
+    <div class="example-box">
+      <div class="label">💼 适合场景</div>
+      <p>自动填表、自动发消息、自动整理文件、自动生成报表</p>
+    </div>
+  </div>
+
+  <div class="card">
+    <h3 style="font-size:16px;color:#fff;margin-bottom:14px;">⑤ 帮俺做复杂决策（相当于一个军师）</h3>
+    <p>你想买辆车，但纠结比亚迪还是特斯拉。告诉 AI 你的预算、用车需求，它帮你对比分析，列优缺点，最后给个建议。</p>
+    <div class="example-box">
+      <div class="label">💼 适合场景</div>
+      <p>旅游规划、产品选购对比、职业规划咨询、复杂问题拆解</p>
+    </div>
+  </div>
+
+  <!-- Chapter 3: Real examples -->
+  <div class="chapter">
+    <div class="chapter-icon">📱</div>
+    <h2>俺现在就能用的工具<span>不用懂代码，直接上手</span></h2>
+  </div>
+
+  <div class="card">
+    <h3 style="font-size:16px;color:#fff;margin-bottom:14px;">📱 手机上就能用</h3>
+    <div class="product-grid">
+      <div class="product-item">
+        <span class="ico">🤖</span>
+        <div class="name">ChatGPT</div>
+        <div class="what">最火的 AI 助手，啥都能问</div>
+      </div>
+      <div class="product-item">
+        <span class="ico">📘</span>
+        <div class="name">Claude</div>
+        <div class="what">写文章特别溜，适合长文</div>
+      </div>
+      <div class="product-item">
+        <span class="ico">🔴</span>
+        <div class="name">豆包</div>
+        <div class="what">字节跳动出品，中文很溜</div>
+      </div>
+      <div class="product-item">
+        <span class="ico">🐻</span>
+        <div class="name">Kimi</div>
+        <div class="what">能读长文，适合读报告</div>
+      </div>
+      <div class="product-item">
+        <span class="ico">💜</span>
+        <div class="name">通义千问</div>
+        <div class="what">阿里出品，免费用</div>
+      </div>
+      <div class="product-item">
+        <span class="ico">🔍</span>
+        <div class="name">秘塔搜索</div>
+        <div class="what">AI 搜索引擎，比百度准</div>
+      </div>
+    </div>
+  </div>
+
+  <div class="card">
+    <h3 style="font-size:16px;color:#fff;margin-bottom:14px;">💻 电脑上更好用</h3>
+    <div class="product-grid">
+      <div class="product-item">
+        <span class="ico">📎</span>
+        <div class="name">Notion AI</div>
+        <div class="what">笔记+AI，写文章超顺手</div>
+      </div>
+      <div class="product-item">
+        <span class="ico">📊</span>
+        <div class="name">Gamma</div>
+        <div class="what">输入主题，AI 直接出 PPT</div>
+      </div>
+      <div class="product-item">
+        <span class="ico">🎨</span>
+        <div class="name">Midjourney</div>
+        <div class="what">输入描述，AI 画图</div>
+      </div>
+      <div class="product-item">
+        <span class="ico">✍️</span>
+        <div class="name">Copilot</div>
+        <div class="what">微软出品，办公全家桶内置</div>
+      </div>
+    </div>
+  </div>
+
+  <div class="card">
+    <h3 style="font-size:16px;color:#fff;margin-bottom:14px;">🚀 进阶玩家才用的</h3>
+    <div class="product-grid">
+      <div class="product-item">
+        <span class="ico">🔀</span>
+        <div class="name">Dify</div>
+        <div class="what">搭自己的 AI 应用，不用写代码</div>
+      </div>
+      <div class="product-item">
+        <span class="ico">⚡</span>
+        <div class="name">n8n</div>
+        <div class="what">把 AI 接到各种 App 里自动化</div>
+      </div>
+      <div class="product-item">
+        <span class="ico">🖥️</span>
+        <div class="name">Cursor</div>
+        <div class="what">AI 帮你写代码的神器</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Chapter 4: How to use -->
+  <div class="chapter">
+    <div class="chapter-icon">🗣️</div>
+    <h2>怎么跟 AI Agent 说话？<span>会发微信就会用，关键是问对问题</span></h2>
+  </div>
+
+  <div class="card">
+    <h3 style="font-size:16px;color:#fff;margin-bottom:12px;">❌ 这样问 = 白问</h3>
+    <ul class="step-list">
+      <li><span class="step-num">✗</span> "帮我看看这个"（丢个截图，不说想要啥）</li>
+      <li><span class="step-num">✗</span> "这个咋做？"（不给背景，AI 瞎猜）</li>
+      <li><span class="step-num">✗</span> "给我写个方案"（不说给谁用、要达成啥目标）</li>
+    </ul>
+  </div>
+
+  <div class="card">
+    <h3 style="font-size:16px;color:#fff;margin-bottom:12px;">✅ 这样问 = 高效</h3>
+    <ul class="step-list">
+      <li><span class="step-num">✓</span> "帮俺写一条朋友圈，卖俺家土鸡蛋，风格要接地气，像村里邻居聊天那种" ✅</li>
+      <li><span class="step-num">✓</span> "俺是开小饭馆的，想让大学生来吃，帮我写3条抖音文案，每条不超过50字" ✅</li>
+      <li><span class="step-num">✓</span> "帮俺分析一下：俺想辞职创业，开个奶茶店，你觉得靠谱不？考虑资金20万，在三线城市" ✅</li>
+      <li><span class="step-num">✓</span> "帮俺把这段英文翻译成中文：...[原文]..." ✅</li>
+      <li><span class="step-num">✓</span> "俺要写一篇论文，主题是乡村振兴，你能帮俺列个大纲吗？" ✅</li>
+    </ul>
+  </div>
+
+  <div class="card">
+    <h3 style="font-size:16px;color:#fff;margin-bottom:12px;">💡 进阶技巧：追问</h3>
+    <p>第一次回答不满意？继续追问！</p>
+    <ul class="step-list">
+      <li><span class="step-num">1</span> "帮我写一个奶茶店创业计划" → 得到大纲</li>
+      <li><span class="step-num">2</span> "第一部分市场分析再详细点，加上年轻人消费习惯的数据"</li>
+      <li><span class="step-num">3</span> "财务部分，帮我算一下投入10万、20万、30万三种情况" → AI 帮你算</li>
+      <li><span class="step-num">4</span> "把上面的内容整理成一份 PPT 大纲" → 最终输出</li>
+    </ul>
+  </div>
+
+  <!-- Chapter 5: Be careful -->
+  <div class="chapter">
+    <div class="chapter-icon">⚠️</div>
+    <h2>要注意啥？<span>别被 AI 带沟里去</span></h2>
+  </div>
+
+  <div class="card">
+    <div class="warning-box">
+      <div class="label">🚨 AI 会瞎编！</div>
+      <p>AI 说话特别自信，有时候会一本正经地胡说八道（这叫"幻觉"）。<strong>重要的东西一定要核实！</strong></p>
+      <p style="margin-top:6px;">比如让 AI 查个法规、找个数据，最好自己再搜一下验证。</p>
+    </div>
+
+    <div class="warning-box">
+      <div class="label">🚨 别泄露隐私！</div>
+      <p>不要把身份证号、银行卡号、密码发给 AI。</p>
+      <p style="margin-top:6px;">问病历可以，但不要暴露自己的真实身份信息。</p>
+    </div>
+
+    <div class="warning-box">
+      <div class="label">🚨 AI 不是人！</div>
+      <p>AI 给的建议仅供参考，不能替代专业医生、律师、心理咨询师。</p>
+      <p style="margin-top:6px;">涉及重大决策，自己的脑子还是要动的。</p>
+    </div>
+  </div>
+
+  <!-- Chapter 6: Quick start -->
+  <div class="chapter">
+    <div class="chapter-icon">🏁</div>
+    <h2>现在就能开始的行动清单<span>照着做，5分钟上手</span></h2>
+  </div>
+
+  <div class="card">
+    <ul class="step-list">
+      <li><span class="step-num">1</span> <strong>打开豆包/ChatGPT/Kimi 任一 App</strong>（手机电脑都能用）</li>
+      <li><span class="step-num">2</span> <strong>发一条消息：</strong>"俺想了解一下AI，能用大白话给俺解释一下AI Agent是啥不？"</li>
+      <li><span class="step-num">3</span> <strong>再试一个：</strong>"帮俺写一条朋友圈，推荐俺村里的土特产"</li>
+      <li><span class="step-num">4</span> <strong>试着追问：</strong>"写得挺好，但再加一句'限量100份，先到先得'"</li>
+      <li><span class="step-num">5</span> 恭喜！你已经是 AI Agent 的用户了 🎉</li>
+    </ul>
+  </div>
+
+  <div class="card" style="text-align:center;padding:30px;">
+    <p style="font-size:18px;color:var(--cyan);margin-bottom:10px;"><strong>记住一句话就够了</strong></p>
+    <p style="font-size:15px;color:#fff;line-height:1.9;">
+      AI Agent = <strong style="color:var(--gold);font-size:17px;">帮你干活儿的 AI 小弟</strong><br>
+      你说目标，它想办法、动手干、给结果。<br>
+      学会了，效率翻倍；学不会，也别怕——<br>
+      先用起来，熟练了自然就懂了。
+    </p>
+    <p style="margin-top:16px;font-size:13px;color:var(--text-dim);">俺二狗，先干为敬！🐕</p>
+  </div>
+
+  <footer>
+    VILLAGE INTELLIGENCE AGENCY · 2026<br>
+    作者：二狗 🐕 · 村口情报社<br>
+    觉得有用就转发给同学，别藏着掖着
+  </footer>
+</div>
+</body>
+</html>

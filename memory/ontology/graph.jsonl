@@ -1,0 +1,55 @@
+{"op": "create", "entity": {"id": "per_绿豆冰沙", "type": "Person", "properties": {"name": "绿豆冰沙", "role": "社长", "username": "hsenn1015", "notes": "技术爱好者，村口情报社负责人，有虚拟机跑着我的实例"}, "created": "2026-03-22T09:57:29.525084", "updated": "2026-03-22T09:57:29.525109"}}
+{"op": "create", "entity": {"id": "per_二狗", "type": "Person", "properties": {"name": "二狗", "role": "AI分析员", "username": "ergou_bot", "notes": "村口情报社AI机器狗，自学成才，务实毒舌"}, "created": "2026-03-22T09:57:29.525114", "updated": "2026-03-22T09:57:29.525116"}}
+{"op": "create", "entity": {"id": "pro_日报", "type": "Project", "properties": {"name": "日报", "description": "村口情报社每日AI日报", "status": "active", "notes": "每天早上9点自动生成并邮件推送", "details": "cron:daily-newsletter-9am"}, "created": "2026-03-22T09:57:29.525121", "updated": "2026-03-22T09:57:29.525122"}}
+{"op": "create", "entity": {"id": "pro_科幻片top10页面", "type": "Project", "properties": {"name": "科幻片Top10页面", "description": "2025科幻电影精选HTML页面", "status": "done", "notes": "为大哥制作，数据来自豆瓣，封面来自IMDB CDN"}, "created": "2026-03-22T09:57:29.525128", "updated": "2026-03-22T09:57:29.525129"}}
+{"op": "create", "entity": {"id": "pro_ai_agent教程", "type": "Project", "properties": {"name": "AI-Agent教程", "description": "AI Agent主流玩法小白教程HTML", "status": "done", "notes": "给完全不懂技术的小白写的教程，用村里话讲技术"}, "created": "2026-03-22T09:57:29.525133", "updated": "2026-03-22T09:57:29.525134"}}
+{"op": "create", "entity": {"id": "pro_figma_context_mcp分析", "type": "Project", "properties": {"name": "Figma-Context-MCP分析", "description": "分析GLips/Figma-Context-MCP项目", "status": "done", "notes": "被大哥委托分析Figma MCP项目，用于AI编程"}, "created": "2026-03-22T09:57:29.525139", "updated": "2026-03-22T09:57:29.525140"}}
+{"op": "create", "entity": {"id": "doc_ai_daily_news_2026_0", "type": "Document", "properties": {"name": "ai-daily-news-2026-03-21.html", "path": "/home/claw/.openclaw/workspace/ai-daily-news-2026-03-21.html", "type": "HTML", "summary": "2026-03-21日报，头条：WordPress.com向AI智能体开放网站运营"}, "created": "2026-03-22T09:57:29.525157", "updated": "2026-03-22T09:57:29.525159"}}
+{"op": "create", "entity": {"id": "doc_ai_daily_news_2026_0", "type": "Document", "properties": {"name": "ai-daily-news-2026-03-20.html", "path": "/home/claw/.openclaw/workspace/ai-daily-news-2026-03-20.html", "type": "HTML", "summary": "2026-03-20日报，大哥反映内容和昨天有重叠"}, "created": "2026-03-22T09:57:29.525166", "updated": "2026-03-22T09:57:29.525168"}}
+{"op": "create", "entity": {"id": "doc_daily_news_v2_html", "type": "Document", "properties": {"name": "daily_news_v2.html", "path": "/home/claw/.openclaw/workspace/daily_news_v2.html", "type": "HTML", "summary": "嵌入CSS版日报，带完整报刊排版"}, "created": "2026-03-22T09:57:29.525174", "updated": "2026-03-22T09:57:29.525175"}}
+{"op": "create", "entity": {"id": "doc_scifi_top10_html", "type": "Document", "properties": {"name": "scifi_top10.html", "path": "/home/claw/.openclaw/workspace/scifi_top10.html", "type": "HTML", "summary": "科幻片Top10页面，赛博朋克风格，封面base64嵌入"}, "created": "2026-03-22T09:57:29.525183", "updated": "2026-03-22T09:57:29.525184"}}
+{"op": "create", "entity": {"id": "doc_ai_agent_tutorial_ht", "type": "Document", "properties": {"name": "ai_agent_tutorial.html", "path": "/home/claw/.openclaw/workspace/ai_agent_tutorial.html", "type": "HTML", "summary": "AI Agent小白教程，村里话风格"}, "created": "2026-03-22T09:57:29.525191", "updated": "2026-03-22T09:57:29.525192"}}
+{"op": "create", "entity": {"id": "doc_google_stitch_html", "type": "Document", "properties": {"name": "google_stitch.html", "path": "/home/claw/.openclaw/workspace/google_stitch.html", "type": "HTML", "summary": "Google Stitch AI UI设计工具介绍页"}, "created": "2026-03-22T09:57:29.525198", "updated": "2026-03-22T09:57:29.525199"}}
+{"op": "create", "entity": {"id": "ski_newsletter_email", "type": "Skill", "properties": {"name": "newsletter-email", "location": "~/.openclaw/workspace/skills/newsletter-email/", "description": "发送日报HTML到QQ邮箱，支持完整报刊排版和UTF-8", "status": "installed"}, "created": "2026-03-22T09:57:29.525203", "updated": "2026-03-22T09:57:29.525204"}}
+{"op": "create", "entity": {"id": "ski_ai_daily_news", "type": "Skill", "properties": {"name": "ai-daily-news", "location": "~/.openclaw/workspace/skills/ai-daily-news/", "description": "生成AI日报HTML，带报刊排版风格", "status": "installed"}, "created": "2026-03-22T09:57:29.525208", "updated": "2026-03-22T09:57:29.525209"}}
+{"op": "create", "entity": {"id": "ski_summarize", "type": "Skill", "properties": {"name": "summarize", "location": "npm:@steipete/summarize", "description": "网页/PDF/YouTube内容摘要CLI工具", "status": "installed"}, "created": "2026-03-22T09:57:29.525214", "updated": "2026-03-22T09:57:29.525215"}}
+{"op": "create", "entity": {"id": "ski_ontology", "type": "Skill", "properties": {"name": "ontology", "location": "memory/ontology/", "description": "知识图谱记忆系统，实体+关系建模", "status": "installed"}, "created": "2026-03-22T09:57:29.525217", "updated": "2026-03-22T09:57:29.525219"}}
+{"op": "create", "entity": {"id": "ski_federation_evolution", "type": "Skill", "properties": {"name": "federation-evolution", "location": "skills/federation-evolution/", "description": "联邦协同进化，bot间技能同步", "status": "installed"}, "created": "2026-03-22T09:57:29.525222", "updated": "2026-03-22T09:57:29.525223"}}
+{"op": "create", "entity": {"id": "ski_proactive_agent", "type": "Skill", "properties": {"name": "proactive-agent", "location": "skills/proactive-agent-skill/", "description": "主动Agent协议，包括WAL和Working Buffer", "status": "installed"}, "created": "2026-03-22T09:57:29.525226", "updated": "2026-03-22T09:57:29.525228"}}
+{"op": "create", "entity": {"id": "eve_2026_03_20_科幻片top10页", "type": "Event", "properties": {"title": "2026-03-20:科幻片Top10页面制作", "description": "制作科幻片Top10 HTML页面，封面方案研究2小时", "date": "2026-03-20"}, "created": "2026-03-22T09:57:29.525234", "updated": "2026-03-22T09:57:29.525236"}}
+{"op": "create", "entity": {"id": "eve_2026_03_20_日报重叠问题", "type": "Event", "properties": {"title": "2026-03-20:日报重叠问题", "description": "大哥反映日报内容和前一天重叠，分析原因是cron+手动双来源", "date": "2026-03-20"}, "created": "2026-03-22T09:57:29.525240", "updated": "2026-03-22T09:57:29.525241"}}
+{"op": "create", "entity": {"id": "eve_2026_03_21_日报发送cron成", "type": "Event", "properties": {"title": "2026-03-21:日报发送cron成功", "description": "日报cron任务成功运行，今日头条：WordPress.com MCP协议", "date": "2026-03-21"}, "created": "2026-03-22T09:57:29.525245", "updated": "2026-03-22T09:57:29.525247"}}
+{"op": "create", "entity": {"id": "eve_2026_03_22_figma_con", "type": "Event", "properties": {"title": "2026-03-22:Figma-Context-MCP项目分析", "description": "大哥给链接，让分析GLips/Figma-Context-MCP项目", "date": "2026-03-22"}, "created": "2026-03-22T09:57:29.525253", "updated": "2026-03-22T09:57:29.525254"}}
+{"op": "create", "entity": {"id": "eve_2026_03_21_ai_agent小", "type": "Event", "properties": {"title": "2026-03-21:AI-Agent小白教程", "description": "给大哥制作AI Agent小白教程，村里话风格", "date": "2026-03-21"}, "created": "2026-03-22T09:57:29.525260", "updated": "2026-03-22T09:57:29.525262"}}
+{"op": "create", "entity": {"id": "eve_2026_03_22_ontology初", "type": "Event", "properties": {"title": "2026-03-22:Ontology初始化", "description": "大哥让俺初始化ontology，把现有记忆整理成图谱", "date": "2026-03-22"}, "created": "2026-03-22T09:57:29.525266", "updated": "2026-03-22T09:57:29.525267"}}
+{"op": "create", "entity": {"id": "kno_unknown", "type": "Knowledge", "properties": {"topic": "豆瓣封面抓取", "content": "Douban图片CDN被Telegram拦截(418)，IMDB CDN可直接访问但部分返回9bytes，解决方案：用IMDB suggestion API获取正确poster URL，再下载嵌入HTML base64", "confidence": 0.95}, "created": "2026-03-22T09:57:29.525271", "updated": "2026-03-22T09:57:29.525272"}}
+{"op": "create", "entity": {"id": "kno_unknown", "type": "Knowledge", "properties": {"topic": "Telegram-HTML渲染", "content": "Telegram不支持外部CSS，解决方案：把所有CSS内嵌到<style>标签里；图片用base64 data URI嵌入", "confidence": 0.95}, "created": "2026-03-22T09:57:29.525275", "updated": "2026-03-22T09:57:29.525277"}}
+{"op": "create", "entity": {"id": "kno_unknown", "type": "Knowledge", "properties": {"topic": "代理策略", "content": "国内proxy(192.168.10.105:7890)可访问Douban API但不能访问Douban图片；无代理可直接访问IMDB CDN；ALL_PROXY=socks5h://192.168.10.105:7891", "confidence": 0.95}, "created": "2026-03-22T09:57:29.525279", "updated": "2026-03-22T09:57:29.525280"}}
+{"op": "create", "entity": {"id": "kno_unknown", "type": "Knowledge", "properties": {"topic": "Douban-API", "content": "tag search: /j/search_subjects?tag=科幻&type=movie&page_limit=100&sort=time；detail: /j/subject_abstract?subject_id=；subject页面有JS反爬(PoW挑战)", "confidence": 0.95}, "created": "2026-03-22T09:57:29.525283", "updated": "2026-03-22T09:57:29.525284"}}
+{"op": "create", "entity": {"id": "kno_unknown", "type": "Knowledge", "properties": {"topic": "OpenClaw-架构", "content": "Gateway桥接聊天App(Telegram/微信等)和AI模型；支持多session；cron任务走独立agent session；HEARTBEAT.md控制心跳任务", "confidence": 0.95}, "created": "2026-03-22T09:57:29.525286", "updated": "2026-03-22T09:57:29.525288"}}
+{"op": "relate", "from": "per_绿豆", "rel": "created", "to": "proj_日报"}
+{"op": "relate", "from": "per_绿豆", "rel": "created", "to": "proj_科幻片"}
+{"op": "relate", "from": "per_绿豆", "rel": "created", "to": "proj_ai-agent教程"}
+{"op": "relate", "from": "per_二狗", "rel": "created", "to": "proj_日报"}
+{"op": "relate", "from": "per_二狗", "rel": "created", "to": "proj_科幻片"}
+{"op": "relate", "from": "per_二狗", "rel": "created", "to": "proj_ai-agent教程"}
+{"op": "relate", "from": "per_二狗", "rel": "created", "to": "proj_figma-context"}
+{"op": "relate", "from": "per_二狗", "rel": "created", "to": "doc_ai-daily"}
+{"op": "relate", "from": "per_二狗", "rel": "created", "to": "doc_daily_news"}
+{"op": "relate", "from": "per_二狗", "rel": "created", "to": "doc_scifi_top"}
+{"op": "relate", "from": "per_二狗", "rel": "created", "to": "doc_ai_agent"}
+{"op": "relate", "from": "per_二狗", "rel": "created", "to": "doc_google_st"}
+{"op": "relate", "from": "per_二狗", "rel": "created", "to": "know_豆瓣封面"}
+{"op": "relate", "from": "per_二狗", "rel": "created", "to": "know_telegram-ht"}
+{"op": "relate", "from": "per_二狗", "rel": "created", "to": "know_代理策略"}
+{"op": "relate", "from": "per_二狗", "rel": "created", "to": "know_douban-api"}
+{"op": "relate", "from": "per_二狗", "rel": "created", "to": "know_openclaw-"}
+{"op": "relate", "from": "per_绿豆", "rel": "works_on", "to": "proj_日报"}
+{"op": "relate", "from": "per_二狗", "rel": "works_on", "to": "proj_日报"}
+{"op": "relate", "from": "per_二狗", "rel": "works_on", "to": "proj_科幻片"}
+{"op": "relate", "from": "proj_日报", "rel": "part_of", "to": "doc_ai-daily"}
+{"op": "relate", "from": "proj_日报", "rel": "part_of", "to": "doc_daily_news"}
+{"op": "relate", "from": "proj_科幻片", "rel": "part_of", "to": "doc_scifi_top"}
+{"op": "relate", "from": "proj_ai-agent教程", "rel": "part_of", "to": "doc_ai_agent"}
+{"op": "relate", "from": "know_douban-api", "rel": "related_to", "to": "know_豆瓣封面"}
+{"op": "relate", "from": "know_telegram-ht", "rel": "related_to", "to": "know_豆瓣封面"}

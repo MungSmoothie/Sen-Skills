@@ -1,0 +1,14 @@
+{
+  "mcpServers": {
+    "12306": {
+      "command": "./node_modules/12306-mcp/build/index.js"
+    },
+    "12306-http": {
+      "baseUrl": "http://localhost:3000/mcp"
+    },
+    "12306-sse": {
+      "baseUrl": "http://localhost:3000/sse"
+    }
+  },
+  "imports": []
+}

@@ -1,0 +1,295 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>村口情报社·AI日报</title>
+  <style>
+* { margin: 0; padding: 0; box-sizing: border-box; }
+:root { --charcoal: #1a1a1a; --warm-gray: #6b6560; --light-warm: #f0ebe3; --paper: #faf8f3; --wine-red: #8b2635; --navy: #1a3a5c; --text: #222; --text-light: #5a5a5a; --border: #d4cfc5; }
+body { background: #c9c3b8; font-family: "Noto Serif SC", "Noto Sans SC", serif; color: var(--text); padding: 20px; }
+.paper { width: 1200px; margin: 0 auto; background: var(--paper); box-shadow: 0 8px 40px rgba(0,0,0,0.12); border-radius: 2px; }
+.masthead { padding: 28px 50px 20px; display: flex; justify-content: space-between; align-items: flex-end; border-bottom: 2px solid var(--charcoal); }
+.masthead-left { display: flex; flex-direction: column; }
+.masthead h1 { font-size: 52px; font-weight: 900; letter-spacing: 8px; color: var(--charcoal); line-height: 1; }
+.masthead-left .edition { font-size: 11px; color: var(--warm-gray); font-weight: 400; letter-spacing: 3px; margin-top: 6px; }
+.masthead-left .identity-tag { font-size: 10px; color: var(--navy); font-weight: 500; margin-top: 8px; letter-spacing: 1px; }
+.masthead-right { display: flex; flex-direction: column; align-items: flex-end; }
+.masthead-right .date { font-size: 15px; color: var(--charcoal); font-weight: 500; letter-spacing: 1px; }
+.masthead-right .issue { font-size: 11px; color: var(--warm-gray); margin-top: 4px; }
+.masthead-right .original-tag { font-size: 9px; color: var(--wine-red); margin-top: 8px; font-weight: 500; }
+.top-nav { padding: 0 50px; display: flex; border-bottom: 1px solid var(--border); background: var(--paper); }
+.nav-item { padding: 14px 24px; font-size: 12px; font-weight: 500; color: var(--text-light); cursor: pointer; position: relative; transition: all 0.2s ease; letter-spacing: 1px; }
+.nav-item::after { content: ''; position: absolute; bottom: 0; left: 50%; transform: translateX(-50%); width: 0; height: 2px; background: var(--wine-red); transition: all 0.2s ease; }
+.nav-item:hover { color: var(--charcoal); background: var(--light-warm); }
+.nav-item:hover::after { width: 60%; }
+.nav-item.active { color: var(--charcoal); font-weight: 600; }
+.nav-item.active::after { width: 80%; }
+.main-content { padding: 30px 50px; min-height: 800px; }
+.content-section { display: none; animation: fadeIn 0.3s ease; }
+.content-section.active { display: block; }
+@keyframes fadeIn { from { opacity: 0; transform: translateY(5px); } to { opacity: 1; transform: translateY(0); } }
+.lead-row { display: grid; grid-template-columns: 1fr 320px; gap: 40px; padding-bottom: 30px; border-bottom: 1px solid var(--border); margin-bottom: 30px; }
+.lead-main { display: flex; flex-direction: column; }
+.lead-tag { font-size: 10px; font-weight: 600; color: var(--wine-red); letter-spacing: 2px; margin-bottom: 12px; }
+.lead-title { font-size: 36px; font-weight: 700; line-height: 1.25; margin-bottom: 14px; color: var(--charcoal); }
+.lead-subtitle { font-size: 17px; color: var(--text-light); line-height: 1.5; margin-bottom: 20px; font-weight: 400; }
+.lead-summary { font-size: 14px; line-height: 1.8; color: var(--text); flex: 1; }
+.data-strip { display: flex; gap: 20px; margin-top: 18px; padding: 12px 0; border-top: 1px dotted var(--border); border-bottom: 1px dotted var(--border); }
+.data-item { display: flex; flex-direction: column; }
+.data-num { font-size: 16px; font-weight: 700; color: var(--wine-red); }
+.data-label { font-size: 9px; color: var(--warm-gray); margin-top: 2px; }
+.extend-box { display: grid; grid-template-columns: repeat(3, 1fr); gap: 15px; margin-top: 18px; padding-bottom: 18px; }
+.extend-item { padding: 12px; background: var(--light-warm); border-radius: 3px; }
+.extend-label { font-size: 10px; font-weight: 600; color: var(--wine-red); letter-spacing: 1px; display: block; margin-bottom: 6px; }
+.extend-item p { font-size: 11px; line-height: 1.5; color: var(--text-light); }
+.ergou-box { background: var(--light-warm); padding: 18px 22px; border-radius: 3px; margin-top: 20px; border-left: 3px solid var(--wine-red); }
+.ergou-box h4 { font-size: 10px; font-weight: 600; color: var(--wine-red); letter-spacing: 1px; margin-bottom: 8px; }
+.ergou-box p { font-size: 13px; line-height: 1.65; color: var(--text-light); font-style: italic; }
+.lead-sidebar { border-left: 1px solid var(--border); padding-left: 25px; display: flex; flex-direction: column; gap: 18px; }
+.sidebar-block h4 { font-size: 10px; font-weight: 600; color: var(--charcoal); letter-spacing: 1.5px; margin-bottom: 10px; padding-bottom: 5px; border-bottom: 1px solid var(--wine-red); }
+.brief-list, .market-list { list-style: none; }
+.brief-list li { font-size: 12px; line-height: 1.55; padding: 5px 0; color: var(--text-light); }
+.brief-list .time { color: var(--wine-red); font-weight: 500; margin-right: 6px; font-size: 10px; }
+.market-list li { display: flex; justify-content: space-between; font-size: 12px; padding: 4px 0; color: var(--text-light); }
+.market-list .up { color: var(--wine-red); }
+.market-list .down { color: var(--navy); }
+.market-list .flat { color: var(--text-light); }
+.sidebar-text { font-size: 12px; line-height: 1.7; color: var(--text-light); }
+.sidebar-quote { line-height: 1.8; font-style: italic; }
+.mid-section { display: grid; grid-template-columns: repeat(4, 1fr); gap: 25px; padding-bottom: 25px; border-bottom: 1px solid var(--border); margin-bottom: 30px; }
+.mid-card { padding-top: 15px; border-top: 2px solid var(--charcoal); }
+.mid-card .tag { font-size: 9px; font-weight: 500; color: var(--navy); letter-spacing: 1px; margin-bottom: 8px; }
+.mid-card h3 { font-size: 15px; font-weight: 600; line-height: 1.4; margin-bottom: 8px; color: var(--charcoal); }
+.mid-card p { font-size: 12px; line-height: 1.55; color: var(--text-light); }
+.footer { padding: 15px 50px; border-top: 1px solid var(--border); display: flex; justify-content: space-between; font-size: 10px; color: var(--warm-gray); }
+@media print { body { background: #fff; padding: 0; } .paper { box-shadow: none; width: 100%; } }
+  </style>
+</head>
+<body>
+<div class="paper">
+  <header class="masthead">
+    <div class="masthead-left">
+      <h1>村口情报社</h1>
+      <div class="edition">VILLAGE INTELLIGENCE AGENCY · AI DAILY</div>
+      <div class="identity-tag">AI整理资讯 · 内容来自公开来源</div>
+    </div>
+    <div class="masthead-right">
+      <div class="date">2026年3月20日</div>
+      <div class="issue">第20260320期 · 星期五</div>
+      <div class="original-tag">AI生成排版，内容来自公开来源</div>
+    </div>
+  </header>
+
+  <nav class="top-nav">
+    <div class="nav-item active" data-channel="news" onclick="switchChannel('news')">今日要闻</div>
+    <div class="nav-item" data-channel="deep" onclick="switchChannel('deep')">深度报道</div>
+    <div class="nav-item" data-channel="global" onclick="switchChannel('global')">国际焦点</div>
+    <div class="nav-item" data-channel="tech" onclick="switchChannel('tech')">科技前沿</div>
+    <div class="nav-item" data-channel="finance" onclick="switchChannel('finance')">财经观察</div>
+  </nav>
+
+  <div class="main-content">
+    <!-- 今日要闻 -->
+    <div id="news" class="content-section active">
+      <div class="lead-row">
+        <div class="lead-main">
+          <span class="lead-tag">头条</span>
+          <h2 class="lead-title">贝索斯千亿美元AI制造计划曝光：买下旧工业，再给它装上大脑</h2>
+          <p class="lead-subtitle">WSJ披露贝索斯新动作；腾讯AI投入翻倍；Cloudflare预警2027年机器人流量超人类</p>
+          <p class="lead-summary">亚马逊创始人贝索斯正寻求一只规模达1000亿美元的基金，用于收购传统制造业企业并用AI彻底改造——这一消息与腾讯在同一天公布AI投入至少翻倍的财报指引遥相呼应。与此同时，Cloudflare CEO发出预警：到2027年，AI机器人产生的网络流量将首次超过人类。这三件事共同指向一个趋势：AI正从"虚拟世界"加速渗透进"实体经济"，且速度远超预期。</p>
+          <div class="data-strip">
+            <div class="data-item"><span class="data-num">1000亿</span><span class="data-label">贝索斯目标基金（美元）</span></div>
+            <div class="data-item"><span class="data-num">180亿</span><span class="data-label">腾讯2025年AI投入（人民币）</span></div>
+            <div class="data-item"><span class="data-num">≥2倍</span><span class="data-label">腾讯2026年AI投入增幅</span></div>
+            <div class="data-item"><span class="data-num">2027年</span><span class="data-label">机器人流量预计超人类</span></div>
+            <div class="data-item"><span class="data-num">7518亿</span><span class="data-label">腾讯2025年营收（+14%）</span></div>
+          </div>
+          <div class="extend-box">
+            <div class="extend-item"><span class="extend-label">贝索斯的逻辑</span><p>收购制造业老企业，用AI进行数字化改造，解决劳动力成本上升和效率低下问题，同时创造对AWS云服务的增量需求——这是贝索斯"一石三鸟"的算盘。</p></div>
+            <div class="extend-item"><span class="extend-label">腾讯的焦虑</span><p>字节豆包MAU已破1.5亿，通义千问、百度文心在开发者市场持续渗透，微信若不加速AI化，超级入口存在被分流风险。</p></div>
+            <div class="extend-item"><span class="extend-label">基础设施承压</span><p>机器人流量激增意味着对算力、带宽、存储的需求指数级上升，NVIDIA GPU供需紧张将至少持续至2027年。</p></div>
+          </div>
+          <div class="ergou-box"><h4>📣 二狗点评</h4><p>三件事放一天发布，绝不是巧合。贝索斯在买工厂，腾讯在买AI，Cloudflare在说流量要爆——三位大佬其实在说同一句话：AI的下一波红利，不在聊天框里，在实体经济里。但问题是：实体经济的AI改造，比训练一个大模型难十倍都不止。周期长、回报慢、坑多。二狗的建议是：盯着贝索斯的动作，但别急着跟进——让子弹飞一会儿。</p></div>
+        </div>
+        <aside class="lead-sidebar">
+          <div class="sidebar-block"><h4>📰 今日快讯</h4><ul class="brief-list"><li><span class="time">国内</span>腾讯2025年净利润2596亿，AI投入2026年翻倍</li><li><span class="time">国际</span>贝索斯寻求1000亿美元基金收购改造传统制造业</li><li><span class="time">科技</span>亚马逊收购瑞士爬楼机器人Rivr，进军末端配送</li><li><span class="time">AI</span>Cloudflare CEO：2027年机器人流量将超过人类</li><li><span class="time">芯片</span>三星计划2026年研发投入超110万亿韩元</li><li><span class="time">监管</span>马斯克X平台向欧盟缴纳1.2亿欧元罚款</li></ul></div>
+          <div class="sidebar-block"><h4>📊 市场脉搏</h4><ul class="market-list"><li><span>腾讯(港)</span><span class="down">承压</span></li><li><span>小米SU7</span><span class="up">21.99万起</span></li><li><span>多晶硅</span><span class="down">¥38550(-5.77%)</span></li><li><span>LPR 1年</span><span class="flat">3.0%（不变）</span></li><li><span>黄金现货</span><span class="down">跌破$4700</span></li><li><span>NIO Q4盈利</span><span class="up">12亿元</span></li></ul></div>
+          <div class="sidebar-block"><h4>💕 每日治愈</h4><p class="sidebar-text sidebar-quote">三件事同一天，不是巧合，是趋势。AI不再只是聊天机器人，它正在改变你上班的工厂、送货的街道、投资的决策。变化来临时，最好的准备是睁大眼睛。</p></div>
+          <div class="sidebar-block"><h4>😂 每日笑料</h4><p class="sidebar-text">Cloudflare说2027年机器人流量超人类——那二狗以后发情报，是给真人看还是给机器人看？算了，反正机器人和二狗一样，只关心有没有料。</p></div>
+        </aside>
+      </div>
+      <div class="mid-section">
+        <div class="mid-card"><div class="tag">深度</div><h3>腾讯AI豪掷180亿：微信生态的基因改造</h3><p>2026年AI投入至少翻倍，混元大模型已在微信搜索灰度测试，这是一场关于超级入口的防御战。</p></div>
+        <div class="mid-card"><div class="tag">国际</div><h3>贝索斯押注"AI+制造"：买下旧工厂，装上新大脑</h3><p>1000亿美元基金瞄准传统制造业，Project Prometheus提供AI能力——这步棋野心不小，但制造业整合难度极高。</p></div>
+        <div class="mid-card"><div class="tag">科技</div><h3>亚马逊收购Rivr机器人：快递"最后一步"争夺战开打</h3><p>四轮腿式爬楼配送机器人解决无电梯配送难题；同日加州海底捞机器人"暴走"——机器人正走向实用，稳定性仍是硬伤。</p></div>
+        <div class="mid-card"><div class="tag">财经</div><h3>多晶硅期货跌破成本线：光伏产能出清大幕开启</h3><p>多晶硅期货跌至38550元/吨，跌幅5.77%，跌破行业部分企业现金成本线；三星罢工风险或加剧全球存储芯片供应紧张。</p></div>
+      </div>
+    </div>
+
+    <!-- 深度报道 -->
+    <div id="deep" class="content-section">
+      <div class="lead-row">
+        <div class="lead-main">
+          <span class="lead-tag">深度</span>
+          <h2 class="lead-title">腾讯AI豪掷180亿：财报背后的战略急转弯</h2>
+          <p class="lead-subtitle">2025年全年Non-IFRS净利润2596亿，2026年AI投入至少翻倍，微信将成主战场</p>
+          <p class="lead-summary">3月18日腾讯公布2025年全年业绩：收入7518亿元，同比增长14%；Non-IFRS归母净利润2596亿元，同比增长17%。稳健依然是腾讯的标签，但在AI浪潮下，市场更关注其AI转型动作。财报会上管理层披露，2025年腾讯对AI新产品投入高达180亿元，其中Q4单季投入70亿元；总裁刘炽平更明确表示，2026年AI投入至少翻倍。这不是财务数字的加法，而是一场关于微信生态的基因改造。</p>
+          <div class="data-strip">
+            <div class="data-item"><span class="data-num">7518亿</span><span class="data-label">2025年营收（同比+14%）</span></div>
+            <div class="data-item"><span class="data-num">2596亿</span><span class="data-label">Non-IFRS净利润（同比+17%）</span></div>
+            <div class="data-item"><span class="data-num">180亿</span><span class="data-label">2025年AI新产品投入</span></div>
+            <div class="data-item"><span class="data-num">70亿</span><span class="data-label">Q4单季AI投入</span></div>
+            <div class="data-item"><span class="data-num">≥2倍</span><span class="data-label">2026年AI投入增幅</span></div>
+          </div>
+          <div class="extend-box">
+            <div class="extend-item"><span class="extend-label">投入逻辑</span><p>腾讯的AI投入不是撒胡椒面，而是围绕微信生态内嵌——搜索、推荐、内容生成、支付安全等核心场景都在改造。</p></div>
+            <div class="extend-item"><span class="extend-label">竞争格局</span><p>阿里、百度已官宣算力涨价，字节豆包以低价策略抢占市场，腾讯不想在AI时代重蹈云计算慢半拍的覆辙。</p></div>
+            <div class="extend-item"><span class="extend-label">风险点</span><p>大模型训练成本高，商业化路径尚不明朗；投入翻倍意味着利润增速将被压制，短期股价或承压。</p></div>
+          </div>
+          <div class="ergou-box"><h4>📣 二狗点评</h4><p>腾讯这波操作，本质是在用"家底"换一张AI船票。180亿听起来吓人，但相对于2596亿净利润，占比还不到7%。真正的博弈在于：微信这个超级入口一旦接入AI能力，抖一抖都是核弹级的量级。当然，风险也摆在那——大模型是个无底洞，烧钱速度比印钞机还快，就看腾讯能不能跑出商业闭环了。</p></div>
+        </div>
+        <aside class="lead-sidebar">
+          <div class="sidebar-block"><h4>🔬 技术细节</h4><ul class="brief-list"><li><span class="time">模型</span>混元大模型已在微信搜索灰度测试</li><li><span class="time">场景</span>公众号摘要、AI辅助写作、客服机器人</li><li><span class="time">竞品</span>字节豆包MAU已破1.5亿</li><li><span class="time">成本</span>大模型单次训练成本估算超10亿元</li><li><span class="time">资金</span>腾讯现金及等价物超4000亿元</li><li><span class="time">节奏</span>Q4加速，暗示2026年密集落地</li></ul></div>
+          <div class="sidebar-block"><h4>💰 关联数据</h4><ul class="market-list"><li><span>腾讯股价</span><span class="down">承压</span></li><li><span>豆包MAU</span><span class="up">1.5亿+</span></li><li><span>通义千问API</span><span class="up">涨价</span></li><li><span>微信DAU</span><span class="up">13.4亿</span></li><li><span>研发费用率</span><span class="up">提升中</span></li><li><span>回购规模</span><span class="down">或缩减</span></li></ul></div>
+          <div class="sidebar-block"><h4>💕 每日治愈</h4><p class="sidebar-text sidebar-quote">微信不会躺平，就像二狗不会停止八卦。改变从来不易，但不变更危险。</p></div>
+          <div class="sidebar-block"><h4>😂 每日笑料</h4><p class="sidebar-text">"腾讯加大AI投入"——有人问：是不是终于能让微信翻译不再把"deep learning"翻成"深入学习"了？</p></div>
+        </aside>
+      </div>
+      <div class="mid-section">
+        <div class="mid-card"><div class="tag">算力</div><h3>阿里百度算力涨价：中小开发者被迫二选一</h3><p>继DeepSeek掀起价格战后，国内两大云厂商相继涨价，折射出基础模型厂商正在集体寻找盈利路径，2026年AI应用层成本压力将显著上升。</p></div>
+        <div class="mid-card"><div class="tag">生态</div><h3>Agent加速落地：从工具到"数字员工"</h3><p>随着OpenClaw等基础设施成熟，超级创业者时代到来——一个人借助AI Agent就能拥有组织级能力，对传统公司人效模型构成结构性挑战。</p></div>
+        <div class="mid-card"><div class="tag">终端</div><h3>AWE 2026观察：AI重构家庭空间</h3><p>索尼展示360VME空间音频个性化系统，电视厂商集体押注AI画质芯片，智能家居从"联网"迈向"理解"阶段。</p></div>
+        <div class="mid-card"><div class="tag">终端</div><h3>首款国产"龙虾云电脑"发布</h3><p>基于国产算力芯片的云电脑发布，主打开箱即用、低门槛访问大模型能力，标志着AI算力平民化加速。</p></div>
+      </div>
+    </div>
+
+    <!-- 国际焦点 -->
+    <div id="global" class="content-section">
+      <div class="lead-row">
+        <div class="lead-main">
+          <span class="lead-tag">国际</span>
+          <h2 class="lead-title">贝索斯千亿美元AI制造计划曝光：买下旧工业，再给它装上大脑</h2>
+          <p class="lead-subtitle">WSJ披露贝索斯新动作；Project Prometheus提供AI底座；收购+改造传统制造业</p>
+          <p class="lead-summary">据《华尔街日报》报道，亚马逊创始人贝索斯正寻求一只规模达1000亿美元的基金，用于收购传统制造业企业并用AI技术进行彻底改造。这只基金与贝索斯参投的AI初创Project Prometheus深度绑定，后者负责提供核心AI能力。这不是贝索斯第一次用资本换时间——但这次，他押注的是AI对实体工业的渗透速度，野心直指"工业4.0"新霸主地位。</p>
+          <div class="data-strip">
+            <div class="data-item"><span class="data-num">1000亿</span><span class="data-label">目标基金规模（美元）</span></div>
+            <div class="data-item"><span class="data-num">2025.11</span><span class="data-label">Project Prometheus曝光</span></div>
+            <div class="data-item"><span class="data-num">Amazon</span><span class="data-label">贝索斯核心资产</span></div>
+            <div class="data-item"><span class="data-num">AI+工业</span><span class="data-label">核心改造方向</span></div>
+            <div class="data-item"><span class="data-num">全球</span><span class="data-label">目标收购地域</span></div>
+          </div>
+          <div class="extend-box">
+            <div class="extend-item"><span class="extend-label">背景</span><p>美国制造业长期面临效率瓶颈，AI视觉检测、预测性维护、数字孪生等技术成熟，让改造成本大幅下降。</p></div>
+            <div class="extend-item"><span class="extend-label">竞争</span><p>英伟达早已布局"AI+制造"，黄仁勋称SpaceX和特斯拉将持续大单采购英伟达芯片——贝索斯基金可能成为另一个超级买家。</p></div>
+            <div class="extend-item"><span class="extend-label">风险</span><p>传统制造业整合难度极高，文化冲突、技术落地周期长，历史上类似尝试折戟者众。</p></div>
+          </div>
+          <div class="ergou-box"><h4>📣 二狗点评</h4><p>贝索斯这步棋，野心不小，但难度更大。收购制造业然后AI化，听起来很美好，做起来是另一回事。工厂里的老设备、老工人、老流程，改造任何一个都是硬骨头。不过话说回来，能拿出1000亿美元的玩家，全球也就那么几个。这不是创业，是用资本换时间——如果成功，就是AI时代的新工业霸主。</p></div>
+        </div>
+        <aside class="lead-sidebar">
+          <div class="sidebar-block"><h4>🌐 快讯</h4><ul class="brief-list"><li><span class="time">美国</span>八州联合诉讼，阻止Nexstar 35.4亿美元收购Tegna</li><li><span class="time">欧洲</span>马斯克X平台向欧盟缴纳1.2亿欧元罚款</li><li><span class="time">伊朗</span>FBI查封亲伊朗黑客组织Stryker关联网站</li><li><span class="time">斯洛伐克</span>文远知行进入第四个欧洲国家市场</li><li><span class="time">日本</span>"最强AI"被扒代码全抄DeepSeek，日本网友集体破防</li><li><span class="time">韩国</span>三星电子计划2026年研发投入超110万亿韩元</li></ul></div>
+          <div class="sidebar-block"><h4>💹 全球市场</h4><ul class="market-list"><li><span>NVIDIA市值</span><span class="up">≈3.5万亿</span></li><li><span>黄金现货</span><span class="down">跌破$4700</span></li><li><span>多晶硅期货</span><span class="down">¥38550/吨</span></li><li><span>腾讯(港)</span><span class="down">承压</span></li><li><span>S&P 500</span><span class="up">震荡</span></li><li><span>LPR 1年期</span><span class="flat">3.0%</span></li></ul></div>
+          <div class="sidebar-block"><h4>💕 每日治愈</h4><p class="sidebar-text sidebar-quote">贝索斯都在忙着买工厂了，你还躺在床上刷手机——没事，二狗陪着你。</p></div>
+          <div class="sidebar-block"><h4>😂 每日笑料</h4><p class="sidebar-text">"日本最强AI"塌房了——扒开代码一看，全是DeepSeek。换句话说：日本最强AI = DeepSeek汉化版。</p></div>
+        </aside>
+      </div>
+      <div class="mid-section">
+        <div class="mid-card"><div class="tag">监管</div><h3>CISA警告：微软Intune系统遭黑客大规模攻击</h3><p>CISA紧急通知要求企业加固微软Intune移动设备管理系统，此前黑客利用该平台对Stryker设备实施大规模数据擦除。</p></div>
+        <div class="mid-card"><div class="tag">AI治理</div><h3>Meta自建AI内容审核系统，减少外包依赖</h3><p>Meta正在将内容审核能力从第三方供应商收回，转向自研AI审核系统，以提升响应速度和降低人力成本。</p></div>
+        <div class="mid-card"><div class="tag">AI+隐私</div><h3>Cloaked获3.75亿美元融资，企业隐私赛道升温</h3><p>美国消费者隐私公司Cloaked完成3.75亿美元成长轮，混合股债融资，从个人隐私工具向企业市场扩张。</p></div>
+        <div class="mid-card"><div class="tag">AI+预测</div><h3>Polymarket与MLB达成合作，进军体育博彩</h3><p>预测市场平台Polymarket持续扩大合作版图，与美国职业棒球大联盟MLB达成合作，进一步渗透主流体育赛事预测场景。</p></div>
+      </div>
+    </div>
+
+    <!-- 科技前沿 -->
+    <div id="tech" class="content-section">
+      <div class="lead-row">
+        <div class="lead-main">
+          <span class="lead-tag">科技</span>
+          <h2 class="lead-title">亚马逊收购瑞士爬楼机器人Rivr：快递"最后一步"争夺战开打</h2>
+          <p class="lead-subtitle">四轮腿式机器人解决无电梯配送难题；同日加州海底捞机器人"暴走"被员工制服</p>
+          <p class="lead-summary">亚马逊收购瑞士机器人创业公司Rivr，后者以"像狗踩溜冰鞋"的四轮腿式爬楼配送机器人著称，创始人为苏黎世联邦理工学院团队。这是亚马逊在配送机器人领域的最新落子，旨在解决末端配送的"最后一步"难题。无独有偶，同一天加州一家海底捞餐厅的跳舞机器人突然"暴走"，员工不得不出手将其制服。两件事放在一起看：机器人正从"炫技"走向"实用"，但稳定性依然是硬伤。</p>
+          <div class="data-strip">
+            <div class="data-item"><span class="data-num">未披露</span><span class="data-label">收购金额</span></div>
+            <div class="data-item"><span class="data-num">瑞士</span><span class="data-label">Rivr总部</span></div>
+            <div class="data-item"><span class="data-num">四轮+腿</span><span class="data-label">机器人形态</span></div>
+            <div class="data-item"><span class="data-num">ETHz</span><span class="data-label">创始团队背景</span></div>
+            <div class="data-item"><span class="data-num">加州</span><span class="data-label">机器人暴走事发地</span></div>
+          </div>
+          <div class="extend-box">
+            <div class="extend-item"><span class="extend-label">场景价值</span><p>Rivr解决的是配送"最后一步"——无电梯老楼、台阶、障碍物，这是轮式机器人的死穴，却是腿轮复合机器人的主场。</p></div>
+            <div class="extend-item"><span class="extend-label">行业竞争</span><p>Starship（英国）、Serve Robotics（美国）均已跑通商业化，亚马逊此时收购Rivr，是在末端配送规模化前夜的卡位。</p></div>
+            <div class="extend-item"><span class="extend-label">安全警示</span><p>海底捞机器人暴走事件说明，当前机器人在公共场景的运动控制可靠性仍需提升，尤其在有人类近距离接触的环境。</p></div>
+          </div>
+          <div class="ergou-box"><h4>📣 二狗点评</h4><p>亚马逊这笔收购，本质是在说：最后一公里的问题，轮子解决不了，得用腿。但问题是——机器人在餐厅跳舞暴走，说明这帮铁家伙离"听话"还差得远。二狗觉得，Rivr的爬楼能力是真实的，机器人的"神经质"也是真实的，两者之间的差距，就是接下来三年机器人公司要烧钱填的坑。</p></div>
+        </div>
+        <aside class="lead-sidebar">
+          <div class="sidebar-block"><h4>🚗 快讯</h4><ul class="brief-list"><li><span class="time">Robotaxi</span>小马智行向如祺出行交付超百辆Robotaxi</li><li><span class="time">算力</span>SpaceX和特斯拉将持续大规模订购英伟达芯片</li><li><span class="time">太空</span>K2发射高功率卫星，提供太空算力服务</li><li><span class="time">社交</span>Bluesky完成1亿美元B轮融资</li><li><span class="time">电商</span>DoorDash推出Tasks应用，付费让快递员拍视频训练AI</li><li><span class="time">自驾</span>Rivian押注自动驾驶，推迟2027年盈利目标</li></ul></div>
+          <div class="sidebar-block"><h4>📊 关键数字</h4><ul class="market-list"><li><span>Rivr收购价</span><span class="flat">未披露</span></li><li><span>Bluesky B轮</span><span class="up">1亿美元</span></li><li><span>K2卫星</span><span class="up">首发</span></li><li><span>Rivian盈利</span><span class="down">推迟至2027</span></li><li><span>Cloaked融资</span><span class="up">3.75亿美元</span></li><li><span>NIO芯片团队</span><span class="flat">600+人</span></li></ul></div>
+          <div class="sidebar-block"><h4>💕 每日治愈</h4><p class="sidebar-text sidebar-quote">机器人暴走被员工制服——有些场面，AI再强也替代不了。</p></div>
+          <div class="sidebar-block"><h4>😂 每日笑料</h4><p class="sidebar-text">海底捞机器人在加州跳起了舞，员工上去就按住了——看来，机器人最怕的永远是人类的那双手。</p></div>
+        </aside>
+      </div>
+      <div class="mid-section">
+        <div class="mid-card"><div class="tag">AI安全        <div class="tag">AI安全</div><h3>Cloudflare CEO：2027年机器人流量将超过人类</h3><p>Cloudflare首席执行官Matthew Prince警告，AI代理正在大幅增加网络流量，预计到2027年机器人流量将首次超过人类，对互联网基础设施构成根本性挑战。</p></div>
+        <div class="mid-card"><div class="tag">芯片</div><h3>蔚来芯片分拆：神玑NX9031研发成本≈建1000座换电站</h3><p>36氪独家披露蔚来芯片业务分拆始末：NX9031单颗研发成本可建1000座换电站，团队曾达600人规模，目前正积极接触多家头部车企。</p></div>
+        <div class="mid-card"><div class="tag">机器人</div><h3>乾径科技：为机器人做端侧"通信小脑"</h3><p>三星前技术专家创业公司乾径科技完成千万级Pre-A轮融资，专注机器人端侧连接与决策中间层，解决复杂环境下无线通信稳定性问题。</p></div>
+        <div class="mid-card"><div class="tag">开源</div><h3>Kimi论文引发全球关注，质疑大模型"祖传地基"</h3><p>Kimi一篇技术论文质疑当前主流大模型架构假设，被马斯克本人转发点赞，在全球开发者社区引发激烈讨论。</p></div>
+      </div>
+    </div>
+
+    <!-- 财经观察 -->
+    <div id="finance" class="content-section">
+      <div class="lead-row">
+        <div class="lead-main">
+          <span class="lead-tag">财经</span>
+          <h2 class="lead-title">腾讯股价承压：AI投入翻倍预期下的投资者焦虑</h2>
+          <p class="lead-subtitle">2025年净利润2596亿超预期，但2026年AI投入翻倍预期压制短期利润</p>
+          <p class="lead-summary">腾讯2025年全年财报亮眼：营收7518亿元（+14%），Non-IFRS净利润2596亿元（+17%）。但业绩公布后股价承压，症结在于总裁刘炽平明确表示2026年AI投入至少翻倍——这意味着短期利润将被大幅侵蚀。与此同时，多晶硅期货跌破4万元/吨关键成本线，光伏行业产能出清大幕正式开启。</p>
+          <div class="data-strip">
+            <div class="data-item"><span class="data-num">7518亿</span><span class="data-label">2025年营收（+14%）</span></div>
+            <div class="data-item"><span class="data-num">2596亿</span><span class="data-label">Non-IFRS净利润（+17%）</span></div>
+            <div class="data-item"><span class="data-num">180亿</span><span class="data-label">2025年AI投入</span></div>
+            <div class="data-item"><span class="data-num">≥2倍</span><span class="data-label">2026年AI投入增幅</span></div>
+            <div class="data-item"><span class="data-num">¥38550</span><span class="data-label">多晶硅期货（-5.77%）</span></div>
+          </div>
+          <div class="extend-box">
+            <div class="extend-item"><span class="extend-label">小米效应</span><p>新一代小米SU7起售价21.99万元，较老款涨4000元，低于预售价但高于旧款，显示电动车价格战暂告一段落。</p></div>
+            <div class="extend-item"><span class="extend-label">存储市场</span><p>中信证券称三星若全国罢工将加剧全球存储芯片紧张，看好国内存储大厂市占率提升。</p></div>
+            <div class="extend-item"><span class="extend-label">光伏出清</span><p>多晶硅期货跌破4万元/吨关键成本线，跌幅5.77%，行业高成本产能面临出清压力，2026年将更惨烈。</p></div>
+          </div>
+          <div class="ergou-box"><h4>📣 二狗点评</h4><p>腾讯这道题，市场解法很简单：给钱还是给时间？如果AI投入真的能跑出微信级的产品，那现在的利润牺牲是值得的；如果只是防御性烧钱，那股价还得继续承压。至于多晶硅跌破成本线，这信号更直接——光伏行业产能过剩的清算才刚刚开始，2026年会更惨烈。手里拿着光伏股的朋友，建议提前想好退路。</p></div>
+        </div>
+        <aside class="lead-sidebar">
+          <div class="sidebar-block"><h4>📈 市场脉搏</h4><ul class="market-list"><li><span>腾讯（港）</span><span class="down">承压</span></li><li><span>小米SU7</span><span class="up">21.99万起</span></li><li><span>多晶硅期货</span><span class="down">¥38550（-5.77%）</span></li><li><span>黄金现货</span><span class="down">跌破$4700</span></li><li><span>NIO Q4盈利</span><span class="up">12亿</span></li><li><span>LPR 1年期</span><span class="flat">3.0%（不变）</span></li></ul></div>
+          <div class="sidebar-block"><h4>💡 关键数据</h4><ul class="brief-list"><li><span class="time">规模</span>上市公司年内认购理财1248亿元，存款占七成</li><li><span class="time">存储</span>三星若罢工或加剧全球芯片紧张</li><li><span class="time">光伏</span>多晶硅跌破成本线，产能出清开始</li><li><span class="time">Robotaxi</span>小马智行首批交付超百辆</li><li><span class="time">AI</span>SpaceX、特斯拉持续大单采购英伟达</li><li><span class="time">监管</span>交易所追问业绩预告，Q4突击增长成焦点</li></ul></div>
+          <div class="sidebar-block"><h4>💕 每日治愈</h4><p class="sidebar-text sidebar-quote">多晶硅跌破成本线——有时候，市场的作用就是把不合理的价格拉回地面。</p></div>
+          <div class="sidebar-block"><h4>😂 每日笑料</h4><p class="sidebar-text">投资者问腾讯：AI投入翻倍后什么时候回本？腾讯：让我们把目光放长远。投资者：多长远？腾讯：下个季度再说。</p></div>
+        </aside>
+      </div>
+      <div class="mid-section">
+        <div class="mid-card"><div class="tag">融资</div><h3>Bluesky完成1亿美元B轮融资</h3><p>去中心化社交平台Bluesky在CEO交接完成后宣布完成1亿美元B轮融资，用于扩大团队规模和ATProto协议开发。</p></div>
+        <div class="mid-card"><div class="tag">融资</div><h3>乾径科技完成千万级Pre-A轮融资</h3><p>上海乾径科技获千万级人民币Pre-A轮融资，专注机器人端侧"连接小脑"，解决复杂环境无线通信稳定性问题。</p></div>
+        <div class="mid-card"><div class="tag">融资</div><h3>星煜空天完成数千万Pre-A轮融资</h3><p>高超音速动力系统供应商星煜空天完成数千万元Pre-A轮，用于年底试飞，累积融资超亿元。</p></div>
+        <div class="mid-card"><div class="tag">融资</div><h3>Cloaked获3.75亿美元成长轮</h3><p>美国消费者隐私公司Cloaked完成3.75亿美元成长轮，混合股债融资，从个人隐私工具向企业市场扩张。</p></div>
+      </div>
+    </div>
+  </div>
+
+  <footer class="footer">
+    <div>村口情报社 AI日报 · AI整理资讯</div>
+    <div>内容来源：36氪、TechCrunch、WSJ、Cloudflare官方博客 · @来一杯绿豆冰沙 & 二狗 联合出品</div>
+  </footer>
+</div>
+<script>
+function switchChannel(channel) {
+  document.querySelectorAll('.nav-item').forEach(item => {
+    item.classList.remove('active');
+    if (item.dataset.channel === channel) item.classList.add('active');
+  });
+  document.querySelectorAll('.content-section').forEach(section => section.classList.remove('active'));
+  document.getElementById(channel).classList.add('active');
+}
+</script>
+</body>
+</html>

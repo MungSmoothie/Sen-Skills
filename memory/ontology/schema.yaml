@@ -1,0 +1,86 @@
+types:
+  Person:
+    required: [name]
+    properties:
+      name: string
+      email: string?
+      role: string?
+      notes: string?
+
+  Project:
+    required: [name, status]
+    properties:
+      name: string
+      status: enum[active,done,paused,archived]
+      description: string?
+      owner: string?
+      created: string?
+
+  Document:
+    required: [name, path]
+    properties:
+      name: string
+      path: string
+      type: string?
+      summary: string?
+      created: string?
+
+  Task:
+    required: [title, status]
+    properties:
+      title: string
+      status: enum[open,in_progress,done,blocked]
+      priority: enum[low,medium,high]?
+      due: string?
+      assignee: string?
+      project: string?
+
+  Event:
+    required: [title, date]
+    properties:
+      title: string
+      date: string
+      description: string?
+      participants: string[]?
+
+  Skill:
+    required: [name, location]
+    properties:
+      name: string
+      location: string
+      description: string?
+      status: enum[installed,configured,broken]?
+
+  Knowledge:
+    required: [topic, content]
+    properties:
+      topic: string
+      content: string
+      tags: string[]?
+      confidence: number?
+
+relations:
+  knows:
+    from_types: [Person]
+    to_types: [Person, Skill, Project]
+    description: "Person knows or is familiar with"
+  
+  created:
+    from_types: [Person, Skill, Project]
+    to_types: [Document, Task, Event]
+    description: "Entity created something"
+  
+  works_on:
+    from_types: [Person]
+    to_types: [Project, Task]
+    description: "Person works on project or task"
+  
+  part_of:
+    from_types: [Document, Task]
+    to_types: [Project]
+    description: "Document or task belongs to project"
+  
+  related_to:
+    from_types: [Knowledge]
+    to_types: [Knowledge, Skill, Project]
+    description: "Knowledge is related to something"

@@ -1,0 +1,49 @@
+{
+  "version": 1,
+  "skills": {
+    "self-improving": {
+      "version": "1.2.10",
+      "installedAt": 1773049816016
+    },
+    "clawsec": {
+      "version": "1.0.0",
+      "installedAt": 1773052562540
+    },
+    "capability-evolver": {
+      "version": "1.27.3",
+      "installedAt": 1773052866745
+    },
+    "multi-search-engine-2-0-1": {
+      "version": "1.0.0",
+      "installedAt": 1773053233321
+    },
+    "proactive-agent-skill": {
+      "version": "1.0.0",
+      "installedAt": 1773054784016
+    },
+    "nano-pdf": {
+      "version": "1.0.0",
+      "installedAt": 1773912411458
+    },
+    "himalaya": {
+      "version": "1.0.0",
+      "installedAt": 1773918297576
+    },
+    "ontology": {
+      "version": "0.1.2",
+      "installedAt": 1773923387084
+    },
+    "skill-vetter": {
+      "version": "1.0.0",
+      "installedAt": 1773932812006
+    },
+    "summarize": {
+      "version": "1.0.0",
+      "installedAt": 1773933104227
+    },
+    "agent-browser": {
+      "version": "0.2.0",
+      "installedAt": 1773933729642
+    }
+  }
+}

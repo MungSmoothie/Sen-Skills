@@ -1,7 +1,7 @@
 FROM_EMAIL=2323831454@qq.com
 FROM_DISPLAY=村口情报社
-TO_EMAIL=179621078@qq.com,hakusai22@qq.com,536074781@qq.com
+TO_EMAIL=179621078@qq.com,hakusai22@qq.com,536574781@qq.com
 SMTP_HOST=smtp.qq.com
 SMTP_PORT=587
 
-TO_EMAIL=179621078@qq.com,hakusai22@qq.com,536074781@qq.com
+TO_EMAIL=179621078@qq.com,hakusai22@qq.com,536574781@qq.com

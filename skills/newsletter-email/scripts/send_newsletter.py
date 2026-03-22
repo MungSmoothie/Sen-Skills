@@ -105,6 +105,19 @@ def parse_tag(html, i):
     return (tag, attrs, self_closing, end)
 
 def inline_css(html, html_path):
+    # Remove all script tags and their content (emails dont support JS)
+    # Remove all script tags and content (reliable, no regex edge cases)
+    while '<script' in html:
+        start = html.find('<script')
+        end = html.find('</script>', start)
+        if end == -1:
+            # No closing tag, remove from start to end of tag
+            gt = html.find('>', start)
+            if gt != -1:
+                html = html[:start] + html[gt+1:]
+            break
+        html = html[:start] + html[end + len('</script>'):]
+
     # Load CSS from external files
     css_texts = []
     for m in re.finditer(r'<link[^>]+href=["\']([^"\']+)["\'][^>]*>', html):
@@ -144,6 +157,9 @@ def inline_css(html, html_path):
             elif c == '}': depth -= 1
             j += 1
         decls = all_css[brace+1:j-1]
+        # Skip pseudo-element selectors (::after, ::before, ::first-line, etc.)
+        if '::' in selector:
+            ci = j; continue
         if selector:
             style = {}
             for d in decls.split(';'):
@@ -200,10 +216,18 @@ def inline_css(html, html_path):
         if tag in ('script', 'link', '!--'):
             i = end; continue
         if tag == 'style':
-            # Skip opening <style> tag and its CSS content and closing </style>
+            # Skip <style> tag, its CSS content, and closing </style>
             close_pos = html.find('</style>', end)
             if close_pos != -1:
                 end = close_pos + len('</style>')
+            i = end; continue
+        if tag == 'script':
+            # Skip <script> tag, all JS content, and closing </script>
+            close_pos = html.find('</script>', end)
+            if close_pos != -1:
+                end = close_pos + len('</script>')
+            else:
+                end = len(html)
             i = end; continue
         if tag == '':
             # Closing tag: output it as-is

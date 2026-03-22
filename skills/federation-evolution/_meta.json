@@ -1,0 +1,8 @@
+{
+  "name": "federation-evolution",
+  "description": "联邦协同进化 - 让学到的经验在联邦内同步共享",
+  "version": "0.1.0",
+  "tags": ["federation", "evolution", "sync"],
+  "requires": ["openclaw-federation"],
+  "author": "二狗"
+}

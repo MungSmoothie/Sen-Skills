@@ -1,0 +1,455 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>村口情报社 · AI日报 · 2026年3月22日</title>
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+  <div class="paper">
+    <header class="masthead">
+      <div class="masthead-left">
+        <h1>村口情报社</h1>
+        <div class="edition">AI 内参 · 每日版</div>
+        <div class="identity-tag">AI整理资讯 · 公开信息汇编</div>
+      </div>
+      <div class="masthead-right">
+        <div class="date">2026年3月22日 · 星期日</div>
+        <div class="issue">第 387 期</div>
+        <div class="original-tag">@来一杯绿豆冰沙 & 二狗</div>
+      </div>
+    </header>
+
+    <nav class="top-nav">
+      <div class="nav-item active" data-channel="news" onclick="switchChannel('news')">今日要闻</div>
+      <div class="nav-item" data-channel="deep" onclick="switchChannel('deep')">深度报道</div>
+      <div class="nav-item" data-channel="global" onclick="switchChannel('global')">国际焦点</div>
+      <div class="nav-item" data-channel="tech" onclick="switchChannel('tech')">科技前沿</div>
+      <div class="nav-item" data-channel="finance" onclick="switchChannel('finance')">财经观察</div>
+    </nav>
+
+    <div class="main-content">
+      <!-- 今日要闻 -->
+      <div id="news" class="content-section active">
+        <div class="lead-row">
+          <div class="lead-main">
+            <span class="lead-tag">头条</span>
+            <h2 class="lead-title">小米发布 MiMo-V2-Pro：1万亿参数逼近 GPT-5.2，成本仅为七分之一</h2>
+            <p class="lead-subtitle">DeepSeek R1 核心成员领衔研发，1M 上下文窗口刷新中国大模型性能纪录</p>
+            <p class="lead-summary">小米于3月21日发布 MiMo-V2-Pro，1万亿参数大模型在 Artificial Analysis 全球智能指数位列第10，接近 GPT-5.2 与 Claude Opus 4.6 水平，但 API 调用成本仅约 4美元/百万token，约为 GPT-5.2 的七分之一。该模型由前 DeepSeek R1 核心成员 Fuli Luo 主导，采用稀疏架构（42B 活跃参数），结合 7:1 混合注意力机制，实现100万上下文窗口。研究机构已验证该模型幻觉率降至30%，并预告将开源部分版本。</p>
+
+            <div class="data-strip">
+              <div class="data-item"><span class="data-num">1T</span><span class="data-label">总参数量</span></div>
+              <div class="data-item"><span class="data-num">42B</span><span class="data-label">活跃参数</span></div>
+              <div class="data-item"><span class="data-num">1M</span><span class="data-label">上下文窗口</span></div>
+              <div class="data-item"><span class="data-num">$4</span><span class="data-label">每百万token成本</span></div>
+              <div class="data-item"><span class="data-num">30%</span><span class="data-label">幻觉率（较上代降18pp）</span></div>
+            </div>
+
+            <div class="extend-box">
+              <div class="extend-item">
+                <span class="extend-label">架构亮点</span>
+                <p>采用稀疏架构：1T总参中仅42B活跃；7:1混合注意力比（处理85%数据时"速览"，15%高密度注意），配合多Token预测层降低推理延迟。</p>
+              </div>
+              <div class="extend-item">
+                <span class="extend-label">Benchmark 验证</span>
+                <p>Artificial Analysis 确认：全球智能指数第10位，与 GPT-5.2 Codex 同档；在 GDPval-AA（真实任务代理评测）中超越 GLM-5 与 Kimi K2.5。</p>
+              </div>
+              <div class="extend-item">
+                <span class="extend-label">开源计划</span>
+                <p>Fuli Luo 在 X 平台透露，模型稳定后将开源部分变体。小米正从消费硬件公司向"具身智能+大模型"垂直整合企业转型。</p>
+              </div>
+            </div>
+
+            <div class="ergou-box">
+              <h4>📣 二狗点评</h4>
+              <p>小米这波操作挺狠的——花小钱办大事，用七分之一的成本做到接近顶流水平，而且背后还是 DeepSeek R1 的老班底。俺觉得这条新闻不只是"国产模型又进步了"这么简单，它意味着大模型的价格战已经从海外烧到国内了。以后企业选型，价格这张牌会越来越重要。</p>
+            </div>
+          </div>
+
+          <aside class="lead-sidebar">
+            <div class="sidebar-block">
+              <h4>今日快讯</h4>
+              <ul class="brief-list">
+                <li><span class="time">GTC</span>Nvidia 发布 Vera Rubin 平台，7芯片联合，OpenAI/Anthropic/Meta 全员站台，黄仁勋称将开启"史上最大基础设施建热潮"</li>
+                <li><span class="time">编程</span>Cursor 发布 Composer 2，价格较上代降低86%，评测超越 Claude Opus 4.6，仍小幅落后 GPT-5.4</li>
+                <li><span class="time">监管</span>美国国防部正式反驳 Anthropic 诉讼，声称若认定"供应链风险"公司将有能力预先行使技术封锁权</li>
+                <li><span class="time">插件</span>WordPress.com 开放 AI Agent 接入，支持 Claude/GPT 经由 MCP 协议直接起草并发布内容</li>
+                <li><span class="time">隐私</span>Signal 创始人 Moxie Marlinspike 宣布正与 Meta 合作，将其加密技术整合进 Meta AI 底层</li>
+                <li><span class="time">芯片</span>三星宣布2026年投资730亿美元扩张 AI 芯片产能，同比增22%，剑指 SK 海力士的 HBM 市场份额</li>
+              </ul>
+            </div>
+
+            <div class="sidebar-block">
+              <h4>市场脉搏</h4>
+              <ul class="market-list">
+                <li><span>Nvidia (NVDA)</span><span class="up">≈ $135</span></li>
+                <li><span>OpenAI 估值</span><span class="up">$300B+</span></li>
+                <li><span>Anthropic 估值</span><span class="up">$75B+</span></li>
+                <li><span>Cursor 估值</span><span class="up">$29.3B</span></li>
+                <li><span>小米 (01810.HK)</span><span class="up">≈ HK$53</span></li>
+                <li><span>三星 (005930.KS)</span><span class="down">≈ ₩57,000</span></li>
+              </ul>
+            </div>
+
+            <div class="sidebar-block">
+              <h4>💕 每日治愈</h4>
+              <p class="sidebar-text sidebar-quote">模型越来越聪明，但春天还是那个春天——偶尔抬头看看天，别忘了自己也是智能体。</p>
+            </div>
+
+            <div class="sidebar-block">
+              <h4>😂 每日笑料</h4>
+              <p class="sidebar-text">程序员：我要造一个不会说废话的 AI。AI：好的，我先问你一个问题——你要我先说什么？</p>
+            </div>
+          </aside>
+        </div>
+
+        <div class="mid-section">
+          <div class="mid-card"><div class="tag">芯片</div><h3>Nvidia 发布 Vera Rubin：10倍能效提升，召唤"史上最大 AI 基础设施热"</h3><p>Vera Rubin 平台整合7枚芯片（含 Vera CPU、Rubin GPU、Groq 3 LPU），较 Blackwell 推理吞吐提升10倍、每token成本降至十分之一。AWS/Azure/GCP/Oracle 全员支持，80+合作伙伴跟进。</p></div>
+          <div class="mid-card"><div class="tag">开源</div><h3>Nemotron Coalition 成立：Mistral/Cursor/Perplexity 等联手打造开源前沿模型</h3><p>Nvidia 联合8家 AI 实验室成立 Nemotron Coalition，首个合作模型将由 Mistral AI 与 Nvidia 共同开发，定位开源 frontier 模型，与 DGX Cloud 深度绑定。</p></div>
+          <div class="mid-card"><div class="tag">推理优化</div><h3>Nvidia KVTC 技术：无需改权重，将 LLM 内存压缩20倍，首token延迟降低8倍</h3><p>KV Cache Transform Coding 借鉴 JPEG 压缩思路，利用 KV 缓存的低秩结构实现20倍压缩。H100上8000 token 提示词的首token生成时间从3秒降至约0.4秒。</p></div>
+          <div class="mid-card"><div class="tag">代理</div><h3>Nvidia NemoClaw：一键部署安全 AI 助手，从 RTX 笔记本到 DGX 超算均支持</h3><p>NemoClaw 将 Nemotron 模型与 OpenShell 安全运行时打包，支持一条命令在本地设备安装always-on AI助手，面向企业级安全代理场景。</p></div>
+        </div>
+      </div>
+
+      <!-- 深度报道 -->
+      <div id="deep" class="content-section">
+        <div class="lead-row">
+          <div class="lead-main">
+            <span class="lead-tag">深度</span>
+            <h2 class="lead-title">从 Vera Rubin 看 Nvidia 的 Agent 时代赌注：硬件公司还是软件平台？</h2>
+            <p class="lead-subtitle">7芯片平台背后的战略逻辑：为什么黄仁勋说"聊天机器人时代已经结束"</p>
+            <p class="lead-summary">GTC 2026 上 Nvidia 发布的 Vera Rubin 不仅仅是一代新硬件。7枚芯片联合、5个机架级系统合一、从 GPU 到 CPU 到 LPU 到 DPU 全链路覆盖——这意味着 Nvidia 正在将自身定位从"AI 芯片供应商"向"AI 基础设施操作系统提供商"迁移。本次 GTC 的核心叙事是"Agentic AI 临界点已至"，而 Nvidia 的所有产品线——Vera Rubin、NemoClaw、Dynamo 1.0、Nemotron Coalition——都在围绕这一判断展开布局。</p>
+
+            <div class="data-strip">
+              <div class="data-item"><span class="data-num">7</span><span class="data-label">平台芯片数量</span></div>
+              <div class="data-item"><span class="data-n0">10x</span><span class="data-label">推理能效提升</span></div>
+              <div class="data-item"><span class="data-num">1/10</span><span class="data-label">单位token成本</span></div>
+              <div class="data-item"><span class="data-num">80+</span><span class="data-label">制造合作伙伴</span></div>
+              <div class="data-item"><span class="data-num">Dynamo</span><span class="data-label">推理OS已获Cursor/PayPal采纳</span></div>
+            </div>
+
+            <div class="extend-box">
+              <div class="extend-item">
+                <span class="extend-label">为什么是"7"枚芯片</span>
+                <p>Agentic AI 的工作负载不再单一：CPU 执行沙盒代码、GPU 推理、长程上下文需要 KV 缓存存储、Groq LPU 负责低延迟 token 生成、Ethernet 互联成瓶颈——没有一枚芯片能覆盖全链路，7芯片联动是架构刚需而非营销数字。</p>
+              </div>
+              <div class="extend-item">
+                <span class="extend-label">Dynamo 1.0 的战略价值</span>
+                <p>Dynamo 被 Nvidia 定位为"AI 推理工厂操作系统"，已获 AWS/Azure/GCP/Oracle/Cursor/PayPal/Pinterest 部署。它解决的不仅是 GPU 调度，而是分布式推理工厂层面的资源弹性——这是未来 AI 计算量贩化的基础设施。</p>
+              </div>
+              <div class="extend-item">
+                <span class="extend-label">Nemotron Coalition 的生态意图</span>
+                <p>开源 Frontier 模型一方面培养开发者生态对 Nvidia 硬件的依赖，另一方面也避免 Nvidia 与顶级实验室直接竞争。Mira Murati 新创立的 Thinking Machines Lab 加入 coalition，是值得关注的信号。</p>
+              </div>
+            </div>
+
+            <div class="ergou-box">
+              <h4>📣 二狗点评</h4>
+              <p>俺观察 Nvidia 好几年了，这波操作比往年任何一次发布都激进。以前老黄卖的是"更强的卡"，这次卖的是"一整套 Agent 时代的工作站"。这背后的判断是：聊天 AI 的计算模式是一次性的，Agent AI 的计算是连续的、长期的、跨模态的。对俺们搞情报的人来说，关键是盯紧 Cursor、Perplexity 这些已经在用 Dynamo 的公司——它们的成本曲线会最先改善。</p>
+            </div>
+          </div>
+
+          <aside class="lead-sidebar">
+            <div class="sidebar-block">
+              <h4>相关动态</h4>
+              <ul class="brief-list">
+                <li><span class="time">Roche</span>宣布部署 3,500 块 Blackwell GPU，跨美欧混合云布局，为制药 AI 研发铺路</li>
+                <li><span class="time">GR00T N2</span>Nvidia 下一代机器人基础模型，RoboArena 基准排名第一，新任务上手成功率超竞品2倍以上</li>
+                <li><span class="time">Agent Toolkit</span>Adobe/Atlassian/Salesforce/SAP 等14家企业级厂商已集成 OpenShell 安全运行时</li>
+                <li><span class="time">KVTC</span>即将集成进 Dynamo KVBM 模块，兼容 vLLM 等主流推理引擎</li>
+                <li><span class="time">Vera CPU</span>256核液冷，22,500个并发 CPU 环境，专为 Agent 沙盒设计</li>
+                <li><span class="time">Spectrum-6</span>新型 Ethernet 交换机，光学共封装能效提升5倍</li>
+              </ul>
+            </div>
+
+            <div class="sidebar-block">
+              <h4>技术注解</h4>
+              <ul class="market-list">
+                <li><span>Groq 3 LPU</span><span class="flat">推理加速专用</span></li>
+                <li><span>BlueField-4 DPU</span><span class="flat">上下文存储</span></li>
+                <li><span>NVLink 6</span><span class="flat">多GPU互联</span></li>
+              </ul>
+            </div>
+
+            <div class="sidebar-block">
+              <h4>💕 每日治愈</h4>
+              <p class="sidebar-text sidebar-quote">芯片越来越复杂，但村口的老槐树还是那棵树。有些东西不需要升级。</p>
+            </div>
+
+            <div class="sidebar-block">
+              <h4>😂 每日笑料</h4>
+              <p class="sidebar-text">老黄：这是史上最大基础设施建热潮。俺：先问问供电局准备好了没？</p>
+            </div>
+          </aside>
+        </div>
+
+        <div class="mid-section">
+          <div class="mid-card"><div class="tag">架构</div><h3>为什么 Agent 工作负载需要全新的硬件平衡</h3><p>聊天模型只需毫秒级 GPU 调用；Agent 需要 CPU 跑沙盒、GPU 推理、大容量 KV 缓存存储——传统数据中心设计无法高效支撑这种混合负载。</p></div>
+          <div class="mid-card"><div class="tag">开源</div><h3>Nemotron 3 Ultra 发布：5倍 Blackwell 吞吐量效率</h3><p>Nemotron 3 Ultra 以开源形式发布，官方称在 Blackwell 上实现5倍吞吐量效率，面向企业私有部署场景。</p></div>
+          <div class="mid-card"><div class="tag">生态</div><h3>Nemotron Coalition 首批成员：8家实验室背后各自押注</h3><p>Black Forest Labs（图像）/ Cursor（编程）/ Mistral AI（欧洲）/ Perplexity（搜索）/ Thinking Machines Lab（Mirra Murati 新公司）——成员各有侧重，映射 Nvidia 不把鸡蛋放一个篮子。</p></div>
+          <div class="mid-card"><div class="tag">机器人</div><h3>GR00T N2：让机器人在陌生环境中成功上手新任务</h3><p>基于 Nvidia 机器人基础模型 GR00T N2，在 MolmoSpaces 与 RoboArena 基准中排名第一，新任务成功率超竞品2倍以上，定位具身智能研究社区。</p></div>
+        </div>
+      </div>
+
+      <!-- 国际焦点 -->
+      <div id="global" class="content-section">
+        <div class="lead-row">
+          <div class="lead-main">
+            <span class="lead-tag">国际</span>
+            <h2 class="lead-title">五角大楼反击 Anthropic："供应链风险"认定引发 AI 军备竞赛担忧</h2>
+            <p class="lead-subtitle">DoD 法庭文件称 Anthropic 有能力"在战争期间预先行使技术封锁"，Anthropic 反驳称认定基于误解</p>
+            <p class="lead-summary">美国国防部本月正式反驳 Anthropic 此前提起的诉讼，就其被列为"供应链风险"单位一事再度表态。五角大楼在法庭文件中声称，若认定公司存在供应链风险，Athropic"理论上可以在战争期间或认为红线被越过时，预先禁用其技术或改变模型行为"。Anthropic 则坚持其技术设计本身包含安全限制，不存在上述能力。此次争议折射出美国政府与前沿 AI 实验室之间日益加深的信任鸿沟。</p>
+
+            <div class="data-strip">
+              <div class="data-item"><span class="data-num">$75B</span><span class="data-label">Anthropic 最新估值</span></div>
+              <div class="data-item"><span class="data-num">Dario</span><span class="data-label">Amodei公开支持 Rubin 合作</span></div>
+              <div class="data-item"><span class="data-num">3月</span><span class="data-label">诉讼时间线（进行中）</span></div>
+            </div>
+
+            <div class="extend-box">
+              <div class="extend-item">
+                <span class="extend-label">背景</span>
+                <p>Anthropic 被 DoD 列入"供应链风险"名单，意味着其技术不能直接用于某些政府 AI 项目。Anthropic 认为该认定基于对其安全架构的误解，于本月提起诉讼。</p>
+              </div>
+              <div class="extend-item">
+                <span class="extend-label">对立</span>
+                <p>讽刺的是，同期 Nvidia GTC 上，Dario Amodei 代表 Anthropic 为 Vera Rubin 平台背书——商业合作与安全分歧并行。</p>
+              </div>
+              <div class="extend-item">
+                <span class="extend-label">风险</span>
+                <p>若诉讼持续，可能影响 Anthropic 获得美国政府合同的资格，同时引发其他 AI 实验室对监管风险的重新评估。</p>
+              </div>
+            </div>
+
+            <div class="ergou-box">
+              <h4>📣 二狗点评</h4>
+              <p>这事儿挺有意思的——Anthropic 一边和 Nvidia 合作卖芯片给政府，一边和政府打关于"我到底能不能搞事"的官司。Dario Amodei 这个人挺拧巴的：他在公开场合说要 AI 安全要对齐，但背后又不得不承认，没有算力一切都免谈。俺的看法是，这种"亦敌亦友"的关系会持续更久。</p>
+            </div>
+          </div>
+
+          <aside class="lead-sidebar">
+            <div class="sidebar-block">
+              <h4>国际动态</h4>
+              <ul class="brief-list">
+                <li><span class="time">梵蒂冈</span>教皇 AI 顾问 Benanti 神父公开撰文称 Peter Thiel 为"异端"，引发硅谷与宗教界的跨圈讨论</li>
+                <li><span class="time">欧洲</span>Alexa Plus AI 助手正式进入英国，为其首个欧洲市场，月费 £19.99</li>
+                <li><span class="time">索尼</span>索尼 R&D 正在训练"防护型 AI"模型，专门识别并阻止 AI 模仿吉卜力动画内容</li>
+                <li><span class="time">日本</span>Val Kilmer 遗产方授权 AI 生成形象出演新片，Variety 报道引发版权界争议</li>
+                <li><span class="time">BBC</span>统计发现全球已有8个"人类创作"标识倡议，业界呼吁统一标准以免消费者困惑</li>
+              </ul>
+            </div>
+
+            <div class="sidebar-block">
+              <h4>监管动向</h4>
+              <ul class="market-list">
+                <li><span>美国 DoD</span><span class="down">Anthropic 诉讼</span></li>
+                <li><span>欧盟 AI Act</span><span class="flat">执行阶段</span></li>
+                <li><span>英国 ICO</span><span class="flat">Alexa 隐私审查</span></li>
+              </ul>
+            </div>
+
+            <div class="sidebar-block">
+              <h4>💕 每日治愈</h4>
+              <p class="sidebar-text sidebar-quote">有些架吵了几千年还在吵——人和 AI 的信任问题，大概也是如此。慢慢来。</p>
+            </div>
+
+            <div class="sidebar-block">
+              <h4>😂 每日笑料</h4>
+              <p class="sidebar-text">Anthropic 的 AI：我很安全。DoD：真的吗？Anthropic：真的。DoD：我们法庭见。</p>
+            </div>
+          </aside>
+        </div>
+
+        <div class="mid-section">
+          <div class="mid-card"><div class="tag">搜索</div><h3>Perplexity 推出 Comet 浏览器 iOS 版</h3><p>AI 搜索引擎 Perplexity 正式推出自研 Comet 浏览器 iOS 版本，主打 AI 深度集成与无追踪浏览体验。</p></div>
+          <div class="mid-card"><div class="tag">工具</div><h3>Google 测试 macOS 版 Gemini 应用</h3><p>据 The Verge 报道，Google 正在 macOS 平台测试 Gemini 独立应用，或将对标 ChatGPT 桌面客户端的市场份额。</p></div>
+          <div class="mid-card"><div class="tag">音乐</div><h3>索尼开发 AI 歌曲溯源技术</h3><p>索尼 R&D 训练专属模型识别 AI 生成音乐来源，防止 AI 模型从受版权保护音乐中提取训练数据。</p></div>
+          <div class="mid-card"><div class="tag">开源</div><h3>Mamba 3 发布：挑战 Transformer 架构的新选择</h3><p>Mamba 3 正式发布，在多项基准中展示了对传统 Transformer 架构的计算效率优势，专注于长序列处理场景。</p></div>
+        </div>
+      </div>
+
+      <!-- 科技前沿 -->
+      <div id="tech" class="content-section">
+        <div class="lead-row">
+          <div class="lead-main">
+            <span class="lead-tag">技术</span>
+            <h2 class="lead-title">Cursor Composer 2 评测：编程模型价格战的引爆点</h2>
+            <p class="lead-subtitle">Fine-tuned 版 Kimi K2.5，降价86%，能否对抗 OpenAI Codex 与 Claude Code 的夹击？</p>
+            <p class="lead-summary">Cursor 发布 Composer 2，这是其首款完全自研的编程模型，基于 Kimi K2.5 微调而来。定价从 Composer 1.5 的 $3.50/$17.50（输入/输出每百万token）直接降至 $0.50/$2.50，降幅达86%。Benchmark 方面，Composer 2 在 SWE-bench Multilingual 达73.7分，Terminal-Bench 2.0 达61.7分，超越 Claude Opus 4.6（58.0），但仍小幅落后于 GPT-5.4（75.1）。Cursor 估值29.3亿美元，正面临 OpenAI Codex 与 Anthropic Claude Code 的双向竞争。</p>
+
+            <div class="data-strip">
+              <div class="data-item"><span class="data-num">86%</span><span class="data-label">相比上代价格降幅</span></div>
+              <div class="data-item"><span class="data-num">$0.50</span><span class="data-label">每百万输入token</span></div>
+              <div class="data-item"><span class="data-num">200K</span><span class="data-label">上下文窗口</span></div>
+              <div class="data-item"><span class="data-num">73.7</span><span class="data-label">SWE-bench 得分</span></div>
+              <div class="data-item"><span class="data-num">$29.3B</span><span class="data-label">Cursor 最新估值</span></div>
+            </div>
+
+            <div class="extend-box">
+              <div class="extend-item">
+                <span class="extend-label">技术细节</span>
+                <p>Composer 2 采用继续预训练+规模化强化学习路线，首次利用长期代理编程任务数据进行训练，支持20万token上下文，可调用 Cursor 完整工具栈（语义搜索、文件编辑、Shell命令、浏览器控制）。</p>
+              </div>
+              <div class="extend-item">
+                <span class="extend-label">竞争格局</span>
+                <p>Claude Code 以"terminal-first"工作流吸引高端用户；OpenAI Codex 背靠 GPT-5 能力；Cursor 则试图以平台整合+低价策略守住中间市场。</p>
+              </div>
+              <div class="extend-item">
+                <span class="extend-label">锁定争议</span>
+                <p>Composer 2 为 Cursor 专有模型，不通过外部 API 分发，也不提供通用可部署权重——这是竞争优势，也是用户粘性的双刃剑。</p>
+              </div>
+            </div>
+
+            <div class="ergou-box">
+              <h4>📣 二狗点评</h4>
+              <p>Cursor 这波降价挺猛的，但俺觉得它的护城河不是模型本身，而是那个编辑器。Composer 2 降价86%听起来很香，但用户真正绑定的还是 Cursor 的 agent 工具链和团队协作功能。就跟俺村的剃头匠一样——推子便宜不重要，手艺好才是关键。</p>
+            </div>
+          </div>
+
+          <aside class="lead-sidebar">
+            <div class="sidebar-block">
+              <h4>开发动态</h4>
+              <ul class="brief-list">
+                <li><span class="time">WordPress</span>开放 MCP 协议，Claude/GPT 可直接代写并发布博客文章，先以草稿形式待审</li>
+                <li><span class="time">Google</span>Stitch 更新，推广"vibe design"概念，用语音描述生成 UI 设计稿</li>
+                <li><span class="time">MiniMax</span>M2-7 Pro 发布，官方称具备"自进化"能力，可在30-50个任务中自主优化</li>
+                <li><span class="time">Mistral</span>发布 Forge 平台，帮助企业从零构建自有专有模型</li>
+                <li><span class="time">Nvidia</span>NemoClaw 开源，一键部署安全 AI 助手，覆盖 RTX 到 DGX 全线硬件</li>
+              </ul>
+            </div>
+
+            <div class="sidebar-block">
+              <h4>模型榜单</h4>
+              <ul class="market-list">
+                <li><span>GPT-5.4</span><span class="up">Terminal-Bench 75.1</span></li>
+                <li><span>Composer 2</span><span class="up">61.7</span></li>
+                <li><span>Opus 4.6</span><span class="flat">58.0</span></li>
+                <li><span>Opus 4.5</span><span class="flat">52.1</span></li>
+                <li><span>Composer 1.5</span><span class="down">47.9</span></li>
+              </ul>
+            </div>
+
+            <div class="sidebar-block">
+              <h4>💕 每日治愈</h4>
+              <p class="sidebar-text sidebar-quote">每一行代码都在解决一个问题，就像每一颗种子都在等一场雨。</p>
+            </div>
+
+            <div class="sidebar-block">
+              <h4>😂 每日笑料</h4>
+              <p class="sidebar-text">vibe design：一种通过"感觉对了"来设计 UI 的方法。俺们的村口大爷称之为"瞎蒙"。</p>
+            </div>
+          </aside>
+        </div>
+
+        <div class="mid-section">
+          <div class="mid-card"><div class="tag">安全</div><h3>Signal 创始人 Moxie Marlinspike 与 Meta 合作加密 Meta AI</h3><p>Moxie Marlinspike 宣布将旗下 Confer 加密技术整合进 Meta AI 底层，以隐私优先方式重新构建 Meta AI 的对话加密层。</p></div>
+          <div class="mid-card"><div class="tag">图像</div><h3>Microsoft MAI-Image 2 发布：增强写实性，更准确文字渲染</h3><p>微软第二代图像生成模型 MAI-Image 2 全面登陆 Copilot 与 Bing Image Creator，主打摄影级真实感与文字嵌入准确性。</p></div>
+          <div class="mid-card"><div class="tag">开源</div><h3>Mamba 3：Transformer 挑战者登陆，主攻长序列计算效率</h3><p>Mamba 3 正式发布，状态空间模型架构在多项长序列任务中展现对 Transformer 的效率优势。</p></div>
+          <div class="mid-card"><div class="tag">代理</div><h3>Nvidia OpenShell：开源 Agent 安全运行时，14家企业集成</h3><p>Nvidia OpenShell 运行时提供 Agent 行为安全与隐私护栏，已获 Adobe、Salesforce、SAP、Cisco 等14家厂商平台集成。</p></div>
+        </div>
+      </div>
+
+      <!-- 财经观察 -->
+      <div id="finance" class="content-section">
+        <div class="lead-row">
+          <div class="lead-main">
+            <span class="lead-tag">财经</span>
+            <h2 class="lead-title">三星掷730亿美元豪赌 AI 芯片：22% 产能扩张剑指 SK 海力士 HBM 王座</h2>
+            <p class="lead-subtitle">Co-CEO Jun Young-hyun：Agentic AI 需求激增推动 HBM 订单暴涨，SK 海力士龙头地位告急</p>
+            <p class="lead-summary">三星电子宣布2026年投资730亿美元用于 AI 芯片扩张，同比增幅22%。这笔资金将主要流入先进 HBM 内存、晶圆代工和机器人研发三大方向。Co-CEO Jun Young-hyun 明确表示，Agentic AI 的爆发正在推动 HBM 需求激增，三星正试图从 SK 海力士手中夺取 Nvidia HBM 供应商的主导权。消息公布后，三星股价在韩国市场小幅波动，市场对三星能否在 HBM4 节点赶超仍存疑虑。</p>
+
+            <div class="data-strip">
+              <div class="data-item"><span class="data-num">$73B</span><span class="data-label">2026年投资额</span></div>
+              <div class="data-item"><span class="data-num">22%</span><span class="data-label">同比增幅</span></div>
+              <div class="data-item"><span class="data-num">HBM</span><span class="data-label">主攻方向：HBM4</span></div>
+              <div class="data-item"><span class="data-num">Nvidia</span><span class="data-label">目标客户：HBM 认证中</span></div>
+              <div class="data-item"><span class="data-num">机器人</span><span class="data-label">新兴研发方向</span></div>
+            </div>
+
+            <div class="extend-box">
+              <div class="extend-item">
+                <span class="extend-label">HBM 竞争格局</span>
+                <p>目前 SK 海力士是 Nvidia HBM3 的主力供应商，市占率约70%。三星此轮扩张的核心目标是获得 HBM4 认证，并在2027年前将市占率从目前约20%提升至35%。</p>
+              </div>
+              <div class="extend-item">
+                <span class="extend-label">Agentic AI 的连锁反应</span>
+                <p>Nvidia Vera Rubin 平台的火爆推动算力需求，进而传导至上游存储芯片。三星认为 Agent 工作负载需要更大的 KV 缓存，HBM 需求曲线将陡峭化。</p>
+              </div>
+              <div class="extend-item">
+                <span class="extend-label">Robot 野心</span>
+                <p>三星将"先进机器人"列为未来导向投资方向，结合其电动汽车（YU7 SUV）和智能家居生态，布局具身智能硬件矩阵。</p>
+              </div>
+            </div>
+
+            <div class="ergou-box">
+              <h4>📣 二狗点评</h4>
+              <p>三星这次是真的急了——730亿美元不是小数目，而且22%的增幅在当前全球半导体资本开支里算很高的。俺的看法是：HBM 这场仗，三星必须打，SK 海力士也不会坐着等。三星的优势是垂直整合（从内存到代工到封装都能自己做），劣势是 HBM 起步比 SK 海力士晚两代。如果这轮投资能换成 HBM4 的产能，那三星还有得一搏。</p>
+            </div>
+          </div>
+
+          <aside class="lead-sidebar">
+            <div class="sidebar-block">
+              <h4>产业数据</h4>
+              <ul class="brief-list">
+                <li><span class="time">HBM 市场</span>2026年预估规模突破400亿美元，SK 海力士市占约70%，三星约20%</li>
+                <li><span class="time">Vera Rubin</span>黄仁勋：Rubin 将开启"史上最大基础设施建热潮"，首批已分配给四大云厂商</li>
+                <li><span class="time">小米汽车</span>YU7 SUV 上市在即，小米电动车交付量持续攀升，完善硬件+AI 生态闭环</li>
+                <li><span class="time">Alexa Plus</span>英国月费 £19.99（约 $26.5），Prime 用户免费——亚马逊 AI 订阅正式进入欧洲</li>
+                <li><span class="time">Meta 零售</span>Meta 纽约第五大道门店正式成为永久旗舰店，持续销售 Ray-Ban 智能眼镜与 Quest 头显</li>
+              </ul>
+            </div>
+
+            <div class="sidebar-block">
+              <h4>关键估值</h4>
+              <ul class="market-list">
+                <li><span>Nvidia</span><span class="up">≈$135 / 股</span></li>
+                <li><span>三星电子</span><span class="down">≈ ₩57,000</span></li>
+                <li><span>SK 海力士</span><span class="up">≈ ₩210,000</span></li>
+                <li><span>小米集团</span><span class="up">≈ HK$53</span></li>
+                <li><span>Meta</span><span class="up">≈ $620</span></li>
+                <li><span>Anthropic</span><span class="up">$75B 估值</span></li>
+              </ul>
+            </div>
+
+            <div class="sidebar-block">
+              <h4>💕 每日治愈</h4>
+              <p class="sidebar-text sidebar-quote">芯片战争打得很凶，但俺们村口的老槐树下永远有空位。技术再忙，也要歇脚。</p>
+            </div>
+
+            <div class="sidebar-block">
+              <h4>😂 每日笑料</h4>
+              <p class="sidebar-text">SK 海力士：我 HBM 全球第一。三星：我投资730亿美元。SK 海力士：我 HBM4 已通过 Nvidia 认证。三星：俺……</p>
+            </div>
+          </aside>
+        </div>
+
+        <div class="mid-section">
+          <div class="mid-card"><div class="tag">HBM</div><h3>三星 HBM4 认证进展：年内目标 Nvidia 认证通过</h3><p>三星内部文件显示，其 HBM4 内存正在接受 Nvidia 认证流程，目标在2026年下半年获得正式通过，届时将直接挑战 SK 海力士的现有订单。</p></div>
+          <div class="mid-card"><div class="tag">订阅</div><h3>Alexa Plus 英国上线：欧洲 AI 助手订阅战升温</h3><p>Amazon Alexa Plus 正式进入英国，成为首个欧洲市场。月费 £19.99，Prime 用户免费。亚马逊特别针对英式英语做了本地化调优。</p></div>
+          <div class="mid-card"><div class="tag">零售</div><h3>Meta 纽约旗舰店永久化：AI 眼镜从爆款到常态</h3><p>Meta 位于曼哈顿第五大道的 Meta Lab NYC 正式转为永久门店，不再是快闪店。Ray-Ban Meta 智能眼镜是主要销售品类。</p></div>
+          <div class="mid-card"><div class="tag">汽车</div><h3>小米 YU7 上市在即：AI+汽车生态再下一城</h3><p>小米第二款 SUV YU7 即将上市，结合 MIUI Auto 与小米大模型，完善从手机到汽车到家庭的全链路 AI 生态。</p></div>
+        </div>
+      </div>
+
+    </div>
+
+    <footer class="footer">
+      <div>村口情报社 · AI内参 · @来一杯绿豆冰沙 &amp; 二狗 · AI整理资讯</div>
+      <div>信息来源：The Verge / VentureBeat / TechCrunch / Reuters / Artificial Analysis · 公开信息汇编</div>
+    </footer>
+  </div>
+
+  <script>
+    function switchChannel(channel) {
+      document.querySelectorAll('.nav-item').forEach(item => {
+        item.classList.remove('active');
+        if (item.dataset.channel === channel) item.classList.add('active');
+      });
+      document.querySelectorAll('.content-section').forEach(section => section.classList.remove('active'));
+      document.getElementById(channel).classList.add('active');
+    }
+  </script>
+</body>
+</html>
