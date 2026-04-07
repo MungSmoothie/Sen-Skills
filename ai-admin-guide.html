@@ -1,0 +1,775 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>行政管理者的AI入门指南 · 村口情报社</title>
+  <style>
+    @import url('https://fonts.googleapis.com/css2?family=Noto+Serif+SC:wght@400;500;600;700;900&family=Noto+Sans+SC:wght@300;400;500&display=swap');
+
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+
+    :root {
+      --charcoal: #1a1a1a;
+      --warm-gray: #6b6560;
+      --light-warm: #f0ebe3;
+      --paper: #faf8f3;
+      --wine-red: #8b2635;
+      --navy: #1a3a5c;
+      --text: #222;
+      --text-light: #5a5a5a;
+      --border: #d4cfc5;
+    }
+
+    body {
+      background: #c9c3b8;
+      font-family: "Noto Serif SC", "Noto Sans SC", serif;
+      color: var(--text);
+      padding: 20px;
+    }
+
+    .paper {
+      max-width: 860px;
+      margin: 0 auto;
+      background: var(--paper);
+      box-shadow: 0 8px 40px rgba(0, 0, 0, 0.12);
+      border-radius: 2px;
+    }
+
+    /* 报头 */
+    .masthead {
+      padding: 32px 56px 24px;
+      border-bottom: 3px solid var(--charcoal);
+      display: flex;
+      justify-content: space-between;
+      align-items: flex-end;
+    }
+    .masthead-left h1 {
+      font-size: 48px;
+      font-weight: 900;
+      color: var(--charcoal);
+      letter-spacing: 6px;
+    }
+    .masthead-left .edition {
+      font-size: 10px;
+      color: var(--warm-gray);
+      letter-spacing: 3px;
+      margin-top: 6px;
+    }
+    .masthead-right {
+      text-align: right;
+    }
+    .masthead-right .date {
+      font-size: 15px;
+      color: var(--charcoal);
+      font-weight: 500;
+    }
+    .masthead-right .tag {
+      font-size: 9px;
+      color: var(--wine-red);
+      margin-top: 6px;
+      font-weight: 600;
+      letter-spacing: 1px;
+    }
+
+    /* 副标题栏 */
+    .sub-header {
+      padding: 16px 56px;
+      background: var(--light-warm);
+      border-bottom: 1px solid var(--border);
+      font-size: 13px;
+      color: var(--text-light);
+      line-height: 1.7;
+    }
+
+    /* 主体 */
+    .main-body {
+      padding: 36px 56px 48px;
+    }
+
+    /* 标题 */
+    .guide-title {
+      font-size: 32px;
+      font-weight: 900;
+      color: var(--charcoal);
+      line-height: 1.2;
+      margin-bottom: 10px;
+    }
+    .guide-title span {
+      display: block;
+      font-size: 16px;
+      font-weight: 400;
+      color: var(--warm-gray);
+      margin-top: 6px;
+      letter-spacing: 1px;
+    }
+    .guide-meta {
+      font-size: 11px;
+      color: var(--warm-gray);
+      margin-top: 8px;
+      padding-bottom: 20px;
+      border-bottom: 1px solid var(--border);
+      margin-bottom: 32px;
+    }
+
+    /* 章节 */
+    .chapter {
+      margin-bottom: 40px;
+    }
+    .chapter-label {
+      font-size: 9px;
+      font-weight: 700;
+      color: var(--wine-red);
+      letter-spacing: 3px;
+      text-transform: uppercase;
+      border-bottom: 1px solid var(--border);
+      padding-bottom: 6px;
+      margin-bottom: 18px;
+    }
+    .chapter h2 {
+      font-size: 22px;
+      font-weight: 700;
+      color: var(--charcoal);
+      margin-bottom: 14px;
+      line-height: 1.3;
+    }
+    .chapter p {
+      font-size: 14px;
+      line-height: 1.85;
+      color: var(--text);
+      margin-bottom: 12px;
+    }
+    .chapter p:last-child { margin-bottom: 0; }
+
+    /* 场景卡 */
+    .scenario-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 14px;
+      margin: 16px 0;
+    }
+    .scenario {
+      background: var(--light-warm);
+      border-radius: 3px;
+      padding: 16px 18px;
+      border: 1px solid var(--border);
+    }
+    .scenario .icon {
+      font-size: 20px;
+      margin-bottom: 6px;
+    }
+    .scenario h4 {
+      font-size: 14px;
+      font-weight: 700;
+      color: var(--charcoal);
+      margin-bottom: 6px;
+    }
+    .scenario p {
+      font-size: 12.5px;
+      color: var(--text-light);
+      line-height: 1.7;
+      margin-bottom: 0;
+    }
+    .scenario .tag {
+      display: inline-block;
+      background: var(--wine-red);
+      color: #fff;
+      font-size: 10px;
+      padding: 2px 8px;
+      border-radius: 10px;
+      margin-bottom: 6px;
+    }
+
+    /* 工具卡 */
+    .tool-list {
+      margin: 14px 0;
+    }
+    .tool-item {
+      display: flex;
+      gap: 18px;
+      padding: 14px 0;
+      border-bottom: 1px solid var(--border);
+    }
+    .tool-item:last-child { border-bottom: none; }
+    .tool-icon {
+      width: 44px;
+      height: 44px;
+      background: var(--charcoal);
+      border-radius: 4px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 18px;
+      flex-shrink: 0;
+    }
+    .tool-info { flex: 1; }
+    .tool-info h4 {
+      font-size: 15px;
+      font-weight: 700;
+      color: var(--charcoal);
+      margin-bottom: 4px;
+    }
+    .tool-info .type {
+      font-size: 10px;
+      color: var(--wine-red);
+      font-weight: 600;
+      letter-spacing: 1px;
+      margin-bottom: 6px;
+    }
+    .tool-info p {
+      font-size: 13px;
+      color: var(--text-light);
+      line-height: 1.7;
+      margin-bottom: 0;
+    }
+    .tool-info .prompt-tip {
+      background: var(--light-warm);
+      border-left: 3px solid var(--wine-red);
+      padding: 8px 12px;
+      margin-top: 8px;
+      font-size: 12px;
+      color: var(--text-light);
+      font-style: italic;
+    }
+
+    /* 步骤列表 */
+    .step-list {
+      margin: 14px 0;
+      counter-reset: step;
+    }
+    .step {
+      display: flex;
+      gap: 16px;
+      margin-bottom: 16px;
+      padding-bottom: 16px;
+      border-bottom: 1px dotted var(--border);
+    }
+    .step:last-child { border-bottom: none; margin-bottom: 0; padding-bottom: 0; }
+    .step-num {
+      width: 32px;
+      height: 32px;
+      background: var(--charcoal);
+      color: #fff;
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 14px;
+      font-weight: 700;
+      flex-shrink: 0;
+    }
+    .step-content h4 {
+      font-size: 14px;
+      font-weight: 700;
+      color: var(--charcoal);
+      margin-bottom: 4px;
+    }
+    .step-content p {
+      font-size: 13px;
+      color: var(--text-light);
+      line-height: 1.7;
+      margin-bottom: 0;
+    }
+
+    /* 提示框 */
+    .tips-box {
+      background: var(--light-warm);
+      border-left: 4px solid var(--wine-red);
+      padding: 18px 22px;
+      margin: 18px 0;
+      border-radius: 0 4px 4px 0;
+    }
+    .tips-box h4 {
+      font-size: 11px;
+      font-weight: 700;
+      color: var(--wine-red);
+      letter-spacing: 2px;
+      text-transform: uppercase;
+      margin-bottom: 10px;
+    }
+    .tips-box ul {
+      list-style: none;
+      padding: 0;
+    }
+    .tips-box li {
+      font-size: 13px;
+      color: var(--text-light);
+      line-height: 1.8;
+      padding: 3px 0;
+      padding-left: 16px;
+      position: relative;
+    }
+    .tips-box li::before {
+      content: '→';
+      position: absolute;
+      left: 0;
+      color: var(--wine-red);
+      font-weight: 700;
+    }
+
+    /* 警告框 */
+    .warn-box {
+      background: #fff3e0;
+      border-left: 4px solid #e67e22;
+      padding: 16px 20px;
+      margin: 18px 0;
+      border-radius: 0 4px 4px 0;
+    }
+    .warn-box h4 {
+      font-size: 11px;
+      font-weight: 700;
+      color: #e67e22;
+      letter-spacing: 2px;
+      text-transform: uppercase;
+      margin-bottom: 8px;
+    }
+    .warn-box p {
+      font-size: 13px;
+      color: #5a4a3a;
+      line-height: 1.7;
+      margin-bottom: 0;
+    }
+
+    /* 金句 */
+    .quote-box {
+      background: var(--charcoal);
+      color: #fff;
+      padding: 20px 24px;
+      margin: 18px 0;
+      border-radius: 3px;
+      font-size: 15px;
+      line-height: 1.8;
+      font-style: italic;
+      position: relative;
+    }
+    .quote-box::before {
+      content: '"';
+      font-size: 60px;
+      color: rgba(255,255,255,0.15);
+      position: absolute;
+      top: -5px;
+      left: 16px;
+      font-family: Georgia, serif;
+    }
+    .quote-box p { color: #fff; font-style: italic; margin-bottom: 0; }
+    .quote-box .src {
+      font-size: 11px;
+      color: rgba(255,255,255,0.5);
+      margin-top: 10px;
+      font-style: normal;
+      text-align: right;
+    }
+
+    /* 资源表 */
+    .resource-table {
+      width: 100%;
+      border-collapse: collapse;
+      margin: 14px 0;
+      font-size: 13px;
+    }
+    .resource-table th {
+      background: var(--charcoal);
+      color: #fff;
+      padding: 10px 14px;
+      text-align: left;
+      font-size: 11px;
+      letter-spacing: 1px;
+    }
+    .resource-table td {
+      padding: 10px 14px;
+      border-bottom: 1px solid var(--border);
+      color: var(--text-light);
+      vertical-align: top;
+      line-height: 1.6;
+    }
+    .resource-table tr:nth-child(even) td { background: var(--light-warm); }
+    .resource-table .name { font-weight: 700; color: var(--charcoal); }
+
+    /* 底部 */
+    footer {
+      padding: 18px 56px;
+      border-top: 2px solid var(--charcoal);
+      text-align: center;
+      font-size: 10px;
+      color: var(--warm-gray);
+      letter-spacing: 1px;
+    }
+  </style>
+</head>
+<body>
+<div class="paper">
+
+  <!-- 报头 -->
+  <div class="masthead">
+    <div class="masthead-left">
+      <h1>村口情报社</h1>
+      <div class="edition">VILLAGE INTELLIGENCE AGENCY · SPECIAL GUIDE</div>
+    </div>
+    <div class="masthead-right">
+      <div class="date">2026年4月7日</div>
+      <div class="tag">@来一杯绿豆冰沙 &amp; @二狗 联合出品</div>
+    </div>
+  </div>
+
+  <!-- 副标题 -->
+  <div class="sub-header">
+    📌 本指南适合：行政管理人员、人力资源从业者、办公室文员、企业中后台职员 · 不需要技术背景，只需要愿意尝试的心态
+  </div>
+
+  <!-- 主体 -->
+  <div class="main-body">
+
+    <!-- 引言 -->
+    <div class="chapter">
+      <h2 class="guide-title">行政管理者的AI入门指南<span>从"我用不了"到"AI帮我打工" · 7个真实场景 · 5分钟上手</span></h2>
+      <p class="guide-meta">整理自公开资料 · AI辅助写作 · 2026年4月 · 村口情报社</p>
+
+      <p>俺见过很多行政管理者，一听说AI就发怵——"我又不是程序员，学啥AI？"其实这是最大的误解。AI对行政工作的改变，比对程序员还大。为啥？因为行政工作80%的时间在"写"和"整理"，而AI最擅长的恰恰就是这两件事。</p>
+
+      <p>这份指南不讲理论，不讲深度学习，不讲大模型原理。俺只讲一件事：<strong>你明天上班就能用的AI工具和方法。</strong> 读完就能动手，动手就有效果。</p>
+    </div>
+
+    <!-- 第一章：AI能帮行政做什么 -->
+    <div class="chapter">
+      <div class="chapter-label">第一章 · 真实场景</div>
+      <h2>AI能帮行政做什么？7个日常场景</h2>
+      <p>先看看AI在你日常工作中能干啥，别被"AI"两个字吓到——说白了，它就是一个超级打字机 + 超级助理。</p>
+
+      <div class="scenario-grid">
+        <div class="scenario">
+          <div class="tag">最高频</div>
+          <div class="icon">📧</div>
+          <h4>写邮件</h4>
+          <p>"催供应商报价"、"通知各部门开会"、"回复客户投诉"……这些邮件每次都要想半天。AI可以帮你起草，你只需要修改。节省时间：每次5-15分钟。</p>
+        </div>
+        <div class="scenario">
+          <div class="tag">最高频</div>
+          <div class="icon">📝</div>
+          <h4>写通知和公告</h4>
+          <p>放假通知、规章制度、审批流程……这类套话多的文档，AI写起来特别快，而且格式规范、不出错。</p>
+        </div>
+        <div class="scenario">
+          <div class="icon">📊</div>
+          <h4>整理数据做报表</h4>
+          <p>Excel数据汇总、统计报表、月度总结数据……AI能帮你写Excel公式、生成数据透视表逻辑、解释数据趋势。不需要你会编程。</p>
+        </div>
+        <div class="scenario">
+          <div class="icon">📅</div>
+          <h4>会议纪要整理</h4>
+          <p>录音转文字 + AI提炼要点 + 生成待办事项。1小时会议，5分钟出纪要。</p>
+        </div>
+        <div class="scenario">
+          <div class="icon">📚</div>
+          <h4>整理归档</h4>
+          <p>合同、档案、政策文件……AI能帮你快速提取关键词、建立分类目录、生成摘要。</p>
+        </div>
+        <div class="scenario">
+          <div class="icon">💡</div>
+          <h4>写方案和报告</h4>
+          <p>活动方案、工作汇报、项目计划……给AI一个框架，它帮你填充内容。你改细节，AI填血肉。</p>
+        </div>
+        <div class="scenario">
+          <div class="icon">🔍</div>
+          <h4>政策查询与解读</h4>
+          <p>HR新政、税务新规、行业标准……AI能帮你快速从长篇文件里提炼重点，不用全文读完。</p>
+        </div>
+        <div class="scenario">
+          <div class="icon">🗣️</div>
+          <h4>模拟对话和演练</h4>
+          <p>模拟员工谈话、面试提问、处理投诉……AI能扮演不同角色，帮你彩排。</p>
+        </div>
+      </div>
+    </div>
+
+    <!-- 第二章：工具推荐 -->
+    <div class="chapter">
+      <div class="chapter-label">第二章 · 工具清单</div>
+      <h2>行政工作者AI工具清单（免费+付费）</h2>
+      <p>不需要买套餐，不需要学代码。俺按场景给你推荐最好用的工具，每个都经过验证。</p>
+
+      <div class="tips-box">
+        <h4>🗣️ 二狗建议：先从聊天式AI开始</h4>
+        <ul>
+          <li>所有工具里，最容易上手的是<strong>聊天类AI</strong>：你说话，它做事。不需要学任何技术。</li>
+          <li>国内推荐：通义千问、文心一言、Kimi、讯飞星火</li>
+          <li>国外推荐：ChatGPT（需要翻墙）、Claude</li>
+          <li>不需要付钱，免费版本已经能完成80%的行政工作</li>
+        </ul>
+      </div>
+
+      <div class="tool-list">
+
+        <div class="tool-item">
+          <div class="tool-icon">💬</div>
+          <div class="tool-info">
+            <div class="type">聊天AI · 瑞士军刀</div>
+            <h4>Kimi（国产 · 免费）</h4>
+            <p>国产AI里最适合国人的选择。中文理解好，不用翻墙，能读长文档（PDF、Word都能上传）。最适合行政场景。</p>
+            <div class="prompt-tip">💬 常用prompt："帮我起草一份春节放假通知，语气正式" / "把这份会议录音整理成纪要" / "帮我分析这份Excel数据的趋势"</div>
+          </div>
+        </div>
+
+        <div class="tool-item">
+          <div class="tool-icon">📄</div>
+          <div class="tool-info">
+            <div class="type">文档处理 · 国产首选</div>
+            <h4>通义千问（阿里 · 免费）</h4>
+            <p>能处理长文档（100页PDF直接上传）、做会议录音转文字（免费额度够用）。阿里系办公场景集成好，适合企业用户。</p>
+            <div class="prompt-tip">💬 常用prompt："上传这份合同，列出关键条款" / "把这份PDF总结成3点" / "比较这两份文件的差异"</div>
+          </div>
+        </div>
+
+        <div class="tool-item">
+          <div class="tool-icon">📊</div>
+          <div class="tool-info">
+            <div class="type">表格处理 · Excel杀手</div>
+            <h4>ChatExcel（国产 · 免费）</h4>
+            <p>用说话的方式操作Excel。你说"把这列求和，按部门分组统计"，它直接帮你改表格。不需要记任何公式。</p>
+            <div class="prompt-tip">💬 常用prompt："把销售金额那一列加上万元单位" / "筛选出超过10万的订单" / "生成一个按月汇总的透视表"</div>
+          </div>
+        </div>
+
+        <div class="tool-item">
+          <div class="tool-icon">📝</div>
+          <div class="tool-info">
+            <div class="type">写作润色 · 老牌强</div>
+            <h4>文心一言（百度 · 免费）</h4>
+            <p>百度出品，中文写作润色能力很强。适合写通知、公文、邮件等正式文档，能模仿不同文风。</p>
+            <div class="prompt-tip">💬 常用prompt："把这段话改得更正式" / "用简洁风格重写这封邮件" / "写一份通知，语气亲切但不随便"</div>
+          </div>
+        </div>
+
+        <div class="tool-item">
+          <div class="tool-icon">🎤</div>
+          <div class="tool-info">
+            <div class="type">会议录音 · 必备工具</div>
+            <h4>讯飞听见 / 腾讯会议录制（免费额度）</h4>
+            <p>会议录音自动转文字，准确率高。转完后发给Kimi让它帮你整理成纪要。这是行政工作者最高效的工作流之一。</p>
+            <div class="prompt-tip">💬 常用prompt："这是一份会议录音转的文字，帮我整理成纪要，包括：讨论事项、决定、待办"</div>
+          </div>
+        </div>
+
+        <div class="tool-item">
+          <div class="tool-icon">📑</div>
+          <div class="tool-info">
+            <div class="type">进阶工具 · 适合深度用户</div>
+            <h4>Notion AI /飞书妙记</h4>
+            <p>如果你已经在用Notion或飞书，它们的AI功能可以深度集成到日常工作流里。不需要额外打开工具。</p>
+            <div class="prompt-tip">💬 常用prompt："帮我起草这份合同的审批邮件" / "把本周工作内容总结成周报"</div>
+          </div>
+        </div>
+
+      </div>
+    </div>
+
+    <!-- 第三章：实战教程 -->
+    <div class="chapter">
+      <div class="chapter-label">第三章 · 5分钟上手</div>
+      <h2>第一次用AI写邮件（全流程截图式教程）</h2>
+      <p>俺用一个最常见的场景来演示整个流程：给供应商发一封催报价的邮件。</p>
+
+      <div class="step-list">
+        <div class="step">
+          <div class="step-num">1</div>
+          <div class="step-content">
+            <h4>打开Kimi或其他聊天AI</h4>
+            <p>直接在浏览器输入 kimi.moonshot.cn 或通义千问官网。手机也可以用App。登录后就能用，不需要任何设置。</p>
+          </div>
+        </div>
+        <div class="step">
+          <div class="step-num">2</div>
+          <div class="step-content">
+            <h4>把你的需求说清楚</h4>
+            <p>把下面的prompt复制进去，修改红色部分：</p>
+            <div class="quote-box">
+              <p>"我是一家公司的行政专员，需要给一家供应商发邮件催报价。请帮我起草邮件，语气要专业但不生硬。我们已经合作过3次了，关系还算熟。公司叫'深圳市创新科技有限公司'，供应商叫'广州华盛物资公司'，我需要他们在4月15日前给2026年第三季度的报价。"</p>
+            </div>
+          </div>
+        </div>
+        <div class="step">
+          <div class="step-num">3</div>
+          <div class="step-content">
+            <h4>AI生成后，修改发送</h4>
+            <p>AI会在5-10秒内给你一封完整的邮件。读一遍，修改公司名、日期、联系人等细节。觉得语气不对，可以让它重写一次，或者加一句"语气更正式一点"、"更客气一点"。</p>
+          </div>
+        </div>
+        <div class="step">
+          <div class="step-num">4</div>
+          <div class="step-content">
+            <h4>进阶：让AI帮你想替代方案</h4>
+            <p>如果邮件发出后对方没回复，你可以再问AI："对方如果不回复，我可以怎么跟进？给我3个不同力度的方案。" AI会给你从温和到强硬的多种策略。</p>
+          </div>
+        </div>
+      </div>
+
+      <div class="tips-box">
+        <h4>💡 写好prompt的3个原则</h4>
+        <ul>
+          <li><strong>给背景：</strong>先说"我是谁"、"做什么工作"，AI理解你的身份后会用对语气</li>
+          <li><strong>说清楚对象：</strong>"发给供应商"和"发给老板"语气完全不同，要说明</li>
+          <li><strong>给具体要求：</strong>"催报价"、"4月15日前"、"语气专业"——越具体越好</li>
+          <li><strong>允许调整：</strong>发"语气太正式了，重写一遍"、"再短一点"</li>
+        </ul>
+      </div>
+    </div>
+
+    <!-- 第四章：常见问题 -->
+    <div class="chapter">
+      <div class="chapter-label">第四章 · 避坑指南</div>
+      <h2>行政AI使用的5个坑</h2>
+
+      <div class="warn-box">
+        <h4>⚠️ 坑1：AI写完直接发</h4>
+        <p>AI偶尔会"一本正经地胡说八道"——事实、数据、日期都可能出错。<strong>一定要核对。</strong> AI是助理，你是领导，签字之前必须过目。</p>
+      </div>
+
+      <div class="warn-box">
+        <h4>⚠️ 坑2：把机密文件发给AI</h4>
+        <p>公司的合同、工资表、员工个人信息——这些绝对不要上传到公共AI工具。<strong>能用本地工具用本地工具，能脱敏的脱敏后再发。</strong></p>
+      </div>
+
+      <div class="warn-box">
+        <h4>⚠️ 坑3：问AI法律法规问题</h4>
+        <p>AI可以帮你解读政策文件，但它不是律师。<strong>涉及劳动纠纷、合同纠纷等法律问题，先咨询法务，AI只能做参考。</strong></p>
+      </div>
+
+      <div class="warn-box">
+        <h4>⚠️ 坑4：完全依赖AI做决定</h4>
+        <p>AI擅长提供选项，但做决定的是你。<strong>裁员名单、晋升建议、奖金分配——这类事情必须人判断，AI只能帮你整理信息。</strong></p>
+      </div>
+
+      <div class="warn-box">
+        <h4>⚠️ 坑5：一次性要太多</h4>
+        <p>不要扔给AI一个200页的PDF说"给我总结"。<strong>分章节、分段落地提问，效果好10倍。</strong> AI也有"记忆极限"，信息太多它会遗漏后半部分。</p>
+      </div>
+
+      <div class="quote-box">
+        <p>AI是帮你省时间的工具，不是帮你做决定的权威。你比AI更懂人情世故、更懂公司文化、更懂同事脾性。AI负责文字和逻辑，你负责判断和决策。</p>
+        <div class="src">— 二狗的忠告</div>
+      </div>
+    </div>
+
+    <!-- 第五章：进阶用法 -->
+    <div class="chapter">
+      <div class="chapter-label">第五章 · 进阶提升</div>
+      <h2>用好AI的进阶技巧</h2>
+      <p>当你用了一周聊天AI之后，可以试试这些进阶玩法：</p>
+
+      <div class="scenario-grid">
+        <div class="scenario">
+          <div class="icon">📂</div>
+          <h4>建自己的提示词库</h4>
+          <p>把每次写得好的prompt保存下来，下次直接用。行政工作的prompt复用率很高：通知类、邮件类、报告类……积累10个就能应付80%场景。</p>
+        </div>
+        <div class="scenario">
+          <div class="icon">🔄</div>
+          <h4>让AI扮演不同角色</h4>
+          <p>"假设你是我们公司财务总监，帮我审查这份合同里的付款条款"——让AI从不同视角帮你挑毛病，比单纯让它"检查"效果好得多。</p>
+        </div>
+        <div class="scenario">
+          <div class="icon">📋</div>
+          <h4>建立标准工作流</h4>
+          <p>会议纪要：讯飞录音 → Kimi整理 → 飞书存档。这条流水线每天帮你省30分钟，一年就是100多小时。</p>
+        </div>
+        <div class="scenario">
+          <div class="icon">🤝</div>
+          <h4>团队共享提示词</h4>
+          <p>把你验证过好用的prompt分享给同事。行政团队的效率提升靠的是标准化，不是个人努力。把好用的模板变成团队的共同资产。</p>
+        </div>
+      </div>
+    </div>
+
+    <!-- 附录：资源清单 -->
+    <div class="chapter">
+      <div class="chapter-label">附录 · 工具入口</div>
+      <h2>本文提到的工具入口</h2>
+
+      <table class="resource-table">
+        <thead>
+          <tr>
+            <th>工具名</th>
+            <th>类型</th>
+            <th>费用</th>
+            <th>入口</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td class="name">Kimi</td>
+            <td>聊天AI / 文档处理</td>
+            <td>免费（基础额度）</td>
+            <td>kimi.moonshot.cn</td>
+          </tr>
+          <tr>
+            <td class="name">通义千问</td>
+            <td>聊天AI / 会议录音</td>
+            <td>免费（基础额度）</td>
+            <td>tongyi.aliyun.com</td>
+          </tr>
+          <tr>
+            <td class="name">文心一言</td>
+            <td>聊天AI / 写作润色</td>
+            <td>免费（基础额度）</td>
+            <td>yiyan.baidu.com</td>
+          </tr>
+          <tr>
+            <td class="name">ChatExcel</td>
+            <td>Excel自然语言操作</td>
+            <td>免费</td>
+            <td>chatexcel.com</td>
+          </tr>
+          <tr>
+            <td class="name">讯飞听见</td>
+            <td>录音转文字</td>
+            <td>免费额度 / 付费</td>
+            <td>ting.xunfei.cn</td>
+          </tr>
+          <tr>
+            <td class="name">飞书妙记</td>
+            <td>会议录音转文字</td>
+            <td>飞书会员</td>
+            <td>feishu.cn（飞书App内）</td>
+          </tr>
+          <tr>
+            <td class="name">Notion AI</td>
+            <td>文档AI / 工作流集成</td>
+            <td>付费（$10/月）</td>
+            <td>notion.so</td>
+          </tr>
+          <tr>
+            <td class="name">ChatGPT</td>
+            <td>通用聊天AI</td>
+            <td>免费 / $20/月（Plus）</td>
+            <td>chat.openai.com（需翻墙）</td>
+          </tr>
+        </tbody>
+      </table>
+
+      <div class="tips-box">
+        <h4>📌 俺的推荐优先级</h4>
+        <ul>
+          <li><strong>第一天：</strong>Kimi（聊天）+ 讯飞听见（录音），这两个覆盖80%场景</li>
+          <li><strong>第一周：</strong>加上 ChatExcel 处理表格</li>
+          <li><strong>第一个月：</strong>把常用prompt积累成文档，形成团队共享模板</li>
+        </ul>
+      </div>
+    </div>
+
+    <!-- 结语 -->
+    <div class="chapter">
+      <div class="quote-box">
+        <p>AI不会取代行政管理者，但会用AI的行政管理者，会取代不会用AI的同行。这不是预测，这是正在发生的事。</p>
+        <div class="src">— 村口情报社 · 2026年4月</div>
+      </div>
+    </div>
+
+  </div><!-- end main-body -->
+
+  <footer>
+    <p>村口情报社 · 行政管理AI指南 · 2026年4月 · @来一杯绿豆冰沙 &amp; @二狗 联合出品</p>
+    <p>内容基于公开信息整理 · 工具功能以官方最新版本为准 · 仅供参考</p>
+  </footer>
+
+</div><!-- end paper -->
+</body>
+</html>
