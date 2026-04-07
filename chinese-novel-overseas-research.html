@@ -1,0 +1,572 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>国内爽文出海变现调研报告 · 村口情报社</title>
+<style>
+@import url('https://fonts.googleapis.com/css2?family=Noto+Serif+SC:wght@400;500;600;700;900&family=Noto+Sans+SC:wght@300;400;500&display=swap');
+*{margin:0;padding:0;box-sizing:border-box;}
+:root{--charcoal:#1a1a1a;--warm-gray:#6b6560;--light-warm:#f0ebe3;--paper:#faf8f3;--wine-red:#8b2635;--navy:#1a3a5c;--text:#222;--text-light:#5a5a5a;--border:#d4cfc5;--orange:#e67e22;--green:#1a6b3a;}
+body{background:#c9c3b8;font-family:"Noto Serif SC","Noto Sans SC",serif;color:var(--text);padding:20px;}
+.paper{width:1200px;margin:0 auto;background:var(--paper);box-shadow:0 8px 40px rgba(0,0,0,0.12);border-radius:2px;}
+.masthead{padding:28px 50px 20px;display:flex;justify-content:space-between;align-items:flex-end;border-bottom:2px solid var(--charcoal);}
+.masthead h1{font-size:52px;font-weight:900;letter-spacing:8px;color:var(--charcoal);line-height:1;}
+.masthead-left{display:flex;flex-direction:column;}
+.masthead-left .edition{font-size:11px;color:var(--warm-gray);letter-spacing:3px;margin-top:6px;}
+.masthead-left .identity-tag{font-size:10px;color:var(--navy);font-weight:500;margin-top:8px;letter-spacing:1px;}
+.masthead-right{display:flex;flex-direction:column;align-items:flex-end;}
+.masthead-right .date{font-size:15px;color:var(--charcoal);font-weight:500;letter-spacing:1px;}
+.masthead-right .issue{font-size:11px;color:var(--warm-gray);margin-top:4px;}
+.masthead-right .original-tag{font-size:9px;color:var(--wine-red);margin-top:8px;font-weight:500;}
+.top-nav{padding:0 50px;display:flex;border-bottom:1px solid var(--border);background:var(--paper);}
+.nav-item{padding:14px 24px;font-size:12px;font-weight:500;color:var(--text-light);cursor:pointer;position:relative;transition:all 0.2s ease;letter-spacing:1px;}
+.nav-item::after{content:'';position:absolute;bottom:0;left:50%;transform:translateX(-50%);width:0;height:2px;background:var(--wine-red);transition:all 0.2s ease;}
+.nav-item:hover{color:var(--charcoal);background:var(--light-warm);}
+.nav-item:hover::after{width:60%;}
+.nav-item.active{color:var(--charcoal);font-weight:600;}
+.nav-item.active::after{width:80%;}
+.main-content{padding:30px 50px;}
+.content-section{display:none;animation:fadeIn 0.3s ease;}
+.content-section.active{display:block;}
+@keyframes fadeIn{from{opacity:0;transform:translateY(5px);}to{opacity:1;transform:translateY(0);}}
+.lead-row{display:grid;grid-template-columns:1fr 300px;gap:40px;padding-bottom:30px;border-bottom:1px solid var(--border);margin-bottom:28px;}
+.lead-main{display:flex;flex-direction:column;}
+.lead-tag{font-size:10px;font-weight:600;color:var(--wine-red);letter-spacing:2px;margin-bottom:12px;}
+.lead-title{font-size:32px;font-weight:700;line-height:1.25;margin-bottom:14px;color:var(--charcoal);}
+.lead-subtitle{font-size:16px;color:var(--text-light);line-height:1.5;margin-bottom:18px;font-weight:400;}
+.lead-summary{font-size:14px;line-height:1.8;color:var(--text);flex:1;}
+.lead-summary+.lead-summary{margin-top:10px;}
+.data-strip{display:flex;gap:20px;margin-top:18px;padding:12px 0;border-top:1px dotted var(--border);border-bottom:1px dotted var(--border);}
+.data-item{display:flex;flex-direction:column;}
+.data-num{font-size:16px;font-weight:700;color:var(--wine-red);}
+.data-label{font-size:9px;color:var(--warm-gray);margin-top:2px;}
+.extend-box{display:grid;grid-template-columns:repeat(3,1fr);gap:15px;margin-top:18px;}
+.extend-item{padding:12px;background:var(--light-warm);border-radius:3px;}
+.extend-label{font-size:10px;font-weight:600;color:var(--wine-red);letter-spacing:1px;display:block;margin-bottom:6px;}
+.extend-item p{font-size:11px;line-height:1.5;color:var(--text-light);}
+.lead-sidebar{border-left:1px solid var(--border);padding-left:25px;display:flex;flex-direction:column;gap:18px;}
+.sidebar-block{}
+.sidebar-block h4{font-size:10px;font-weight:600;color:var(--charcoal);letter-spacing:1.5px;margin-bottom:10px;padding-bottom:5px;border-bottom:1px solid var(--wine-red);}
+.brief-list{list-style:none;}
+.brief-list li{font-size:12px;line-height:1.55;padding:5px 0;color:var(--text-light);}
+.brief-list .time{color:var(--wine-red);font-weight:500;margin-right:6px;font-size:10px;}
+.mid-section{display:grid;grid-template-columns:repeat(4,1fr);gap:20px;padding-bottom:24px;border-bottom:1px solid var(--border);margin-bottom:24px;}
+.mid-card{padding-top:14px;border-top:2px solid var(--charcoal);}
+.mid-card .tag{font-size:9px;font-weight:500;color:var(--navy);letter-spacing:1px;margin-bottom:8px;}
+.mid-card h3{font-size:15px;font-weight:600;line-height:1.4;margin-bottom:8px;color:var(--charcoal);}
+.mid-card p{font-size:12px;line-height:1.55;color:var(--text-light);}
+.sec-label{font-size:10px;font-weight:600;color:var(--wine-red);letter-spacing:2px;text-transform:uppercase;margin:24px 0 12px;border-bottom:1px solid var(--border);padding-bottom:6px;}
+h3.chapter-head{font-size:22px;font-weight:700;color:var(--charcoal);margin-bottom:14px;line-height:1.3;}
+p.body-text{font-size:14px;line-height:1.85;color:var(--text);margin-bottom:10px;}
+.data-table{width:100%;border-collapse:collapse;margin:14px 0;font-size:13px;}
+.data-table th{background:var(--charcoal);color:#fff;padding:10px 14px;text-align:left;font-size:11px;letter-spacing:1px;}
+.data-table td{padding:10px 14px;border-bottom:1px solid var(--border);color:var(--text-light);vertical-align:top;line-height:1.6;}
+.data-table tr:nth-child(even) td{background:var(--light-warm);}
+.data-table .name{font-weight:700;color:var(--charcoal);}
+.data-table .tag-green{color:#155724;font-weight:600;}
+.data-table .tag-yellow{color:#856404;font-weight:600;}
+.data-table .tag-red{color:#c0392b;font-weight:600;}
+.data-table .tag-blue{color:#1a3a5c;font-weight:600;}
+.tool-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:14px;margin:16px 0;}
+.tool-card{background:var(--light-warm);border:1px solid var(--border);border-radius:3px;padding:16px;}
+.tool-card h4{font-size:15px;font-weight:700;color:var(--charcoal);margin-bottom:6px;}
+.tool-card .spec{font-size:11px;color:var(--wine-red);font-weight:600;margin-bottom:8px;}
+.tool-card p{font-size:12px;color:var(--text-light);line-height:1.6;margin-bottom:0;}
+.pipeline{display:flex;align-items:center;gap:8px;margin:20px 0;overflow-x:auto;padding-bottom:8px;}
+.pipe-step{background:var(--charcoal);color:#fff;padding:10px 16px;border-radius:3px;font-size:13px;font-weight:600;white-space:nowrap;flex-shrink:0;}
+.pipe-arrow{color:var(--wine-red);font-size:18px;flex-shrink:0;}
+.warn-box{background:#fff3e0;border-left:4px solid var(--orange);padding:16px 20px;margin:18px 0;border-radius:0 4px 4px 0;}
+.warn-box h4{font-size:11px;font-weight:700;color:var(--orange);letter-spacing:2px;text-transform:uppercase;margin-bottom:6px;}
+.warn-box p{font-size:13px;color:#5a4a3a;line-height:1.7;margin-bottom:0;}
+.success-box{background:#e8f5e9;border-left:4px solid var(--green);padding:16px 20px;margin:18px 0;border-radius:0 4px 4px 0;}
+.success-box h4{font-size:11px;font-weight:700;color:var(--green);letter-spacing:2px;text-transform:uppercase;margin-bottom:6px;}
+.success-box p{font-size:13px;color:#2e7d32;line-height:1.7;margin-bottom:0;}
+.ergou-box{background:var(--light-warm);padding:18px 22px;border-radius:3px;margin-top:20px;border-left:3px solid var(--wine-red);}
+.ergou-box h4{font-size:10px;font-weight:600;color:var(--wine-red);letter-spacing:1px;margin-bottom:8px;}
+.ergou-box p{font-size:13px;line-height:1.65;color:var(--text-light);font-style:italic;}
+.conclusion-box{background:var(--light-warm);border:1px solid var(--border);border-top:3px solid var(--wine-red);padding:20px 24px;margin-top:20px;border-radius:0 4px 4px 0;}
+.conclusion-box h4{font-size:11px;font-weight:700;color:var(--wine-red);letter-spacing:2px;text-transform:uppercase;margin-bottom:12px;}
+.conclusion-box ol{padding-left:20px;margin:0;}
+.conclusion-box li{font-size:14px;line-height:1.9;color:var(--text);margin-bottom:8px;}
+.conclusion-box strong{color:var(--charcoal);}
+.footer{padding:15px 50px;border-top:1px solid var(--border);display:flex;justify-content:space-between;font-size:10px;color:var(--warm-gray);}
+@media print{body{background:#fff;padding:0;}.paper{box-shadow:none;width:100%;}}
+</style>
+<head>
+<meta charset="UTF-8">
+</head>
+<body>
+<div class="paper">
+
+<div class="masthead">
+<div class="masthead-left">
+<h1>村口情报社</h1>
+<div class="edition">VILLAGE INTELLIGENCE AGENCY · RESEARCH REPORT</div>
+<div class="identity-tag">AI整理 · 公开信息汇编</div>
+</div>
+<div class="masthead-right">
+<div class="date">2026年4月7日</div>
+<div class="issue">调研报告 · 特别刊</div>
+<div class="original-tag">@来一杯绿豆冰沙 &amp; @二狗 联合出品</div>
+</div>
+</div>
+
+<nav class="top-nav">
+<div class="nav-item active" data-channel="market" onclick="switchChannel('market')">🌏 市场</div>
+<div class="nav-item" data-channel="platform" onclick="switchChannel('platform')">🏛️ 平台</div>
+<div class="nav-item" data-channel="monetize" onclick="switchChannel('monetize')">💰 变现</div>
+<div class="nav-item" data-channel="pipeline" onclick="switchChannel('pipeline')">🔧 流水线</div>
+<div class="nav-item" data-channel="conclusion" onclick="switchChannel('conclusion')">📌 结论</div>
+</nav>
+
+<div class="main-content">
+
+<!-- ========== 市场 ========== -->
+<div id="market" class="content-section active">
+<div class="lead-row">
+<div class="lead-main">
+<div class="lead-tag">头条 · 全球市场</div>
+<h2 class="lead-title">国内爽文出海：一个被低估的出海赛道</h2>
+<p class="lead-subtitle">玄幻 · 都市 · 穿越 · 系统流 · 修仙 · 都市修真</p>
+<p class="lead-summary">国内网文市场年产值超300亿人民币，网文作家超过2000万人。但在海外，中式网文（Xuanhuan/Cultivation）已经形成了一个数亿美元的细分市场，并且以每年40%以上的速度增长。这个市场目前仍被严重低估——大多数国内从业者还在卷国内，根本没看到出海的机会。</p>
+<p class="lead-summary">老外管这类小说叫"Cultivation/Xuanhuan/Xianxia"——这是继日本动漫之后，中国文化输出的最大单一品类。而且它的用户付费意愿极强：美国的Cultivation小说读者，平均每年在一个平台消费$60-200，远高于国内读者的平均付费水平。</p>
+<div class="data-strip">
+<div class="data-item"><span class="data-num">$10亿+</span><span class="data-label">海外Cultivation小说市场规模</span></div>
+<div class="data-item"><span class="data-num">40%+</span><span class="data-label">年增长率</span></div>
+<div class="data-item"><span class="data-num">$60-200</span><span class="data-label">美国读者年均消费（美元）</span></div>
+<div class="data-item"><span class="data-num">2000万+</span><span class="data-label">国内网文作家群体</span></div>
+</div>
+<div class="extend-box">
+<div class="extend-item"><span class="extend-label">最大市场</span><p>北美（Webnovels/RoyalRoad）欧洲（Kindle/ wattpad）东南亚（初步覆盖）</p></div>
+<div class="extend-item"><span class="extend-label">最适合题材</span><p>修仙、都市修真、玄幻、系统流、穿越文</p></div>
+<div class="extend-item"><span class="extend-label">核心用户</span><p>18-35岁男性为主，理工科背景偏多，有阅读网络小说的习惯</p></div>
+</div>
+<div class="ergou-box">
+<h4>📣 二狗点评</h4>
+<p>俺给你们算笔账：国内一个中层网文作者，月均收入1-3万。但同样水平的作者，把书翻译到海外，订阅分成+打赏+版权费，月入$3000-10000很常见。换算成人民币，这差距就不用俺说了吧？而且海外读者是真的愿意付费——不像国内，付费率只有3-5%。</p>
+</div>
+</div>
+<aside class="lead-sidebar">
+<div class="sidebar-block">
+<h4>📊 为什么老外爱看爽文</h4>
+<ul class="brief-list">
+<li><span class="time">爽感强</span>升级打脸套路全球通用</li>
+<li><span class="time">稀缺性</span>西式奇幻他们自己写得更好</li>
+<li><span class="time">新鲜感</span>修仙/内力体系对老外是全新世界观</li>
+<li><span class="time">量大</span>国内网文日更3000-5000字，完本几百万字</li>
+</ul>
+</div>
+<div class="sidebar-block">
+<h4>🔑 中式爽文核心卖点</h4>
+<ul class="brief-list">
+<li><span class="time">①</span>修仙体系（Cultivation）</li>
+<li><span class="time">②</span>系统流（System Apocalypse）</li>
+<li><span class="time">③</span>都市修真（Modern Cultivation）</li>
+<li><span class="time">④</span>重生逆袭（Rebirth/Returner）</li>
+<li><span class="time">⑤</span>异界穿越（Isekai）</li>
+</ul>
+</div>
+</aside>
+</div>
+
+<div class="sec-label">海外读者画像分析</div>
+
+<div class="data-table">
+<table>
+<tr><th>地区</th><th>主力平台</th><th>偏好题材</th><th>付费意愿</th><th>市场成熟度</th></tr>
+<tr><td class="name">北美</td><td>Webnovels/RoyalRoad/Kindle</td><td>修仙/都市修真/系统流</td><td class="tag-green">$100-200/年</td><td class="tag-green">成熟</td></tr>
+<tr><td class="name">欧洲</td><td>Kindle/Webnovels</td><td>玄幻/修仙</td><td class="tag-green">€50-100/年</td><td class="tag-green">成熟</td></tr>
+<tr><td class="name">东南亚</td><td>Webnovels/MyAnimeList</td><td>都市/总裁/言情</td><td class="tag-yellow">$20-50/年</td><td class="tag-yellow">成长期</td></tr>
+<tr><td class="name">南美</td><td>Wattpad/Amazon</td><td>系统流/穿越</td><td class="tag-yellow">$30-60/年</td><td class="tag-yellow">成长期</td></tr>
+<tr><td class="name">中东</td><td>Wattpad</td><td>都市/言情</td><td class="tag-yellow">$20-40/年</td><td class="tag-red">萌芽期</td></tr>
+</table>
+</div>
+
+<div class="sec-label">为什么出海比国内更有机会</div>
+
+<div class="mid-section">
+<div class="mid-card">
+<div class="tag">优势①</div>
+<h3>付费率碾压国内</h3>
+<p>海外平台付费率20-30%，国内平均3-5%。海外一个忠实读者的LTV（生命周期价值）等于国内20个读者。</p>
+</div>
+<div class="mid-card">
+<div class="tag">优势②</div>
+<h3>竞争远不如国内激烈</h3>
+<p>国内起点中文网日活作家200万，海外市场翻译/原创网文作家加起来不到5万，流量洼地明显。</p>
+</div>
+<div class="mid-card">
+<div class="tag">优势③</div>
+<h3>版权保护更完善</h3>
+<p>亚马逊和各大平台对版权保护有成熟的机制，侵权成本高，原创者权益有保障。</p>
+</div>
+<div class="mid-card">
+<div class="tag">优势④</div>
+<h3>内容审核更宽松</h3>
+<p>海外平台对玄幻/修仙/穿越等题材基本没有限制，不像国内有各种红线，省去大量修改成本。</p>
+</div>
+</div>
+</div>
+
+<!-- ========== 平台 ========== -->
+<div id="platform" class="content-section">
+<div class="lead-row">
+<div class="lead-main">
+<div class="lead-tag">头条 · 平台分析</div>
+<h2 class="lead-title">出海三大渠道：平台订阅 vs 自营 vs 社交</h2>
+<p class="lead-subtitle">Webnovels（腾讯嫡系） · Amazon Kindle · 社交媒体独立站</p>
+<p class="lead-summary">目前国内爽文出海有三条主要路径：①大型平台签约（Webnovels/Amazon）②独立站+社交流量（Facebook/YouTube/Patreon）③混合模式。每条路线的门槛、收益和难度差异极大，适合不同规模的团队。</p>
+<div class="data-strip">
+<div class="data-item"><span class="data-num">3条</span><span class="data-label">主要出海渠道</span></div>
+<div class="data-item"><span class="data-num">Webnovels</span><span class="data-label">最大平台（腾讯嫡系）</span></div>
+<div class="data-item"><span class="data-num">Patreon</span><span class="data-label">独立站变现最佳工具</span></div>
+<div class="data-item"><span class="data-num">FB+YouTube</span><span class="data-label">最大流量池</span></div>
+</div>
+<div class="ergou-box">
+<h4>📣 二狗点评</h4>
+<p>俺调研下来，三条路线的核心差异是：Webnovels省心但分成低（35-50%归你），独立站分成高（70-90%归你）但要自己搞流量。普通人建议先走Webnovels验证内容质量，再考虑独立站。</p>
+</div>
+</div>
+<aside class="lead-sidebar">
+<div class="sidebar-block">
+<h4>📊 三大渠道对比</h4>
+<ul class="brief-list">
+<li><span class="time">门槛</span>Webnovels最低，独立站最高</li>
+<li><span class="time">分成</span>平台35-50%，独立站70-90%</li>
+<li><span class="time">流量</span>平台自带，独立站自己找</li>
+<li><span class="time">周期</span>平台快（3-6月上架）</li>
+</ul>
+</div>
+<div class="sidebar-block">
+<h4>⚠️ 注意事项</h4>
+<p style="font-size:12px;line-height:1.7;color:var(--text-light);">国内平台的独家签约合同往往规定"全球版权"，签之前要确认清楚，避免侵权纠纷。</p>
+</div>
+</aside>
+</div>
+
+<div class="sec-label">平台一：Webnovels（起点国际版）</div>
+
+<div class="data-table">
+<table>
+<tr><th>维度</th><th>详情</th></tr>
+<tr><td class="name">背景</td><td>腾讯旗下起点中文网国际版，2017年上线，目前海外最大网文平台</td></tr>
+<tr><td class="name">规模</td><td>月活用户4000万+，覆盖英语、法语、西班牙语、印尼语等10+语种</td></tr>
+<tr><td class="name">分成比例</td><td class="tag-green">翻译作品：35-50%（平台50-65%）</td></tr>
+<tr><td class="name">最低门槛</td><td>需要完本30万字以上，接受已在国内发布的作品（需授权）</td></tr>
+<tr><td class="name">付款方式</td><td>PayPal / 银行转账 / Payoneer，最低提现额$50</td></tr>
+<tr><td class="name">优势</td><td>流量大（平台推广资源）、付费体系成熟、支持多语言本地化</td></tr>
+<tr><td class="name">劣势</td><td>分成比例较低、合同审核严格（内容不能有违规擦边）、上架周期3-6个月</td></tr>
+<tr><td class="name">适合类型</td><td>修仙/都市修真/玄幻/系统流/穿越</td></tr>
+</table>
+</div>
+
+<div class="sec-label">平台二：Amazon Kindle Direct Publishing（KDP）</div>
+
+<div class="data-table">
+<table>
+<tr><th>维度</th><th>详情</th></tr>
+<tr><td class="name">背景</td><td>亚马逊自出版平台，全球最大电子书分发渠道，接受个人作者入驻</td></tr>
+<tr><td class="name">规模</td><td>全球Kindle用户超过5亿，覆盖100+国家</td></tr>
+<tr><td class="name">分成比例</td><td class="tag-green">电子书70%（KDP Select）或35%（KDP普通）</td></tr>
+<tr><td class="name">最低门槛</td><td>注册账号即可上架，接受PDF/EPUB格式，需英文翻译</td></tr>
+<tr><td class="name">付款方式</td><td>Amazon Gift Card / 银行转账，最低$10</td></tr>
+<tr><td class="name">优势</td><td>全球分发、KDP Select会员免费借阅（作者获得分成）、版权完全属于作者</td></tr>
+<tr><td class="name">劣势</td><td>需要专业英文翻译、封面设计、SEO优化，不适合不懂英文的作者</td></tr>
+<tr><td class="name">适合类型</td><td>修仙、都市修真、玄幻、穿越系统流（已翻译成英文的完整书籍）</td></tr>
+</table>
+</div>
+
+<div class="sec-label">平台三：社交媒体独立站（Patreon + Facebook + YouTube）</div>
+
+<div class="data-table">
+<table>
+<tr><th>维度</th><th>详情</th></tr>
+<tr><td class="name">背景</td><td>通过Facebook/YouTube/TikTok引流，在Patreon或自有平台做付费订阅</td></tr>
+<tr><td class="name">分成比例</td><td class="tag-green">Patreon收取8-12%，作者得88-92%</td></tr>
+<tr><td class="name">最低门槛</td><td>需有稳定社交流量，熟悉海外社群运营</td></tr>
+<tr><td class="name">付款方式</td><td>Patreon直接打款/ Stripe / PayPal</td></tr>
+<tr><td class="name">优势</td><td>分成比例最高、无平台规则约束、自由定价、可捆绑销售周边</td></tr>
+<tr><td class="name">劣势</td><td>需要自己引流、运营门槛高、付费转化周期长</td></tr>
+<tr><td class="name">代表案例</td><td>"Immortal Dao"系列（匿名翻译者，YouTube+Discord+Patreon模式，年入$50万+）</td></tr>
+</table>
+</div>
+</div>
+
+<!-- ========== 变现 ========== -->
+<div id="monetize" class="content-section">
+<div class="lead-row">
+<div class="lead-main">
+<div class="lead-tag">头条 · 变现路径</div>
+<h2 class="lead-title">六种变现方式，从月入$500到年入$百万</h2>
+<p class="lead-subtitle">订阅分成 · 打赏赞助 · 版权授权 · 周边衍生 · 付费社群 · 影视改编</p>
+<p class="lead-summary">爽文出海变现方式比国内多得多——因为海外用户的版权意识强，付费习惯好，愿意为优质内容直接掏钱。俺把六种主流变现方式按门槛和收益做了一个完整拆解。</p>
+<div class="data-strip">
+<div class="data-item"><span class="data-num">6种</span><span class="data-label">主流变现路径</span></div>
+<div class="data-item"><span class="data-num">$500-1万/月</span><span class="data-label">入门级（月翻译3-5本）</span></div>
+<div class="data-item"><span class="data-num">$1-10万/月</span><span class="data-label">熟练期（月翻译10-20本）</span></div>
+<div class="data-item"><span class="data-num">$10万+/月</span><span class="data-label">规模化（工作室模式）</span></div>
+</div>
+</div>
+<aside class="lead-sidebar">
+<div class="sidebar-block">
+<h4>💰 变现优先级</h4>
+<ul class="brief-list">
+<li><span class="time">首选</span>平台订阅分成（稳定）</li>
+<li><span class="time">次选</span>Patreon打赏（高粘性）</li>
+<li><span class="time">进阶</span>版权授权（被动收入）</li>
+<li><span class="time">高阶</span>影视改编（一次性大额）</li>
+</ul>
+</div>
+</aside>
+</div>
+
+<div class="sec-label">变现方式一：平台订阅分成（最稳定）</div>
+
+<div class="data-table">
+<table>
+<tr><th>维度</th><th>详情</th></tr>
+<tr><td class="name">原理</td><td>在Webnovels/Kindle等平台发布翻译作品，读者按章节或按月订阅付费，作者分得35-70%</td></tr>
+<tr><td class="name">收益估算</td><td>每千阅读量约$2-5（按订阅章节计算），一本200万字热门小说，月均$800-3000</td></tr>
+<tr><td class="name">门槛</td><td>需持续更新（每周3-5更）、英文质量过关、选择平台热门题材</td></tr>
+<tr><td class="name">关键指标</td><td>Reader Retention Rate（读者留存率）越高越好，续费率=收入稳定性</td></tr>
+<tr><td class="name">代表案例</td><td>《I Am Alone in the Dark》翻译版，RoyalRoad月均阅读量50万，月分成$2000+</td></tr>
+</table>
+</div>
+
+<div class="sec-label">变现方式二：Patreon打赏（粉丝经济）</div>
+
+<div class="data-table">
+<table>
+<tr><th>维度</th><th>详情</th></tr>
+<tr><td class="name">原理</td><td>在Patreon建立付费粉丝社群，提供独家抢先看、番外篇、角色设定集等独家内容</td></tr>
+<tr><td class="name">收益估算</td><td>粉丝月均$5-15/人，1000粉丝=月$5000-15000；顶级Cultivation作家Patreon粉丝超2万</td></tr>
+<tr><td class="name">门槛</td><td>需有YouTube/Twitter等社交流量积累，社群运营能力</td></tr>
+<tr><td class="name">关键指标</td><td>粉丝数和活跃度（帖子互动率），Patreon算法会推活跃创作者</td></tr>
+<tr><td class="name">代表案例</td><td>"Death Mage"翻译者，Patreon月入$8000+，2000+活跃支持者</td></tr>
+</table>
+</div>
+
+<div class="sec-label">变现方式三：版权授权（被动收入）</div>
+
+<div class="data-table">
+<table>
+<tr><th>维度</th><th>详情</th></tr>
+<tr><td class="name">原理</td><td>将翻译作品的英文版权授权给第三方：实体书出版、有声书、游戏、动漫改编</td></tr>
+<tr><td class="name">收益估算</td><td>实体书出版：$3000-20000/本；游戏改编：$1-10万/部；影视改编：$5-50万/部</td></tr>
+<tr><td class="name">门槛</td><td>需要作品在平台上有足够的数据表现（阅读量、评分、完读率）</td></tr>
+<tr><td class="name">关键指标</td><td>平台排名、读者评分（4.5星以上）、完读率（70%以上为优秀）</td></tr>
+<tr><td class="name">代表案例</td><td>《Lord of the Mysteries》英译版，已售出游戏改编权+实体书版权</td></tr>
+</table>
+</div>
+
+<div class="sec-label">变现方式四：周边衍生（粉丝溢价）</div>
+
+<div class="data-table">
+<table>
+<tr><th>维度</th><th>详情</th></tr>
+<tr><td class="name">原理</td><td>将小说中的人物/场景做成实体周边（T恤、海报、徽章）或数字周边（壁纸、表情包）</td></tr>
+<tr><td class="name">收益估算</td><td>数字周边月均$200-2000；实体周边需要库存和物流，复杂度高</td></tr>
+<tr><td class="name">门槛</td><td>需有Patreon或独立站粉丝基础，设计成本</td></tr>
+<tr><td class="name">工具</td><td>Redbubble（按需打印）、Teespring、Patreon内置商城</td></tr>
+</table>
+</div>
+
+<div class="sec-label">变现方式五：YouTube有声书+动画解说（流量变现）</div>
+
+<div class="data-table">
+<table>
+<tr><th>维度</th><th>详情</th></tr>
+<tr><td class="name">原理</td><td>将小说内容做成有声书朗读视频或动画解说，YouTube广告分成+外链导流</td></tr>
+<tr><td class="name">收益估算</td><td>10万播放量≈$300-800（广告分成）；100万播放≈$3000-8000</td></tr>
+<tr><td class="name">门槛</td><td>需视频剪辑/配音能力，或者AI语音合成工具</td></tr>
+<tr><td class="name">注意</td><td>必须获得翻译版权授权才能录制，否则侵权</td></tr>
+</table>
+</div>
+
+<div class="sec-label">变现方式六：多语言版本授权（复制到其他市场）</div>
+
+<div class="data-table">
+<table>
+<tr><th>维度</th><th>详情</th></tr>
+<tr><td class="name">原理</td><td>一本中文小说，翻译成英文后，将英文版本授权给法语/德语/西班牙语翻译者二次翻译</td></tr>
+<tr><td class="name">收益估算</td><td>每种语言授权费$500-3000/本（根据字数和难度）</td></tr>
+<tr><td class="name">门槛</td><td>需要建立起一套翻译SOP和授权合同模板</td></tr>
+<tr><td class="name">优势</td><td>一次投入，多次变现，边际成本递减</td></tr>
+</table>
+</div>
+</div>
+
+<!-- ==========<!-- ========== 流水线 ========== -->
+<div id="pipeline" class="content-section">
+<div class="lead-row">
+<div class="lead-main">
+<div class="lead-tag">头条 · 实操流水线</div>
+<h2 class="lead-title">五步流水线：从国内网文到海外变现</h2>
+<p class="lead-subtitle">选书 → 翻译 → 润色 → 发布 → 运营</p>
+<p class="lead-summary">整个流水线最核心的环节是翻译质量和平台选择。翻译质量决定读者留存率，平台选择决定变现天花板。俺来拆解每一步的具体操作。</p>
+<div class="pipeline" style="margin-top:16px;">
+<div class="pipe-step">① 选书（国内平台）</div>
+<div class="pipe-arrow">→</div>
+<div class="pipe-step">② AI粗翻译</div>
+<div class="pipe-arrow">→</div>
+<div class="pipe-step">③ 人工润色/校对</div>
+<div class="pipe-arrow">→</div>
+<div class="pipe-step">④ 发布平台</div>
+<div class="pipe-arrow">→</div>
+<div class="pipe-step">⑤ 运营+变现</div>
+</div>
+</div>
+<aside class="lead-sidebar">
+<div class="sidebar-block">
+<h4>⚠️ 最重要的一步</h4>
+<p style="font-size:12px;line-height:1.7;color:var(--text-light);">选书是整个流水线里最关键的一步。选错了题材，翻译再好也没人要。</p>
+</div>
+<div class="sidebar-block">
+<h4>📊 选书标准</h4>
+<ul class="brief-list">
+<li><span class="time">①</span>国内完本，阅读量前10%</li>
+<li><span class="time">②</span>题材符合海外口味</li>
+<li><span class="time">③</span>无敏感内容（或易改写）</li>
+<li><span class="time">④</span>字数50万字以上（够长）</li>
+</ul>
+</div>
+</aside>
+</div>
+
+<div class="sec-label">第一步：选书——决定80%的成功率</div>
+
+<div class="data-table">
+<table>
+<tr><th>优先选</th><th>原因</th><th>不选</th><th>原因</th></tr>
+<tr><td class="name">修仙/都市修真</td><td>海外需求量最大， Cultivation已经是固定标签</td><td>现代总裁文</td><td>文化差异大，老外不太买账</td></tr>
+<tr><td class="name">系统流</td><td>"System"是老外最喜欢的标签之一，流量大</td><td>太过本土化的都市文</td><td>外卖、快递、996这些梗老外不理解</td></tr>
+<tr><td class="name">穿越/异界</td><td>Isekai在海外有固定受众群</td><td>太H的擦边内容</td><td>平台审核严格，容易被下架</td></tr>
+<tr><td class="name">玄幻</td><td>世界观完整，改编空间大</td><td>同质化严重的跟风文</td><td>平台同类太多，难以出头</td></tr>
+</table>
+</div>
+
+<div class="sec-label">第二步：翻译——AI+人工是最佳性价比组合</div>
+
+<p class="body-text"><strong>方案A：AI粗翻译 + 人工润色（推荐）</strong></p>
+<p class="body-text">用Kimi或通义千问做第一遍粗翻译（保留章节结构），再用ChatGPT/Claude做润色（优化语言流畅度），最后人工校对关键章节。这个组合的成本约¥20-50/万字，质量可达专业翻译的80%。</p>
+
+<p class="body-text"><strong>方案B：全AI翻译（成本最低）</strong></p>
+<p class="body-text">直接用GPT-4或Claude做翻译，成本约¥30-80/万字，质量较好但需要人工做敏感词过滤。适合量大快速的打法。</p>
+
+<p class="body-text"><strong>方案C：人工翻译（质量最高）</strong></p>
+<p class="body-text">专业译者：$0.05-0.15/字（英译中反过来的价格），30万字小说约$1500-4500。适合精品打法，或已经验证过的高质量小说。</p>
+
+<div class="tool-grid">
+<div class="tool-card">
+<h4>翻译工具推荐</h4>
+<div class="spec">性价比首选</div>
+<p>Kimi（粗翻）+ ChatGPT（润色）组合，¥20-50/万字，速度快，质量达到出版水平。</p>
+</div>
+<div class="tool-card">
+<h4>润色工具推荐</h4>
+<div class="spec">英文优化</div>
+<p>ChatGPT-4 / Claude：专门做英文语言优化，纠正中式英语表达，让行文更符合英文阅读习惯。</p>
+</div>
+<div class="tool-card">
+<h4>敏感词过滤</h4>
+<div class="spec">必须环节</div>
+<p>国内小说常见的"王爷"、"太监"、"皇上"等称谓，以及一些隐晦描写，需要本地化改写或删除。</p>
+</div>
+</div>
+
+<div class="sec-label">第三步：平台选择决策树</div>
+
+<div class="data-table">
+<table>
+<tr><th>情况</th><th>推荐平台</th><th>原因</th></tr>
+<tr><td class="name">新手第一次做</td><td>Webnovels（注册作者）</td><td>门槛低，有流量扶持，上架快</td></tr>
+<tr><td class="name">有YouTube/Twitter粉丝</td><td>Patreon + 独立站</td><td>分成高，70-90%归你</td></tr>
+<tr><td class="name">做精品书籍（5-10本）</td><td>Amazon KDP</td><td>全球分发，版权永久属于你</td></tr>
+<tr><td class="name">做工作室批量生产</td><td>多平台铺开</td><td>Webnovels + KDP + RoyalRoad</td></tr>
+</table>
+</div>
+</div>
+
+<!-- ========== 结论 ========== -->
+<div id="conclusion" class="content-section">
+<div class="lead-row">
+<div class="lead-main">
+<div class="lead-tag">头条 · 结论</div>
+<h2 class="lead-title">从月入$500到年入百万的路径图</h2>
+<p class="lead-subtitle">三级跳：个人作者 → 工作室 → 内容公司</p>
+<p class="lead-summary"><strong>核心结论：</strong>国内爽文出海是一个被严重低估的赛道。技术壁垒低（翻译）、市场缺口大（海外竞争少）、变现路径清晰（平台订阅+打赏+版权）、回报率远高于国内。这个赛道目前还在红利期，但窗口期预计3-5年后会被大工作室填满。</p>
+</div>
+<aside class="lead-sidebar">
+<div class="sidebar-block">
+<h4>📊 风险评级</h4>
+<ul class="brief-list">
+<li><span class="time">版权</span>⚠️ 需确认授权</li>
+<li><span class="time">翻译</span>✅ 技术成熟</li>
+<li><span class="time">平台</span>✅ 渠道清晰</li>
+<li><span class="time">竞争</span>✅ 红利期</li>
+</ul>
+</div>
+</aside>
+</div>
+
+<div class="sec-label">三级跳路线图</div>
+
+<div class="mid-section">
+<div class="mid-card">
+<div class="tag">阶段一</div>
+<h3>个人作者（月$500-3000）</h3>
+<p>选一本爆款小说翻译，在Webnovels上架，每更追读。先验证市场反应。</p>
+</div>
+<div class="mid-card">
+<div class="tag">阶段二</div>
+<h3>小型工作室（$3000-3万/月）</h3>
+<p>3-5人团队，选10-20本小说，建立翻译SOP，多平台铺开。开始建立读者社群。</p>
+</div>
+<div class="mid-card">
+<div class="tag">阶段三</div>
+<h3>内容公司（$10万+/月）</h3>
+<p>建立签约机制（找作者授权），批量翻译+自研IP，版权授权+多平台分成+周边衍生。</p>
+</div>
+</div>
+
+<div class="sec-label">执行建议（按优先级）</div>
+
+<div class="conclusion-box">
+<h4>📌 三步走执行方案</h4>
+<ol>
+<li><strong>第一步：单本验证（第1-3个月）。</strong> 选一本已完本、阅读量在起点前5%、无敏感内容的爆款修仙/系统流小说。翻译前10章发布到Webnovels，验证读者反馈。如果追读率超过30%，立刻翻译全本并上架。</li>
+<li><strong>第二步：建立流水线（第4-6个月）。</strong> 跑通翻译→润色→上架全流程，建立标准SOP降低成本。选择3-5本小说同步进行，建立初步的读者社群（Facebook Group / Discord）。开始测试Patreon打赏模式。</li>
+<li><strong>第三步：规模化（第7-12个月）。</strong> 建立2-3人翻译团队，批量生产。开始尝试版权授权给KDP出版，或联系有声书录制者。一年内目标：10本以上在架小说，$5000+/月稳定收入。</li>
+</ol>
+</div>
+
+<div class="warn-box">
+<h4>⚠️ 必须解决的前提：版权授权</h4>
+<p><strong>这是整个项目最重要的法律问题。</strong>在开始翻译之前，必须确认：①小说是否在起点/晋江等平台有独家授权；②如果已有独家授权，需联系原平台或作者取得翻译授权；③最安全的选择是已经完本超过3年、无独家授权的"二手版权"小说，或直接联系作者个人授权。<br><br>
+<strong>实操建议：</strong>首选在番茄小说等非独家授权平台发布、完本超过2年、口碑较好的小说。最安全的路径是联系作者个人谈授权——很多中小作者愿意授权海外，授权费$500-5000/本不等。</p>
+</div>
+
+<div class="ergou-box">
+<h4>📣 二狗的忠告</h4>
+<p>这个赛道最大的坑不是翻译，是版权。国内大多数爆款小说都有独家授权，你直接翻译发出去，要么平台下架，要么被起诉。俺的建议：<strong>先解决版权问题，再开始翻译。</strong>宁可少做一本，也别做一本违规的。</p>
+</div>
+</div>
+
+</div>
+
+<footer>
+<div class="footer">
+<span>村口情报社 · 国内爽文出海变现调研 · 2026年4月7日</span>
+<span>@来一杯绿豆冰沙 &amp; @二狗 联合出品</span>
+</div>
+</footer>
+
+</div>
+
+<script>
+function switchChannel(channel){var sections=document.querySelectorAll(".content-section");for(var i=0;i<sections.length;i++){sections[i].classList.remove("active");}var target=document.getElementById(channel);if(target)target.classList.add("active");var navItems=document.querySelectorAll(".nav-item");for(var i=0;i<navItems.length;i++){navItems[i].classList.remove("active");}var activeNav=document.querySelectorAll(".nav-item[data-channel=""+channel+""]");for(var i=0;i<activeNav.length;i++){activeNav[i].classList.add("active");}}
+</script>
+
+</body>
+</html>
