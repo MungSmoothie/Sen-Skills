@@ -1,0 +1,1136 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>村口情报社 · 超级个体图鉴 · 2026年4月</title>
+  <link rel="stylesheet" href="style.css">
+  <style>
+    /* ====== 封面页 ====== */
+    .cover-page {
+      text-align: center;
+      padding: 80px 50px 60px;
+      border-bottom: 3px double var(--charcoal);
+    }
+    .cover-badge {
+      display: inline-block;
+      background: var(--wine-red);
+      color: #fff;
+      padding: 6px 20px;
+      font-size: 11px;
+      font-weight: 700;
+      letter-spacing: 4px;
+      margin-bottom: 24px;
+    }
+    .cover-title {
+      font-size: 64px;
+      font-weight: 900;
+      color: var(--charcoal);
+      letter-spacing: 8px;
+      line-height: 1.1;
+    }
+    .cover-title span {
+      display: block;
+      font-size: 22px;
+      font-weight: 400;
+      color: var(--warm-gray);
+      letter-spacing: 12px;
+      margin-top: 10px;
+    }
+    .cover-desc {
+      font-size: 14px;
+      color: var(--text-light);
+      line-height: 1.8;
+      max-width: 640px;
+      margin: 24px auto 0;
+    }
+    .cover-meta {
+      font-size: 10px;
+      color: var(--wine-red);
+      margin-top: 14px;
+      letter-spacing: 1px;
+    }
+    .person-chips {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 8px;
+      justify-content: center;
+      margin-top: 28px;
+    }
+    .person-chips .chip {
+      background: var(--charcoal);
+      color: #fff;
+      padding: 5px 14px;
+      font-size: 12px;
+      font-weight: 600;
+    }
+    .person-chips .chip.w { background: var(--wine-red); }
+
+    /* ====== 人物导航 ====== */
+    .person-nav {
+      padding: 0 50px;
+      display: flex;
+      flex-wrap: wrap;
+      border-bottom: 2px solid var(--charcoal);
+      background: var(--paper);
+    }
+    .person-nav .nav-item {
+      padding: 12px 18px;
+      font-size: 11px;
+      font-weight: 600;
+      color: var(--text-light);
+      cursor: pointer;
+      position: relative;
+      transition: all 0.2s;
+      border-right: 1px solid var(--border);
+    }
+    .person-nav .nav-item .num {
+      display: block;
+      font-size: 9px;
+      color: var(--wine-red);
+      font-weight: 700;
+      letter-spacing: 1px;
+      margin-bottom: 2px;
+    }
+    .person-nav .nav-item:hover { background: var(--light-warm); color: var(--charcoal); }
+    .person-nav .nav-item.active { background: var(--charcoal); color: #fff; }
+    .person-nav .nav-item.active .num { color: #fff; opacity: 0.6; }
+
+    /* ====== 人物主内容 ====== */
+    .person-section { display: none; }
+    .person-section.active { display: block; animation: fadeIn 0.3s ease; }
+
+    /* 人物头部 */
+    .person-head {
+      display: grid;
+      grid-template-columns: 100px 1fr;
+      gap: 32px;
+      align-items: start;
+      padding: 28px 0 24px;
+      border-bottom: 2px solid var(--charcoal);
+      margin-bottom: 28px;
+    }
+    .person-avatar {
+      width: 100px;
+      height: 100px;
+      background: var(--charcoal);
+      border-radius: 4px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 40px;
+      font-weight: 900;
+      color: #fff;
+      letter-spacing: 2px;
+      flex-shrink: 0;
+    }
+    .person-head-info {}
+    .person-num {
+      font-size: 10px;
+      font-weight: 700;
+      color: var(--wine-red);
+      letter-spacing: 3px;
+      text-transform: uppercase;
+      margin-bottom: 6px;
+    }
+    .person-name {
+      font-size: 40px;
+      font-weight: 900;
+      color: var(--charcoal);
+      line-height: 1.1;
+      margin-bottom: 8px;
+    }
+    .person-subtitle {
+      font-size: 14px;
+      color: var(--text-light);
+      margin-bottom: 10px;
+    }
+    .person-handle {
+      font-size: 12px;
+      color: var(--wine-red);
+      font-weight: 600;
+      margin-bottom: 10px;
+    }
+    .person-tags {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 6px;
+    }
+    .person-tags span {
+      background: var(--light-warm);
+      padding: 3px 10px;
+      font-size: 11px;
+      color: var(--text-light);
+      border-radius: 2px;
+    }
+
+    /* 数据条 */
+    .data-row {
+      display: flex;
+      gap: 0;
+      border: 1px solid var(--border);
+      border-radius: 3px;
+      overflow: hidden;
+      margin-bottom: 24px;
+    }
+    .data-row .d {
+      flex: 1;
+      background: var(--light-warm);
+      padding: 14px 16px;
+      border-right: 1px solid var(--border);
+      text-align: center;
+    }
+    .data-row .d:last-child { border-right: none; }
+    .data-row .d .n { font-size: 18px; font-weight: 900; color: var(--wine-red); }
+    .data-row .d .l { font-size: 10px; color: var(--warm-gray); margin-top: 4px; letter-spacing: 1px; }
+
+    /* 主内容区 */
+    .person-body {
+      display: grid;
+      grid-template-columns: 1fr 300px;
+      gap: 40px;
+    }
+    .sec-label {
+      font-size: 9px;
+      font-weight: 700;
+      color: #3d4a5c;
+      letter-spacing: 3px;
+      text-transform: uppercase;
+      margin: 24px 0 10px;
+      border-bottom: 1px solid var(--border);
+      padding-bottom: 6px;
+    }
+    p { font-size: 14px; line-height: 1.9; color: var(--text); margin-bottom: 10px; }
+    p:first-child { margin-top: 0; }
+
+    /* 语录 */
+    .qcard {
+      background: var(--charcoal);
+      color: #fff;
+      padding: 20px 24px;
+      font-size: 14px;
+      line-height: 1.8;
+      border-radius: 3px;
+      margin: 20px 0;
+      position: relative;
+    }
+    .qcard::before { content: '"'; font-size: 64px; color: #3d4a5c; position: absolute; top: -10px; left: 16px; opacity: 0.5; font-family: Georgia, serif; }
+    .qcard p { color: #fff; font-style: italic; margin-bottom: 0; }
+    .qcard .src { font-size: 10px; color: rgba(255,255,255,0.45); font-style: normal; display: block; margin-top: 10px; text-align: right; letter-spacing: 1px; }
+
+    /* 战术网格 */
+    .tactics { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; margin: 16px 0; }
+    .tactic { background: var(--light-warm); padding: 14px 16px; border-radius: 3px; border: 1px solid var(--border); }
+    .tactic h5 { font-size: 13px; font-weight: 700; color: var(--charcoal); margin-bottom: 6px; }
+    .tactic p { font-size: 12.5px; color: var(--text-light); margin-bottom: 0; line-height: 1.7; }
+
+    /* 课程卡 */
+    .course-card { background: var(--light-warm); border-radius: 3px; padding: 16px 20px; margin-bottom: 12px; border: 1px solid var(--border); border-left: 3px solid var(--wine-red); }
+    .course-card h5 { font-size: 13px; font-weight: 700; color: var(--charcoal); margin-bottom: 8px; }
+    .course-card p { font-size: 13px; color: var(--text-light); line-height: 1.75; margin-bottom: 0; }
+
+    /* 二狗点评 */
+    .ergou-box {
+      background: var(--light-warm);
+      border-left: 4px solid var(--wine-red);
+      padding: 18px 22px;
+      margin: 20px 0;
+      border-radius: 0 4px 4px 0;
+    }
+    .ergou-box h4 { font-size: 10px; font-weight: 700; color: var(--wine-red); letter-spacing: 2px; text-transform: uppercase; margin-bottom: 10px; }
+    .ergou-box p { font-size: 13.5px; color: var(--text-light); line-height: 1.8; margin-bottom: 8px; }
+    .ergou-box p:last-child { margin-bottom: 0; }
+    .ergou-box strong { color: var(--charcoal); }
+
+    /* 侧栏 */
+    .side-box { background: var(--light-warm); border-radius: 3px; padding: 18px 20px; margin-bottom: 16px; border: 1px solid var(--border); }
+    .side-box h4 { font-size: 11px; font-weight: 700; color: var(--wine-red); letter-spacing: 2px; text-transform: uppercase; margin-bottom: 12px; padding-bottom: 8px; border-bottom: 1px solid var(--border); }
+    .side-box ul { list-style: none; padding: 0; }
+    .side-box li { font-size: 13px; line-height: 1.7; padding: 5px 0; border-bottom: 1px solid rgba(0,0,0,0.05); }
+    .side-box li:last-child { border-bottom: none; }
+    .side-box .val { font-weight: 700; color: var(--charcoal); }
+
+    /* 页脚 */
+    footer {
+      padding: 20px 50px;
+      border-top: 3px double var(--charcoal);
+      text-align: center;
+      font-size: 11px;
+      color: var(--warm-gray);
+      letter-spacing: 1px;
+    }
+  </style>
+</head>
+<body>
+<div class="paper">
+
+  <!-- 封面 -->
+  <div class="cover-page">
+    <div class="cover-badge">村口情报社 · 2026</div>
+    <h1 class="cover-title">超级个体图鉴<span>10位改变商业规则的个体创业者</span></h1>
+    <p class="cover-desc">这10个人，白手起家或躬身入局，用各自的哲学和打法在内容、消费、VC、SaaS、媒体等领域立了山头。他们不靠公司这座山，但比大多数公司活得更好。俺把他们深扒了一遍，给你整理成这本图鉴。</p>
+    <p class="cover-meta">@来一杯绿豆冰沙 &amp; @二狗 联合出品 · AI整理 · 公开信息汇编</p>
+    <div class="person-chips">
+      <span class="chip">01 Gary Vee</span>
+      <span class="chip w">02 Patrick Bet-David</span>
+      <span class="chip">03 Dan Lok</span>
+      <span class="chip w">04 Lewis Howes</span>
+      <span class="chip">05 Sahil Bloom</span>
+      <span class="chip w">06 MrBeast</span>
+      <span class="chip">07 Chamath</span>
+      <span class="chip w">08 Tim Ferriss</span>
+      <span class="chip">09 Iman Gadzhi</span>
+      <span class="chip w">10 Myron Golden</span>
+    </div>
+  </div>
+
+  <!-- 人物导航 -->
+  <nav class="person-nav">
+    <div class="nav-item active" data-channel="p01" onclick="switchChannel('p01')">01<span class="num">Gary Vee</span></div>
+    <div class="nav-item" data-channel="p02" onclick="switchChannel('p02')">02<span class="num">Patrick Bet-David</span></div>
+    <div class="nav-item" data-channel="p03" onclick="switchChannel('p03')">03<span class="num">Dan Lok</span></div>
+    <div class="nav-item" data-channel="p04" onclick="switchChannel('p04')">04<span class="num">Lewis Howes</span></div>
+    <div class="nav-item" data-channel="p05" onclick="switchChannel('p05')">05<span class="num">Sahil Bloom</span></div>
+    <div class="nav-item" data-channel="p06" onclick="switchChannel('p06')">06<span class="num">MrBeast</span></div>
+    <div class="nav-item" data-channel="p07" onclick="switchChannel('p07')">07<span class="num">Chamath</span></div>
+    <div class="nav-item" data-channel="p08" onclick="switchChannel('p08')">08<span class="num">Tim Ferriss</span></div>
+    <div class="nav-item" data-channel="p09" onclick="switchChannel('p09')">09<span class="num">Iman Gadzhi</span></div>
+    <div class="nav-item" data-channel="p10" onclick="switchChannel('p10')">10<span class="num">Myron Golden</span></div>
+  </nav>
+
+  <div class="main-content">
+
+    <!-- ========== 01 Gary Vee ========== -->
+    <div id="p01" class="person-section active">
+      <div class="person-head">
+        <div class="person-avatar" style="background:#1a1a1a;">GV</div>
+        <div class="person-head-info">
+          <div class="person-num">01 / 10 · Gary Vaynerchuk</div>
+          <div class="person-name">Gary Vee</div>
+          <div class="person-subtitle">VaynerMedia 创始人 · 互联网原住民商业哲学家 · Wine Library传奇</div>
+          <div class="person-handle">@garyvee</div>
+          <div class="person-tags"><span>内容营销</span><span>个人品牌</span><span>社媒战略</span></div>
+        </div>
+      </div>
+
+      <div class="data-row">
+        <div class="d"><div class="n">14个月</div><div class="l">从$3万到$6亿的Wine事业</div></div>
+        <div class="d"><div class="n">2006</div><div class="l">Wine Library TV上线</div></div>
+        <div class="d"><div class="n">$5亿+</div><div class="l">VaynerX旗下公司估值</div></div>
+        <div class="d"><div class="n">500万+</div><div class="l">Twitter粉丝</div></div>
+      </div>
+
+      <div class="person-body">
+        <div class="person-main">
+          <div class="sec-label">一、从卖酒到搞定整个互联网</div>
+          <p>Gary Vee这个人牛逼之处在于：他不是互联网原住民，但他比大多数原住民更懂互联网规则。1998年，他老爹在在新泽西开了一家葡萄酒零售店，年营业额$3万。Gary接手后，14个月把Wine Library干到了$6亿——不是靠什么黑科技，就是把"客户服务"这件事做到了极致。他在Facebook、Twitter还没普及的时候就嗅到了社媒的价值，2006年上线Wine Library TV，每天中午12点雷打不动出一集，坚持了五年，积累了几十万精准用户。</p>
+          <p>他的核心观点跟大多数"大师"不一样：不是先有产品再想怎么卖，而是先搞懂你在跟谁说话，再决定你卖什么。他管这个叫"消费者注意力学"。</p>
+
+          <div class="sec-label">二、核心哲学：Jab Jab Jab RIGHT HOOK</div>
+          <p>Gary最著名的内容方法论，核心就一句话：先给别人大量免费价值（jab），再自然地要求转化（hook）。"大量喂食"是建立信任的唯一路径。他极其鄙视"上来就卖"的行为，认为那是在消耗社交货币。</p>
+          <p>他另一个核心观点是"Fanbase > Followers"。粉丝是你认识的人，支持者是真为你付费、为你站台的人。大多数人追求粉丝数，但Gary追求的是深度共鸣。</p>
+
+          <div class="qcard">
+            <p>The everything you do in life should be based on the size of your audience's problem, not the size of your solution.</p>
+            <span class="src">— Gary Vaynerchuk</span>
+          </div>
+
+          <div class="sec-label">三、他教的具体内容</div>
+          <div class="course-card">
+            <h5>📱 社交媒体内容工厂（免费层）</h5>
+            <p>他在YouTube免费放出大量内容：DailyVee（记录日常工作）、Q&amp;A系列、GaryVee Show。他的内容从来不"教程化"，而是用自己的真实经历讲故事。核心：怎么把一个观点拆成15种形式（推文/图片/视频/Snippet/Story）。</p>
+          </div>
+          <div class="course-card">
+            <h5>📦 VaynerNAS / Contentment（付费订阅）</h5>
+            <p>付费订阅产品，提供内容日历系统：每日内容模板、标题库、Hashtag策略、以及团队审核反馈。另一产品Contentment教你怎么把个人品牌转化成一门生意。约$500-1000/年。</p>
+          </div>
+          <div class="course-card">
+            <h5>🏢 VaynerRSE（企业服务）</h5>
+            <p>面向品牌的社交媒体代理服务。他的团队帮品牌做整体社媒战略，收费$5万/月以上。这是他真正的营收大头，不是培训，是代运营。</p>
+          </div>
+          <div class="course-card">
+            <h5>📚 书籍体系</h5>
+            <p>《Crush It!》（2009）→ 个人品牌；《Jab, Jab, Jab, Right Hook》（2013）→ 社媒战术；《#AskGaryVee》（2015）→ 场景问答。每一本对应一个具体技能。</p>
+          </div>
+
+          <div class="ergou-box">
+            <h4>📣 二狗点评</h4>
+            <p>Gary Vee的本质是一个<strong>超级销售员</strong>，但他把这个身份包装成了"商业哲学家"。他的内容策略本质上是一种极度勤奋的变态体现——每天15条推文不是技巧，是体力活。大多数人想找捷径，但Gary牛逼的地方在于他告诉你"没有捷径，勤奋就是捷径"。</p>
+            <p>他成功于 Wine TV 这种"垂直内容+垂直电商"的模型，但这个模型不是每个人都能复制的。你没有理由在抖音卖红酒，但你有理由用同样的逻辑卖你的专业服务。</p>
+          </div>
+        </div>
+
+        <aside class="person-sidebar">
+          <div class="side-box">
+            <h4>🗺️ 事业版图</h4>
+            <ul>
+              <li>VaynerMedia（社媒代理）</li>
+              <li>VaynerX（控股公司）</li>
+              <li>Empathy葡萄酒</li>
+              <li>Daily Drop（Newsletter）</li>
+            </ul>
+          </div>
+          <div class="side-box">
+            <h4>💬 金句摘录</h4>
+            <ul>
+              <li>"Move to the culture. Culture is upstream from everything."</li>
+              <li>"Your personal brand is the sum of what people say when you're not in the room."</li>
+              <li>"Stop caring about 7 people that don't f*** with you."</li>
+            </ul>
+          </div>
+        </aside>
+      </div>
+    </div>
+
+    <!-- ========== 02 Patrick Bet-David ========== -->
+    <div id="p02" class="person-section">
+      <div class="person-head">
+        <div class="person-avatar" style="background:#8b2635;">PB</div>
+        <div class="person-head-info">
+          <div class="person-num">02 / 10 · Patrick Bet-David</div>
+          <div class="person-name">Patrick Bet-David</div>
+          <div class="person-subtitle">Valuetainment创始人 · PHP Agency创始人 · 伊朗裔美国创业偶像</div>
+          <div class="person-handle">@patrickbetdavid</div>
+          <div class="person-tags"><span>Valuetainment</span><span>PHP Agency</span><span>保险金融</span><span>人物访谈</span></div>
+        </div>
+      </div>
+
+      <div class="data-row">
+        <div class="d"><div class="n">伊朗</div><div class="l">避难移民背景</div></div>
+        <div class="d"><div class="n">2010</div><div class="l">创立Valuetainment</div></div>
+        <div class="d"><div class="n">$2亿+</div><div class="l">PHP Agency年保费</div></div>
+        <div class="d"><div class="n">10亿+</div><div class="l">YouTube播放量</div></div>
+      </div>
+
+      <div class="person-body">
+        <div class="person-main">
+          <div class="sec-label">一、从德黑兰到美利坚</div>
+          <p>Patrick的人生剧本比好莱坞还离谱。1978年出生于伊朗，两岁时全家逃到德国难民营，8岁移民美国。老爹开出租，一家人住在低收入社区。他从小学篮球，半路辍学差点混黑道，后来回去读大学，毕业后去考了会计和金融，然后去汽车经销商打工——在那里发现了卖车这行的暴利秘密。</p>
+          <p>2010年，他用$1500启动资金创立了PHP Agency，一家面向中产阶级的金融服务公司。同时开始在YouTube上传商业和人生决策的短视频——这就是Valuetainment的雏形。他发现越南裔、菲律宾裔、韩国裔移民二代在YouTube上找不到自己的声音，但这些人的父辈都在做生意，都有故事。</p>
+
+          <div class="sec-label">二、Valuetainment的真正模式</div>
+          <p>表面看Valuetainment是一个YouTube频道，实际上是一个内容驱动的商业帝国。Patrick的核心逻辑是：<strong>用免费内容建立信任池，用高价培训服务变现</strong>。他的YouTube视频从来不直接卖课，但每条视频都在塑造"我是一个有深度的商业思考者"这个人设。</p>
+
+          <div class="qcard">
+            <p>You don't have to have a big idea to start. You have to start to have a big idea. Most people wait until they have the perfect plan. The people who win just start.</p>
+            <span class="src">— Patrick Bet-David</span>
+          </div>
+
+          <div class="sec-label">三、他教的具体内容</div>
+          <div class="course-card">
+            <h5>📺 Valuetainment YouTube（免费层）</h5>
+            <p>每周5-7条新视频，涵盖：创业故事、商业思维、销售技巧、人生决策。视频结构标准化：先讲故事 → 提炼原则 → 给出具体行动步骤。入门必看：《10 Easy Ways to Make Money》、《How to Sell Anything》。</p>
+          </div>
+          <div class="course-card">
+            <h5>💼 PHP Agency（金融服务培训）</h5>
+            <p>核心付费产品，专门教人做金融服务/保险生意。课程内容：客户开发、FSA/HSA账户销售、退休规划、人寿保险。加入后有明确晋升路径：Agent → Senior Agent → Team Leader。需考取保险执照。</p>
+          </div>
+          <div class="course-card">
+            <h5>🎯 People Before Sharks（创业节目）</h5>
+            <p>类似Shark Tank的创投节目，但更注重"创业者个人特质"而非纯粹商业数据。节目本身是内容产品，同时用来挖掘潜在付费学员。</p>
+          </div>
+          <div class="course-card">
+            <h5>📖 《Your Life In Weeks》书籍</h5>
+            <p>把人生量化成格子（按人均寿命78年，共4056周），每一周都在问：这一周我是在投资自己还是在消耗自己？这本书是方法论总纲，入门门槛最低。</p>
+          </div>
+
+          <div class="ergou-box">
+            <h4>📣 二狗点评</h4>
+            <p>Patrick最厉害的地方是：他把"移民叙事"做成了商业品牌。他不会直接喊"你要努力！"，而是用采访对象的真实故事来传递信息。这比大多数"大师"高明多了。</p>
+            <p>但俺也得说一句：他的有些内容有直销组织的味道——PHP Agency本质上是一家直销性质的保险/金融服务公司。这个模式在美国争议很大，你要批判地看。</p>
+          </div>
+        </div>
+
+        <aside class="person-sidebar">
+          <div class="side-box">
+            <h4>🗺️ 事业版图</h4>
+            <ul>
+              <li>PHP Agency（金融服务）</li>
+              <li>Valuetainment（媒体帝国）</li>
+              <li>People Before Sharks（创业节目）</li>
+              <li>Entrepreneur's Organization 成员</li>
+            </ul>
+          </div>
+          <div class="side-box">
+            <h4>💬 金句摘录</h4>
+            <ul>
+              <li>"The day you decide you are the prize, everything changes."</li>
+              <li>"Every problem you have is a sales problem in disguise."</li>
+              <li>"Nothing changes until something breaks."</li>
+            </ul>
+          </div>
+        </aside>
+      </div>
+    </div>
+
+    <!-- ========== 03 Dan Lok ========== -->
+    <div id="p03" class="person-section">
+      <div class="person-head">
+        <div class="person-avatar" style="background:#2c3e50;">DL</div>
+        <div class="person-head-info">
+          <div class="person-num">03 / 10 · Dan Lok</div>
+          <div class="person-name">Dan Lok</div>
+          <div class="person-subtitle">High-Ticket Closing教父 · 亚洲市场最成功的西方营销人</div>
+          <div class="person-handle">@danlok</div>
+          <div class="person-tags"><span>High-Ticket</span><span>FivEmpire</span><span>Closing</span><span>亚洲市场</span></div>
+        </div>
+      </div>
+
+      <div class="data-row">
+        <div class="d"><div class="n">$250</div><div class="l">首份高薪工作</div></div>
+        <div class="d"><div class="n">19岁</div><div class="l">存款为负到月入$5万</div></div>
+        <div class="d"><div class="n">8000万</div><div class="l">学员遍布50国</div></div>
+        <div class="d"><div class="n">中国</div><div class="l">最重要的单一市场</div></div>
+      </div>
+
+      <div class="person-body">
+        <div class="person-main">
+          <div class="sec-label">一、一个穷小子的翻身记</div>
+          <p>Dan Lok1978年出生于香港，7岁随家人移民加拿大。在温哥华的移民社区长大，家里穷到申请社会救济金。高中毕业时，他对自己说："我永远不要像父母那样活着。"</p>
+          <p>19岁那年，在一家复印店找到$7/小时的上门推销员工作。第一周没开单，第二周没开单，第三周开了$250。第四周开了$2500。老板愣住了。但真正的转折是2008年金融危机后，他转战线上，把销售培训课程卖给了中国和东南亚的中小企业主。2012年创立FivEmpire。</p>
+
+          <div class="sec-label">二、High-Ticket Closing的本质</div>
+          <p>他的核心逻辑是：大多数人在错误的事情上努力——花大量时间卖低价格产品，结果越卖越累。解决方案？提高客单价，卖更贵的东西，然后找到愿意为价值付高价的客户。</p>
+          <div class="qcard">
+            <p>Before you build a business, build a high-income skill. Without a skill, you're driving without a map. And when you have a high-income skill, the business takes care of itself.</p>
+            <span class="src">— Dan Lok</span>
+          </div>
+
+          <div class="sec-label">三、他教的具体内容</div>
+          <div class="course-card">
+            <h5>🔒 High-Ticket Closer（旗舰课程）</h5>
+            <p>售价$2500-10000。内容：高压谈判情景模拟、拒绝处理话术库、FOMO设计心理学、价值包装公式。用真实sales call录音教学，告诉你哪些话有效、哪些话让客户挂电话。6周直播培训 + 终身社群访问权。</p>
+          </div>
+          <div class="course-card">
+            <h5>🏗️ Six Figures in Six Months（入门课，$997）</h5>
+            <p>针对完全没有销售经验的小白。核心：怎么找到第一个$10000客户——从自我定位、目标客户画像到cold outreach话术。绝大多数人失败在第一步：根本不知道自己的服务值多少钱。</p>
+          </div>
+          <div class="course-card">
+            <h5>🌏 FivEmpire（跨境数字营销）</h5>
+            <p>早年做的数字营销课程，现打包进更大体系。教你怎么在Fiverr、Upwork等平台做自由职业，以及怎么把自由职业收入转化成可规模化的数字产品。中国学员口碑最好。</p>
+          </div>
+          <div class="course-card">
+            <h5>🤝 Close It（线下活动）</h5>
+            <p>每年全球主要城市举办的线下高客单价成交训练营，为期2-3天。票价$5000+，线下高压情境是最好的成交训练场，转化率极高。</p>
+          </div>
+
+          <div class="ergou-box">
+            <h4>📣 二狗点评</h4>
+            <p>Dan Lok最被低估的地方在于：他深刻理解东西方商业文化的差异。他花了十几年在中国做生意，懂"Kajing"（中文"客情"）。大多数西方营销人看不起"关系"这个东西，他不一样。</p>
+            <p>他的High-Ticket哲学在逻辑上无懈可击——但问题是，<strong>大多数人根本不具备做High-Ticket的能力</strong>。你需要深厚的行业知识、超强的沟通能力、足够的心理素质，才能hold住大单。</p>
+          </div>
+        </div>
+
+        <aside class="person-sidebar">
+          <div class="side-box">
+            <h4>🗺️ 事业版图</h4>
+            <ul>
+              <li>FivEmpire（在线教育）</li>
+              <li>High-Ticket Closer（旗舰课程）</li>
+              <li>Close It（活动品牌）</li>
+              <li>Kajing（亚洲市场专属）</li>
+            </ul>
+          </div>
+          <div class="side-box">
+            <h4>💬 金句摘录</h4>
+            <ul>
+              <li>"It's not what you sell — it's how much you can charge for it."</li>
+              <li>"After revenue is up, certainty is missing."</li>
+              <li>"The first sale is to yourself."</li>
+            </ul>
+          </div>
+        </aside>
+      </div>
+    </div>
+
+    <!-- ========== 04 Lewis Howes ========== -->
+    <div id="p04" class="person-section">
+      <div class="person-head">
+        <div class="person-avatar" style="background:#1a6b3a;">LH</div>
+        <div class="person-head-info">
+          <div class="person-num">04 / 10 · Lewis Howes</div>
+          <div class="person-name">Lewis Howes</div>
+          <div class="person-subtitle">The School of Greatness创始人 · 全美最火商业Podcast主</div>
+          <div class="person-handle">@lewishowes</div>
+          <div class="person-tags"><span>Podcasting</span><span>人物访谈</span><span>生活方式设计</span><span>成功学</span></div>
+        </div>
+      </div>
+
+      <div class="data-row">
+        <div class="d"><div class="n">500期+</div><div class="l">School of Greatness播客</div></div>
+        <div class="d"><div class="n">8位数</div><div class="l">Podcast年收入峰值</div></div>
+        <div class="d"><div class="n">1亿+</div><div class="l">总下载量</div></div>
+        <div class="d"><div class="n">$2万+</div><div class="l">单期赞助费</div></div>
+      </div>
+
+      <div class="person-body">
+        <div class="person-main">
+          <div class="sec-label">一、从NFL弃将到Podcasting之王</div>
+          <p>Lewis Howes原本是俄亥俄州立大学的美式足球防守后卫，梦想进NFL。大三那年，一次严重的车祸终结了他的职业运动梦想——膝关节粉碎性骨折。康复期间，他从运动明星变成了每天在家看8小时电视的宅男，一度胖了60磅。</p>
+          <p>转折点是他在图书馆偶然翻到一本书——《思考致富》。他开始疯狂健身、读书、研究成功学，然后决定做一件事：成为全世界最伟大的人物访谈播客主。2013年上线School of Greatness，采访各领域顶尖人物。十年后，累计下载量超过1亿次，年收入达到8位数。</p>
+
+          <div class="sec-label">二、School of Greatness的底层逻辑</div>
+          <p>Lewis的节目之所以火，是因为他构建了一个<strong>持续输出高密度价值的流水线</strong>。每周3期，雷打不动，每期采访一位不同领域的登顶者，然后剪辑成精华版。量的积累带来了质的飞跃。他的商业模式核心：Podcast是前端入口，课程和社群是变现产品。</p>
+          <div class="qcard">
+            <p>The world has enough people who will push you to be more. What the world needs is more people who will believe in you and see your greatness before you do.</p>
+          <span class="src">— Lewis Howes</span>
+          </div>
+
+          <div class="sec-label">三、他教的具体内容</div>
+          <div class="course-card">
+            <h5>🎙️ School of Greatness播客（免费层）</h5>
+            <p>每周3期，每期采访一位不同领域的登顶者。采访干货密集：早晨习惯、失败经历、核心恐惧。入门推荐：Tom Brady（运动员心态）、James Clear（原子习惯作者）、Ray Dalio（桥水基金创始人）。</p>
+          </div>
+          <div class="course-card">
+            <h5>💪 Greatness Academy（$297/月）</h5>
+            <p>核心付费社群，月费$297。含每周直播指导、训练计划、饮食方案、圈子社交。社群分成不同"圈子"（Circle），各有特定主题。他本人每月参与2-3次直播答疑。据报道这是他最稳定的收入来源。</p>
+          </div>
+          <div class="course-card">
+            <h5>📚 The Greatness Book（书籍）</h5>
+            <p>总结"Greatness五维模型"：Focus、Health、Relationship、Finance、Spirituality。每个维度有具体评估标准和行动建议。这本书是整个产品矩阵的"入口"——很多人因这本书进入他的社群。</p>
+          </div>
+          <div class="course-card">
+            <h5>🛏️ The Masked Rider（新书）</h5>
+            <p>关于如何面对人生的失去和重建。源自他NFL受伤后的康复经历，以及母亲去世后的心灵重建。更偏个人成长，少商业，多内心。</p>
+          </div>
+
+          <div class="ergou-box">
+            <h4>📣 二狗点评</h4>
+            <p>Lewis Howes最值得学习的地方是他的<strong>运动员心态迁移</strong>。他把自己在NFL训练中养成的纪律性完整地带到了内容创作行业。大多数人做播客坚持不了3个月，但他雷打不动做了十年。</p>
+            <p>他的局限也很明显：内容偏"成功学"，深度不如Tim Ferriss，广度不如Joe Rogan。但他的社群$297/月不便宜，据说续费率相当高——这是最硬的指标。</p>
+          </div>
+        </div>
+
+        <aside class="person-sidebar">
+          <div class="side-box">
+            <h4>🗺️ 事业版图</h4>
+            <ul>
+              <li>School of Greatness（Podcasts）</li>
+              <li>Greatness Academy（$297/月社群）</li>
+              <li>The Masked Rider（新书）</li>
+              <li>线上课程矩阵</li>
+            </ul>
+          </div>
+          <div class="side-box">
+            <h4>💬 金句摘录</h4>
+            <ul>
+              <li>"Success is not about perfection. It's about progress."</li>
+              <li>"Don't be afraid to be great."</li>
+              <li>"Your body hears everything your mind says."</li>
+            </ul>
+          </div>
+        </aside>
+      </div>
+    </div>
+
+    <!-- ========== 05 Sahil Bloom ========== -->
+    <div id="p05" class="person-section">
+      <div class="person-head">
+        <div class="person-avatar" style="background:#4a3080;">SB</div>
+        <div class="person-head-info">
+          <div class="person-num">05 / 10 · Sahil Bloom</div>
+          <div class="person-name">Sahil Bloom</div>
+          <div class="person-subtitle">5am Newsletter创始人 · Decacorn最年轻LP · 推特增长黑客</div>
+          <div class="person-handle">@SahilBloom</div>
+          <div class="person-tags"><span>Newsletter</span><span>投资</span><span>Twitter/X</span><span>个人品牌</span></div>
+        </div>
+      </div>
+
+      <div class="data-row">
+        <div class="d"><div class="n">0→50万</div><div class="l">Newsletter18个月增长</div></div>
+        <div class="d"><div class="n">Decacorn</div><div class="l">早期VC基金管理</div></div>
+        <div class="d"><div class="n">50万+</div><div class="l">Newsletter订阅用户</div></div>
+        <div class="d"><div class="n">$500/年</div><div class="l">付费会员定价</div></div>
+      </div>
+
+      <div class="person-body">
+        <div class="person-main">
+          <div class="sec-label">一、一个韩裔美国孩子的资本游戏</div>
+          <p>Sahil Bloom的人生轨迹代表了美国"新生代个体资本家"的典型路径：常春藤背景 → 华尔街/硅谷工作 → 早期投资 → 自己的媒体帝国。他本科在乔治城大学，MBA在斯坦福。毕业后在华盛顿做管理咨询，然后加入Horizon Ventures（一家早期VC基金），负责消费者和金融科技赛道的投资。</p>
+          <p>2020年疫情期间，他开始认真经营Twitter和Newsletter。他的策略非常清晰：<strong>用Twitter建立原始粉丝群，用Newsletter做深度变现</strong>。18个月内，Twitter从0涨到50万粉丝，Newsletter从0涨到50万订阅用户。这个增长速度在B2B/投资类Newsletter里几乎是天花板级别。</p>
+
+          <div class="sec-label">二、The 5am Newsletter的秘密</div>
+          <p>他的Newsletter叫"5am"，核心定位是：每周给你5条改变你认知的信息，涵盖商业、投资、人生策略。内容风格极度克制——没有废话，每条都直接给结论，然后给支撑逻辑。这种风格在信息爆炸的时代反而稀缺。</p>
+          <div class="qcard">
+            <p>Clarity comes from engagement, not thought. Most people wait until they have clarity to act. The truth is the reverse: clarity comes after action, not before.</p>
+            <span class="src">— Sahil Bloom</span>
+          </div>
+
+          <div class="sec-label">三、他教的具体内容</div>
+          <div class="course-card">
+            <h5>📧 5am Newsletter（免费层）</h5>
+            <p>每周5条，固定结构：反直觉结论 + 支撑逻辑 + 可操作建议。话题覆盖：商业洞察、投资逻辑、人生策略、工具推荐。他把复杂金融/商业概念翻译成普通人都能看懂的语言。</p>
+          </div>
+          <div class="course-card">
+            <h5>💎 付费会员（$500/年）</h5>
+            <p>解锁内容：①深度投资分析（他个人持仓披露）、②优先Twitter Space问答、③早期内容优先阅读权。最值钱的是"联合投资机会"——可跟投他看好的早期项目，不可复制的稀缺资源。</p>
+          </div>
+          <div class="course-card">
+            <h5>📊 Decacorn Fund（LP投资）</h5>
+            <p>不是课程，是他自己的投资基金。最低门槛$10万，专门投A轮之前的消费/金融科技项目。学员可LP身份参与，享受他尽调后的项目直投机会。把"教学关系"升级成"投资关系"。</p>
+          </div>
+          <div class="course-card">
+            <h5>🧠 Twitter Growth Threading（免费教程）</h5>
+            <p>大量分享增长方法论：Thread结构设计、Hook写法、Curation vs Creation平衡。著名"1000粉丝法则"：有1000个真正认可你的粉丝，就可以开始变现。</p>
+          </div>
+
+          <div class="ergou-box">
+            <h4>📣 二狗点评</h4>
+            <p>Sahil是这10个人里最值得学习的<strong>新媒体增长模型</strong>。他的增长策略不是靠买粉、互推这些低级玩法，而是靠极高质量的Thread内容。他的Thread逻辑非常清晰：开头抛出一个反直觉结论 → 给数据和案例支撑 → 结尾给可操作的建议。这种结构任何人都可以模仿。</p>
+            <p>他的付费会员联合投资模式是个<strong>天才的商业设计</strong>。联合投资机会是真正有价值的（如果他投对了项目）；另一方面，这个机制让用户有极强的动力持续付费——不只是为了内容，而是为了这个稀缺机会。</p>
+          </div>
+        </div>
+
+        <aside class="person-sidebar">
+          <div class="side-box">
+            <h4>🗺️ 事业版图</h4>
+            <ul>
+              <li>5am Newsletter（旗舰产品）</li>
+              <li>Decacorn Fund（早期VC）</li>
+              <li>付费会员社群</li>
+              <li>联合投资平台</li>
+            </ul>
+          </div>
+          <div class="side-box">
+            <h4>💬 金句摘录</h4>
+            <ul>
+              <li>"Clarity comes from engagement, not thought."</li>
+              <li>"The most valuable asset you have is your attention."</li>
+              <li>"Compound yourself in areas where growth is non-linear."</li>
+            </ul>
+          </div>
+        </aside>
+      </div>
+    </div>
+
+    <!-- ========== 06 MrBeast ========== -->
+    <div id="p06" class="person-section">
+      <div class="person-head">
+        <div class="person-avatar" style="background:#c0392b;">MB</div>
+        <div class="person-head-info">
+          <div class="person-num">06 / 10 · Jimmy Donaldson</div>
+          <div class="person-name">MrBeast</div>
+          <div class="person-subtitle">YouTube商业帝国缔造者 · $5亿年度收入 · 流水化内容工厂主</div>
+          <div class="person-handle">@MrBeast</div>
+          <div class="person-tags"><span>YouTube</span><span>内容工业化</span><span>电商</span><span>慈善营销</span></div>
+        </div>
+      </div>
+
+      <div class="data-row">
+        <div class="d"><div class="n">2.7亿+</div><div class="l">YouTube订阅</div></div>
+        <div class="d"><div class="n">$5亿</div><div class="l">年度收入（自称）</div></div>
+        <div class="d"><div class="n">$5亿</div><div class="l">Feastables估值</div></div>
+        <div class="d"><div class="n">100人+</div><div class="l">团队规模</div></div>
+      </div>
+
+      <div class="person-body">
+        <div class="person-main">
+          <div class="sec-label">一、YouTube版图：一己之力改变了内容产业</div>
+          <p>Jimmy Donaldson（MrBeast）1998年出生，13岁开始做YouTube，但前几年几乎没有任何水花。2017年，他的转折点来了——他花$10000做了"数硬币"的视频（数完Elon Musk给的一百万硬币），这个视频在Twitter上炸了，从那天起，他的频道开始指数级增长。</p>
+          <p>他的内容哲学极其简单但极其有效：<strong>夸张的噱头 + 真实的情感 + 超高的制作质量</strong>。他做"在麦当劳住一年"、"给流浪汉$10万"、"给教堂$50万"——这些视频的共同特点是：噱头极大、成本极高、情感极真。</p>
+
+          <div class="sec-label">二、商业模式拆解</div>
+          <p>MrBeast的收入来源本质上是"流量变现四件套"：①YouTube广告分成（每1000次播放约$3-5，但观看时长是普通视频的10倍）；②品牌赞助（起步价$100万，但现在很少接外部品牌）；③自有品牌电商（Feastables年销售额据报道超过$1亿）；④Beast Games（投资超$1亿的线下游戏体验区）。</p>
+          <div class="qcard">
+            <p>I literally think about this all day. I wake up, I think about YouTube videos, I go to sleep, I dream about YouTube videos. And I think that's the secret to success in anything.</p>
+            <span class="src">— MrBeast</span>
+          </div>
+
+          <div class="sec-label">三、他教的具体内容</div>
+          <div class="course-card">
+            <h5>🎬 MrBeast YouTube视频（免费教材）</h5>
+            <p>他拍过专门的"Making of"视频，展示制作流程：每期视频的AB测试数据、缩略图设计逻辑、脚本结构拆解。入门必看：MrBeast 2023全年制作复盘（Twitter长Thread）。他的视频从来不是靠灵感，靠的是系统。</p>
+          </div>
+          <div class="course-card">
+            <h5>🍔 MrBeast Burger（餐饮特许经营）</h5>
+            <p>展示"个人IP → 实体产品"的下一步。申请成为线下门店，可获得供应链和品牌溢价支持。营收模式：每家店收取$5000授权费 + 销售分成。</p>
+          </div>
+          <div class="course-card">
+            <h5>🎮 Beast Games（线下娱乐）</h5>
+            <p>拉斯维加斯正在建设的大型沉浸式游戏体验区，总投资预计$1亿以上。类似真人版"饥饿游戏"闯关。入场费$1000+，代表他商业版图的下一个方向：把YouTube内容实体化。</p>
+          </div>
+          <div class="course-card">
+            <h5>🛠️ 内部工具和方法（未公开）</h5>
+            <p>超过100人的团队，有人专门负责：缩略图设计、视频剪辑、数据分析。公司有自己开发的内部数据分析系统，追踪每个视频实时数据表现。这套内部能力是VC最看重的护城河。</p>
+          </div>
+
+          <div class="ergou-box">
+            <h4>📣 二狗点评</h4>
+            <p>MrBeast是这个列表里最特殊的一个——他的打法是纯流量经济，跟其他9个人的"个人品牌"逻辑完全不一样。他是唯一一个<strong>把YouTube当成工厂而不是媒体</strong>的人。他的成功不可复制，因为他的成本结构是绝大多数创作者承受不起的：一条视频烧$100万，失败3条就足以让大多数创作者破产。</p>
+            <p>但他最值得学习的地方是：他的<strong>数据驱动思维</strong>。他不是凭感觉做内容，他是凭数据做内容。每一个决定——从视频时长到标题到缩略图——都是基于测试结果。这种工业化思维才是核心竞争力。</p>
+          </div>
+        </div>
+
+        <aside class="person-sidebar">
+          <div class="side-box">
+            <h4>🗺️ 事业版图</h4>
+            <ul>
+              <li>MrBeast YouTube频道</li>
+              <li>Feastables（巧克力品牌）</li>
+              <li>MrBeast Burger（餐饮连锁）</li>
+              <li>Beast Games（游戏体验）</li>
+            </ul>
+          </div>
+          <div class="side-box">
+            <h4>💬 金句摘录</h4>
+            <ul>
+              <li>"I literally think about YouTube all day. That's the secret."</li>
+              <li>"The goal is to make the best video, not the most videos."</li>
+            </ul>
+          </div>
+        </aside>
+      </div>
+    </div>
+
+    <!-- ========== 07 Chamath Palihapitiya ========== -->
+    <div id="p07" class="person-section">
+      <div class="person-head">
+        <div class="person-avatar" style="background:#1a3a5c;">CP</div>
+        <div class="person-head-info">
+          <div class="person-num">07 / 10 · Chamath Palihapitiya</div>
+          <div class="person-name">Chamath</div>
+          <div class="person-subtitle">Social Capital创始人 · 硅谷最敢说话的VC · 勇士队小老板</div>
+          <div class="person-handle">@chamath</div>
+          <div class="person-tags"><span>VC/风投</span><span>SPAC</span><span>Facebook高管</span><span>公共知识分子</span></div>
+        </div>
+      </div>
+
+      <div class="data-row">
+        <div class="d"><div class="n">2013</div><div class="l">创立Social Capital</div></div>
+        <div class="d"><div class="n">$10亿+</div><div class="l">早期Facebook股权回报</div></div>
+        <div class="d"><div class="n">SPAC</div><div class="l">开创SPAC上市热潮</div></div>
+        <div class="d"><div class="n">~$20亿</div><div class="l">净资产规模</div></div>
+      </div>
+
+      <div class="person-body">
+        <div class="person-main">
+          <div class="sec-label">一、斯里兰卡难民营到硅谷权力中心</div>
+          <p>Chamath1982年出生于斯里兰卡内战期间，6岁时随家人移民加拿大，在渥太华的廉租房社区长大。老爹是出租车司机，老妈是护士。他在滑铁卢大学学电子工程，毕业后申请了20多家科技公司，只拿到2个offer。他选了AOL，从普通工程师做到了CEO办公室的特别助理。</p>
+          <p>2007年加入Facebook，担任用户增长总监。他当时以$500万入股，拿到了大量期权——2011年离职时价值据报道超过$10亿。2013年创立Social Capital，定位是"技术驱动的新一代VC"，派驻运营合伙人深度介入被投公司的日常管理。</p>
+
+          <div class="sec-label">二、VC圈的反骨仔</div>
+          <p>Chamath是硅谷最敢说话的VC，没有之一。他公开承认"Facebook损害了民主"；他批评整个硅谷圈的种族歧视问题；他发明了SPAC工具，并通过自己的SPAC将多家公司送上市，掀起了一阵SPAC热潮。他的投资哲学是"方程式思维"：他相信大多数问题最终都可以被技术解决。</p>
+          <div class="qcard">
+            <p>The thing that worries me most is not that we have machines that can think, but that we have humans who have stopped thinking. We are outsourcing our cognition to algorithms.</p>
+            <span class="src">— Chamath Palihapitiya</span>
+          </div>
+
+          <div class="sec-label">三、他教的具体内容</div>
+          <div class="course-card">
+            <h5>🧵 Twitter Threads（免费层）</h5>
+            <p>他的Twitter是真正的教材：VC本质的思考、"方程式思维"的拆解、社会问题的犀利分析。信息密度极高——一条Thread通常含10个以上独立观点，每个都有数据和逻辑支撑。入门推荐："how to think about venture capital"系列Thread。</p>
+          </div>
+          <div class="course-card">
+            <h5>🎙️ All-In Podcast（对谈节目）</h5>
+            <p>与Cham Palihapitiya、Eberg、David Sacks、David Friedberg组成的"All-In Quartet"。不设脚本，专门讨论科技、创投、政治、经济。每期都是一堂免费的商业思维课，订阅用户超过100万。</p>
+          </div>
+          <div class="course-card">
+            <h5>💰 Social Capital运营方法（不对外公开）</h5>
+            <p>内部投资框架从未完整对外公开。他在公开演讲中透露：用"方程式"评估公司，把增长逻辑拆解成数学公式。这套方法论后来被很多VC模仿，但核心细节从未公开。</p>
+          </div>
+          <div class="course-card">
+            <h5>📉 SPAC操作指南（历史公开信息）</h5>
+            <p>最早一批系统性地用SPAC工具将私营公司上市。大量Twitter Thread解释SPAC运作原理、优缺点、选择目标公司的标准。虽然SPAC热潮已过，这些Thread仍是理解SPAC最系统的公开资料。</p>
+          </div>
+
+          <div class="ergou-box">
+            <h4>📣 二狗点评</h4>
+            <p>Chamath是这个列表里认知天花板最高的人。他看问题不是看表面，而是直接拆解到数学和物理层面。他说的很多话听起来像是废话，但仔细想想，其实都是对的。</p>
+            <p>他的问题是：<strong>他太聪明了，导致他很难被普通人理解</strong>。他的Twitter thread信息密度极高，但大多数人看了只觉得"牛逼"但不知道具体该怎么做。他的影响力更多是在VC圈和精英圈，而不是大众。</p>
+          </div>
+        </div>
+
+        <aside class="person-sidebar">
+          <div class="side-box">
+            <h4>🗺️ 事业版图</h4>
+            <ul>
+              <li>Social Capital（VC）</li>
+              <li>Social Leverage（SPAC工具）</li>
+              <li>Golden State Warriors（小股东）</li>
+              <li>Slack/Clubhouse早期投资人</li>
+            </ul>
+          </div>
+          <div class="side-box">
+            <h4>💬 金句摘录</h4>
+            <ul>
+              <li>"We are outsourcing our cognition to algorithms."</li>
+              <li>"Focus on the equation, not the narrative."</li>
+            </ul>
+          </div>
+        </aside>
+      </div>
+    </div>
+
+    <!-- ========== 08 Tim Ferriss ========== -->
+    <div id="p08" class="person-section">
+      <div class="person-head">
+        <div class="person-avatar" style="background:#7b2d8b;">TF</div>
+        <div class="person-head-info">
+          <div class="person-num">08 / 10 · Tim Ferriss</div>
+          <div class="person-name">Tim Ferriss</div>
+          <div class="person-subtitle">4-Hour Workweek作者 · 超级天使投资人 · 人类学实验者</div>
+          <div class="person-handle">@tferriss</div>
+          <div class="person-tags"><span>天使投资</span><span>生物黑客</span><span>效率</span><span>内容创作</span></div>
+        </div>
+      </div>
+
+      <div class="data-row">
+        <div class="d"><div class="n">Uber</div><div class="l">种子轮投资，回报数千倍</div></div>
+        <div class="d"><div class="n">$50万→$1亿</div><div class="l">Evernote期权变现</div></div>
+        <div class="d"><div class="n">5本</div><div class="l">全球销量超千万册</div></div>
+        <div class="d"><div class="n">1亿+</div><div class="l">播客下载量</div></div>
+      </div>
+
+      <div class="person-body">
+        <div class="person-main">
+          <div class="sec-label">一、他把"懒人哲学"写成了一门生意</div>
+          <p>Tim Ferriss在普林斯顿大学学神经科学，毕业论文是关于大脑可塑性（这是他后来所有"生物黑客"行为的科学基础）。毕业后加入生技公司Genset（后来被安进$1.5亿收购），2001年互联网泡沫破裂后被裁员，拿着遣散费开始创业。他的第一个创业项目卖给了一家更大的公司，赚了第一桶金。</p>
+          <p>他发现自己有一种特殊能力：<strong>找到最小有效路径</strong>。他把这个能力总结成了《4-Hour Workweek》，2007年出版后迅速成为全球畅销书，连续4年位居《纽约时报》畅销榜。</p>
+
+          <div class="sec-label">二、他的天使投资：比作家更赚钱的身份</div>
+          <p>Tim是硅谷最早期的"超级天使"之一。他的投资策略非常清晰：<strong>只投他能深度帮忙的公司</strong>。他在种子轮投了Uber（估值$300万），后来回报是数千倍；他投了Evernote，$50万期权回报变成了$1个亿。</p>
+          <div class="qcard">
+            <p>The opposite of addiction is not sobriety. The opposite of addiction is connection and flow. Boredom is the root of all evil.</p>
+            <span class="src">— Tim Ferriss</span>
+          </div>
+
+          <div class="sec-label">三、他教的具体内容</div>
+          <div class="course-card">
+            <h5>📖 4-Hour Workweek（入门书）</h5>
+            <p>成名作，核心DEAL框架：D=Definition（定义目标生活）、E=Elimination（消除非关键事务）、A=Automation（建立被动收入系统）、L=Liberation（获得地理自由）。改变全球数百万人的工作观念。</p>
+          </div>
+          <div class="course-card">
+            <h5>🏋️ 4-Hour Body（体能改造手册）</h5>
+            <p>"实验驱动"进入身体改造。Zone Diet（精确到克的饮食优化）、Strength Training minimum effective dose（每周2小时达到普通人6个月训练效果）、冷热交替疗法。每一个建议都是他自己测试过的。</p>
+          </div>
+          <div class="course-card">
+            <h5>🍳 4-Hour Chef（烹饪学习系统）</h5>
+            <p>表面是食谱，实际是"学习方法的书"。用烹饪做案例，讲解"快速学习任何技能"：Deconstruction → Selection → Sequencing → Stakes。</p>
+          </div>
+          <div class="course-card">
+            <h5>🎙️ Tim Ferriss Show（播客 + 变现核心）</h5>
+            <p>最系统的"教材"，采访近200位各领域顶尖人物。变现路径：Podcast → 书籍 → 天使投资 → 付费社群。《Tools of Titans》和《Tribe of Mentors》是两本真正的金矿，汇聚全球最顶尖人物的实战经验。</p>
+          </div>
+
+          <div class="ergou-box">
+            <h4>📣 二狗点评</h4>
+            <p>Tim Ferriss是这个列表里<strong>最聪明的个体</strong>。他不是最有钱的，不是最成功的，但他把"个人效率"这件事研究到了极致。他更像一个科学家而不是企业家——他做的每件事都是实验，然后用数据验证。</p>
+            <p>他的局限性：他的很多方法论对普通人来说门槛太高。大多数人读了他的书，只记住了"4小时工作周"这个概念，而没有学到真正的精髓——<strong>系统化思维和实验驱动</strong>。</p>
+          </div>
+        </div>
+
+        <aside class="person-sidebar">
+          <div class="side-box">
+            <h4>🗺️ 事业版图</h4>
+            <ul>
+              <li>4-Hour Workweek系列（5本书）</li>
+              <li>Tim Ferriss Show（播客）</li>
+              <li>Uber/Stripe/Evernote早期投资人</li>
+              <li>Facebook/Twitter早期投资人</li>
+            </ul>
+          </div>
+          <div class="side-box">
+            <h4>💬 金句摘录</h4>
+            <ul>
+              <li>"Boredom is the root of all evil."</li>
+              <li>"Focus on being productive instead of busy."</li>
+              <li>"The opposite of addiction is connection and flow."</li>
+            </ul>
+          </div>
+        </aside>
+      </div>
+    </div>
+
+    <!-- ========== 09 Iman Gadzhi ========== -->
+    <div id="p09" class="person-section">
+      <div class="person-head">
+        <div class="person-avatar" style="background:#e67e22;">IG</div>
+        <div class="person-head-info">
+          <div class="person-num">09 / 10 · Iman Gadzhi</div>
+          <div class="person-name">Iman Gadzhi</div>
+          <div class="person-subtitle">GAINS创始人 · 19岁辍学 · 数字营销圈最年轻的"老炮儿"</div>
+          <div class="person-handle">@imangadzhi</div>
+          <div class="person-tags"><span>数字营销</span><span>内容创作</span><span>在线教育</span><span>Growth</span></div>
+        </div>
+      </div>
+
+      <div class="data-row">
+        <div class="d"><div class="n">19岁</div><div class="l">从大学辍学全职创业</div></div>
+        <div class="d"><div class="n">6位数</div><div class="l">18岁月收入达到</div></div>
+        <div class="d"><div class="n">5000万+</div><div class="l">学员覆盖人数</div></div>
+        <div class="d"><div class="n">$5000</div><div class="l">旗舰课程起步价</div></div>
+      </div>
+
+      <div class="person-body">
+        <div class="person-main">
+          <div class="sec-label">一、在伦敦贫民窟长大的数字原住民</div>
+          <p>Iman Gadzhi2000年出生于伦敦南部的一个车臣移民家庭，在贫困社区长大。他从小就不是传统意义上的"好学生"——打架、辍学边缘、被学校开除。他在社交媒体上看到有人在卖在线课程，日入$10000，这对他来说就像看到了另一个世界。他开始疯狂学数字营销：SEO、投放、社媒运营，全都是YouTube上免费学的。</p>
+          <p>16岁，赚到了人生第一个$1000。18岁，月收入突破了6位数。19岁，辍学，全职做自己的数字营销agency和在线课程。他创立的GAINS是一个数字营销在线教育平台，课程价格从$5000到$25000不等。</p>
+
+          <div class="sec-label">二、他教的东西到底是什么</div>
+          <p>GAINS全称是"Growth And Income Navigation System"。他的课程本质上是：<strong>一套完整的Agency创业系统</strong>——从找客户、谈单、交付、到规模化，全流程覆盖。他最出名的是"Cold Outreach"战术：怎么通过Instagram DM、LinkedIn邮件等渠道，主动找到潜在客户并成交。</p>
+          <div class="qcard">
+            <p>I don't teach marketing. I teach people how to build a business that happens to use marketing as its primary acquisition channel. There's a massive difference.</p>
+            <span class="src">— Iman Gadzhi</span>
+          </div>
+
+          <div class="sec-label">三、他教的具体内容</div>
+          <div class="course-card">
+            <h5>🚀 GAINS课程（旗舰，$5000-25000）</h5>
+            <p>三个层级：①Foundation（$5000）：数字营销基础；②Pro（$15000）：Agency完整打法，从找客户到谈单到交付；③Elite（$25000）：附加1:1 coaching。视频 + 实战任务交付，有截止日期和作业审核。</p>
+          </div>
+          <div class="course-card">
+            <h5>📱 Cold Outreach系统（核心教学内容）</h5>
+            <p>他的看家本领。流程：①LinkedIn找目标客户 → ②定制化Cold DM开场白（给模板）→ ③提供免费价值 → ④要求约电话 → ⑤电话里做展示 → ⑥要求成交。声称学员30天内拿到第一个付费客户。</p>
+          </div>
+          <div class="course-card">
+            <h5>🎯 Lead Gen Mastermind（高端社群）</h5>
+            <p>加入GAINS课程自动进入私人社群。定期Zoom会议、案例分享、学员间业务合作。文化强调"给予在前，收取在后"——每人必须先给别人提供价值，才能在群里推广自己的服务。</p>
+          </div>
+          <div class="course-card">
+            <h5>📱 Instagram内容策略（免费教学内容）</h5>
+            <p>YouTube和Instagram上大量免费内容，专门讲"怎么做内容获客"。核心：不要追求粉丝数量，要追求精准客户关注。内容模板可直接复制。</p>
+          </div>
+
+          <div class="ergou-box">
+            <h4>📣 二狗点评</h4>
+            <p>Iman Gadzhi是这10个人里最接近"普通人可复制"模板的。他的背景跟大多数人一样：不是名校毕业、没有人脉、没有本金。他所有的成绩都是靠执行力拼出来的。</p>
+            <p>他最值得学习的地方不是具体的投放技巧，而是他的<strong>系统化思维</strong>。他把一个Agency从0到1的全流程拆解成了标准化的步骤，任何人只要愿意学、愿意干，都能复制。</p>
+          </div>
+        </div>
+
+        <aside class="person-sidebar">
+          <div class="side-box">
+            <h4>🗺️ 事业版图</h4>
+            <ul>
+              <li>GAINS（数字营销课程）</li>
+              <li>数字Agency服务</li>
+              <li>Instagram矩阵账号</li>
+              <li>YouTube内容频道</li>
+            </ul>
+          </div>
+          <div class="side-box">
+            <h4>💬 金句摘录</h4>
+            <ul>
+              <li>"I don't teach marketing. I teach people how to build a business."</li>
+              <li>"The best time to start was yesterday. The second best time is now."</li>
+              <li>"Discipline is freedom."</li>
+            </ul>
+          </div>
+        </aside>
+      </div>
+    </div>
+
+    <!-- ========== 10 Myron Golden ========== -->
+    <div id="p10" class="person-section">
+      <div class="person-head">
+        <div class="person-avatar" style="background:#1a5f3c;">MG</div>
+        <div class="person-head-info">
+          <div class="person-num">10 / 10 · Myron Golden</div>
+          <div class="person-name">Myron Golden</div>
+          <div class="person-subtitle">From the Trash Man to Millionaire · Bible-Based Wealth教练 · High-Ticket Sales教父</div>
+          <div class="person-handle">@myrongolden</div>
+          <div class="person-tags"><span>High-Ticket</span><span>销售</span><span>信仰</span><span>财富教育</span></div>
+        </div>
+      </div>
+
+      <div class="data-row">
+        <div class="d"><div class="n">垃圾工</div><div class="l">早期底层工作</div></div>
+        <div class="d"><div class="n">$2.5万</div><div class="l">第一份高价课程</div></div>
+        <div class="d"><div class="n">8位数</div><div class="l">年收入</div></div>
+        <div class="d"><div class="n">Make Nobody Buy</div><div class="l">成交哲学</div></div>
+      </div>
+
+      <div class="person-body">
+        <div class="person-main">
+          <div class="sec-label">一、从垃圾车后座到百万富翁讲台</div>
+          <p>Myron Golden出生于佛罗里达州坦帕的一个低收入家庭，老爸是越南战场回来的老兵，全家靠政府救济金生活。十几岁的时候，他在垃圾收集站做垃圾压缩工——不是坐在办公室里那种，是真的跟着垃圾车收垃圾那种。</p>
+          <p>转折点发生在他遇到一个卖保险的老销售。那个人告诉他："小伙子，你的问题不是没钱，是你的思维没钱。"他开始疯狂学销售、学营销、学商业思维。他后来创立了"Make More Offers"系统，核心哲学是：<strong>你的成交能力决定了你财富的天花板</strong>。</p>
+
+          <div class="sec-label">二、Make More Offers的核心逻辑</div>
+          <p>他的核心哲学是：帮助学员提高成交率和客单价。他有一个著名的"offer矩阵"——不同的客户类型需要不同类型的offer，没有万能模板，只有最合适的组合
+，成交哲学叫"Make Nobody Buy"——不是让你去推销，而是让客户自己产生购买的冲动。
+
+          <div class="qcard">
+            <p>Your income is determined by the quality of your offers and the belief you have in yourself to close them. Not your product. Not your marketing. Your offers. And your ability to present them.</p>
+            <span class="src">— Myron Golden</span>
+          </div>
+
+          <div class="sec-label">三、他教的具体内容</div>
+          <div class="course-card">
+            <h5>💰 Make More Offers（旗舰课程，$2500+）</h5>
+            <p>专门教你怎么设计让客户无法拒绝的Offer。内容：①价值感知包装（让同样服务感知价值翻3倍）②门槛设置（为什么免费试用反而卖不动）③紧迫感设计（FOMO心理学原理）④风险逆转（退款保证的正确用法）。用真实案例做角色扮演。</p>
+          </div>
+          <div class="course-card">
+            <h5>🎯 High-Ticket Sales Training（高价课）</h5>
+            <p>专门教怎么谈成$5000+的大单。内容：高压情景演练（他扮演难缠客户，要求你现场报价和谈判）、拒绝处理话术、FOMO设计。以"训练"为主，不是"讲解"——你需现场开口谈单，他会即时纠正你的语言。</p>
+          </div>
+          <div class="course-card">
+            <h5>⛪ Biblical Wealth Principles（信仰×商业）</h5>
+            <p>把基督教信仰融入商业教育。专门面向有信仰背景的学员，核心观点：财富是神赐的资源，你有为神管理财富的责任。内容融合《圣经》原则和现代商业策略。很多高价学员是通过教会网络转介绍的。</p>
+          </div>
+          <div class="course-card">
+            <h5>🏆 Challenge成交挑战（体验式销售）</h5>
+            <p>"21天成交力挑战"：参与者每天完成一个具体成交任务（如"今天给3个潜在客户发送定制化报价"），在社群中打卡。挑战结束后直播成交——在参与者体验了21天价值后，当场推出高价课程，转化率极高。</p>
+          </div>
+
+          <div class="ergou-box">
+            <h4>📣 二狗点评</h4>
+            <p>Myron Golden是这10个人里故事最戏剧化的——从垃圾工到百万富翁，这个叙事本身就是一个最强大的销售工具。他深谙"故事营销"的精髓：他不是在卖课程，他是在卖"可能性"。</p>
+            <p>他的Make More Offers系统最值钱的东西是那套<strong>offer设计公式</strong>——任何一个产品或者服务，只要你套进去，就能显著提高转化率。他的局限也很明显：内容有很强的宗教属性，如果你不是基督徒，有些东西可能会觉得违和。但他的销售底层逻辑是普世的。</p>
+          </div>
+        </div>
+
+        <aside class="person-sidebar">
+          <div class="side-box">
+            <h4>🗺️ 事业版图</h4>
+            <ul>
+              <li>Make More Offers（旗舰课程）</li>
+              <li>High-Ticket Sales Training</li>
+              <li>Challenge成交系统</li>
+              <li>Biblical Wealth Principles</li>
+            </ul>
+          </div>
+          <div class="side-box">
+            <h4>💬 金句摘录</h4>
+            <ul>
+              <li>"Your income is determined by the quality of your offers."</li>
+              <li>"Make More Offers. Make More Money."</li>
+              <li>"The best business in the world is one that helps people get what they want."</li>
+            </ul>
+          </div>
+        </aside>
+      </div>
+    </div>
+
+  </div><!-- end main-content -->
+
+  <footer>
+    <p>村口情报社 · 超级个体图鉴 · 2026年4月 · @来一杯绿豆冰沙 &amp; @二狗 联合出品</p>
+    <p>内容来自公开信息汇编 · AI整理 · 如有疏漏请联系社长</p>
+  </footer>
+
+</div><!-- end paper -->
+
+<script>
+  function switchChannel(channel) {
+    // Hide all sections
+    document.querySelectorAll('.person-section').forEach(function(el) {
+      el.classList.remove('active');
+    });
+    // Show selected
+    var target = document.getElementById(channel);
+    if (target) target.classList.add('active');
+    
+    // Update nav
+    document.querySelectorAll('.person-nav .nav-item').forEach(function(el) {
+      el.classList.remove('active');
+    });
+    document.querySelectorAll('.person-nav .nav-item[data-channel="'+channel+'"]').forEach(function(el) {
+      el.classList.add('active');
+    });
+  }
+</script>
+
+</body>
+</html>
