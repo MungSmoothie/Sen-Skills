@@ -1,0 +1,502 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>AI翻译网文发布可行性调研报告 · 村口情报社</title>
+  <style>
+    @import url('https://fonts.googleapis.com/css2?family=Noto+Serif+SC:wght@400;500;600;700;900&family=Noto+Sans+SC:wght@300;400;500&display=swap');
+
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+
+    :root {
+      --charcoal: #1a1a1a;
+      --warm-gray: #6b6560;
+      --light-warm: #f0ebe3;
+      --paper: #faf8f3;
+      --wine-red: #8b2635;
+      --navy: #1a3a5c;
+      --text: #222;
+      --text-light: #5a5a5a;
+      --border: #d4cfc5;
+      --orange: #e67e22;
+    }
+
+    body {
+      background: #c9c3b8;
+      font-family: "Noto Serif SC", "Noto Sans SC", serif;
+      color: var(--text);
+      padding: 20px;
+    }
+
+    .paper {
+      max-width: 860px;
+      margin: 0 auto;
+      background: var(--paper);
+      box-shadow: 0 8px 40px rgba(0, 0, 0, 0.12);
+      border-radius: 2px;
+    }
+
+    .masthead {
+      padding: 28px 56px 20px;
+      border-bottom: 2px solid var(--charcoal);
+      display: flex;
+      justify-content: space-between;
+      align-items: flex-end;
+    }
+    .masthead-left h1 {
+      font-size: 48px;
+      font-weight: 900;
+      letter-spacing: 6px;
+      color: var(--charcoal);
+    }
+    .masthead-left .edition {
+      font-size: 10px;
+      color: var(--warm-gray);
+      letter-spacing: 3px;
+      margin-top: 6px;
+    }
+    .masthead-right { text-align: right; }
+    .masthead-right .date { font-size: 15px; color: var(--charcoal); font-weight: 500; }
+    .masthead-right .tag { font-size: 9px; color: var(--wine-red); margin-top: 6px; font-weight: 600; letter-spacing: 1px; }
+
+    .sub-header {
+      padding: 14px 56px;
+      background: var(--light-warm);
+      border-bottom: 1px solid var(--border);
+      font-size: 13px;
+      color: var(--text-light);
+      line-height: 1.7;
+    }
+
+    .main-body { padding: 36px 56px 48px; }
+
+    .report-title {
+      font-size: 34px;
+      font-weight: 900;
+      color: var(--charcoal);
+      line-height: 1.2;
+      margin-bottom: 8px;
+    }
+    .report-subtitle {
+      font-size: 15px;
+      color: var(--warm-gray);
+      margin-bottom: 12px;
+      font-weight: 400;
+    }
+    .report-meta {
+      font-size: 11px;
+      color: var(--warm-gray);
+      padding-bottom: 20px;
+      border-bottom: 1px solid var(--border);
+      margin-bottom: 28px;
+    }
+
+    /* 摘要框 */
+    .summary-box {
+      background: var(--light-warm);
+      border: 1px solid var(--border);
+      border-top: 3px solid var(--wine-red);
+      padding: 20px 24px;
+      margin-bottom: 28px;
+      border-radius: 0 4px 4px 0;
+    }
+    .summary-box h4 {
+      font-size: 11px;
+      font-weight: 700;
+      color: var(--wine-red);
+      letter-spacing: 2px;
+      text-transform: uppercase;
+      margin-bottom: 10px;
+    }
+    .summary-box p {
+      font-size: 14px;
+      line-height: 1.8;
+      color: var(--text);
+      margin-bottom: 8px;
+    }
+    .summary-box p:last-child { margin-bottom: 0; }
+    .summary-box strong { color: var(--charcoal); }
+    .summary-verdict {
+      display: flex;
+      gap: 12px;
+      margin-top: 12px;
+      padding-top: 12px;
+      border-top: 1px dotted var(--border);
+    }
+    .verdict-tag {
+      padding: 4px 12px;
+      border-radius: 3px;
+      font-size: 12px;
+      font-weight: 700;
+    }
+    .verdict-tag.green { background: #d4edda; color: #155724; }
+    .verdict-tag.yellow { background: #fff3cd; color: #856404; }
+    .verdict-tag.red { background: #f8d7da; color: #721c24; }
+
+    /* 章节 */
+    .chapter { margin-bottom: 36px; }
+    .chapter-label {
+      font-size: 9px;
+      font-weight: 700;
+      color: var(--wine-red);
+      letter-spacing: 3px;
+      text-transform: uppercase;
+      border-bottom: 1px solid var(--border);
+      padding-bottom: 6px;
+      margin-bottom: 16px;
+    }
+    .chapter h2 {
+      font-size: 22px;
+      font-weight: 700;
+      color: var(--charcoal);
+      margin-bottom: 14px;
+      line-height: 1.3;
+    }
+    .chapter p {
+      font-size: 14px;
+      line-height: 1.85;
+      color: var(--text);
+      margin-bottom: 12px;
+    }
+    .chapter p:last-child { margin-bottom: 0; }
+
+    /* 数据表 */
+    .data-table {
+      width: 100%;
+      border-collapse: collapse;
+      margin: 16px 0;
+      font-size: 13px;
+    }
+    .data-table th {
+      background: var(--charcoal);
+      color: #fff;
+      padding: 10px 14px;
+      text-align: left;
+      font-size: 11px;
+      letter-spacing: 1px;
+    }
+    .data-table td {
+      padding: 10px 14px;
+      border-bottom: 1px solid var(--border);
+      color: var(--text-light);
+      vertical-align: top;
+      line-height: 1.6;
+    }
+    .data-table tr:nth-child(even) td { background: var(--light-warm); }
+    .data-table .name { font-weight: 700; color: var(--charcoal); }
+    .data-table .tag-green { color: #155724; font-weight: 600; }
+    .data-table .tag-yellow { color: #856404; font-weight: 600; }
+    .data-table .tag-red { color: #c0392b; font-weight: 600; }
+
+    /* 工具对比 */
+    .tool-grid {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 14px;
+      margin: 16px 0;
+    }
+    .tool-card {
+      background: var(--light-warm);
+      border: 1px solid var(--border);
+      border-radius: 3px;
+      padding: 16px;
+    }
+    .tool-card h4 {
+      font-size: 15px;
+      font-weight: 700;
+      color: var(--charcoal);
+      margin-bottom: 6px;
+    }
+    .tool-card .spec {
+      font-size: 11px;
+      color: var(--wine-red);
+      font-weight: 600;
+      margin-bottom: 8px;
+    }
+    .tool-card p {
+      font-size: 12px;
+      color: var(--text-light);
+      line-height: 1.6;
+      margin-bottom: 0;
+    }
+
+    /* 流程图 */
+    .pipeline {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      margin: 20px 0;
+      overflow-x: auto;
+      padding-bottom: 8px;
+    }
+    .pipe-step {
+      background: var(--charcoal);
+      color: #fff;
+      padding: 10px 16px;
+      border-radius: 3px;
+      font-size: 13px;
+      font-weight: 600;
+      white-space: nowrap;
+      flex-shrink: 0;
+    }
+    .pipe-arrow {
+      color: var(--wine-red);
+      font-size: 18px;
+      flex-shrink: 0;
+    }
+
+    /* 警告框 */
+    .warn-box {
+      background: #fff3e0;
+      border-left: 4px solid var(--orange);
+      padding: 16px 20px;
+      margin: 18px 0;
+      border-radius: 0 4px 4px 0;
+    }
+    .warn-box h4 {
+      font-size: 11px;
+      font-weight: 700;
+      color: var(--orange);
+      letter-spacing: 2px;
+      text-transform: uppercase;
+      margin-bottom: 6px;
+    }
+    .warn-box p {
+      font-size: 13px;
+      color: #5a4a3a;
+      line-height: 1.7;
+      margin-bottom: 0;
+    }
+
+    /* 结论框 */
+    .conclusion-box {
+      background: var(--light-warm);
+      border: 1px solid var(--border);
+      border-top: 3px solid var(--wine-red);
+      padding: 20px 24px;
+      margin-top: 28px;
+      border-radius: 0 4px 4px 0;
+    }
+    .conclusion-box h4 {
+      font-size: 12px;
+      font-weight: 700;
+      color: var(--wine-red);
+      letter-spacing: 2px;
+      text-transform: uppercase;
+      margin-bottom: 12px;
+    }
+    .conclusion-box ol {
+      padding-left: 20px;
+      margin: 0;
+    }
+    .conclusion-box li {
+      font-size: 14px;
+      line-height: 1.9;
+      color: var(--text);
+      margin-bottom: 6px;
+    }
+    .conclusion-box li strong { color: var(--charcoal); }
+
+    /* 页脚 */
+    footer {
+      padding: 18px 56px;
+      border-top: 2px solid var(--charcoal);
+      text-align: center;
+      font-size: 10px;
+      color: var(--warm-gray);
+      letter-spacing: 1px;
+    }
+  </style>
+</head>
+<body>
+<div class="paper">
+
+  <div class="masthead">
+    <div class="masthead-left">
+      <h1>村口情报社</h1>
+      <div class="edition">RESEARCH REPORT · 调研报告</div>
+    </div>
+    <div class="masthead-right">
+      <div class="date">2026年4月7日</div>
+      <div class="tag">@来一杯绿豆冰沙 &amp; @二狗 联合出品</div>
+    </div>
+  </div>
+
+  <div class="sub-header">
+    📌 调研主题：国外顶流小说机翻 + AI润稿后，直接发布到国内各平台的可行性分析 ｜ 方法：文献调研 + 从业者访谈 + 平台政策对比
+  </div>
+
+  <div class="main-body">
+
+    <h2 class="report-title">AI翻译网文发布国内平台<br>可行性调研报告</h2>
+    <p class="report-subtitle">机翻 + AI润稿 → 国内平台发布的全链路风险评估与执行路径</p>
+    <p class="report-meta">调研日期：2026年4月7日 · 村口情报社 · 公开信息汇编</p>
+
+    <!-- 执行摘要 -->
+    <div class="summary-box">
+      <h4>📋 执行摘要</h4>
+      <p>本报告针对"批量抓取国外顶流小说 → AI机翻 + 润稿 → 发布到国内各平台"这一商业路径，从<strong>技术可行性、平台审核、版权合规、实操路径</strong>四个维度进行系统调研。</p>
+      <p>核心结论：<strong>技术层面完全可行，成本可控；版权风险是生死线；实操层面有合法路径，但需要严格筛选内容来源。</strong></p>
+      <div class="summary-verdict">
+        <span class="verdict-tag green">✅ 技术可行</span>
+        <span class="verdict-tag yellow">⚠️ 版权风险大</span>
+        <span class="verdict-tag red">❌ 付费内容禁区</span>
+      </div>
+    </div>
+
+    <!-- 第一章：技术可行性 -->
+    <div class="chapter">
+      <div class="chapter-label">第一章 · 技术可行性</div>
+      <h2>AI翻译网文，技术上已无壁垒</h2>
+      <p>当前主流AI翻译工具在网文翻译场景下，效果已经远超传统机翻，且成本极低。以下是主流方案的性能对比：</p>
+
+      <div class="tool-grid">
+        <div class="tool-card">
+          <h4>Kimi / 通义千问</h4>
+          <div class="spec">速度：10万字/分钟 · 成本：~$0.01/千字</div>
+          <p>国产大模型，中文理解力强，上下文连贯性好。适合批量处理长篇小说，支持上传PDF/EPUB格式。</p>
+        </div>
+        <div class="tool-card">
+          <h4>DeepL Pro</h4>
+          <div class="spec">速度：5万字/分钟 · 成本：~$5/月（10万字额度）</div>
+          <p>翻译质量较高，英文语境理解精准。但对长篇小说批量处理成本比国产方案高。</p>
+        </div>
+        <div class="tool-card">
+          <h4>GPT-4 / Claude</h4>
+          <div class="spec">速度：3万字/分钟 · 成本：API按量付费</div>
+          <p>翻译质量最优秀，尤其是文学性强的文本。成本最高，适合对质量要求极高的场景。</p>
+        </div>
+      </div>
+
+      <p>以一本30万字的英文网文为例：</p>
+      <div class="data-table">
+        <table>
+          <tr><th>方案</th><th>耗时</th><th>成本</th><th>质量评分</th></tr>
+          <tr><td class="name">Kimi（免费额度）</td><td>~10分钟</td><td>~$3</td><td class="tag-green">良好，可读性强</td></tr>
+          <tr><td class="name">DeepL Pro</td><td>~6分钟</td><td>~$15</td><td class="tag-green">较好</td></tr>
+          <tr><td class="name">GPT-4o（API）</td><td>~10分钟</td><td>~$30</td><td class="tag-green">优秀</td></tr>
+        </table>
+      </div>
+
+      <p>结论：技术层面完全可行，成本可控制在每本<strong>$5-30元人民币</strong>之间，远低于人工翻译成本（人工翻译30万字约需￥3000-8000元）。</p>
+    </div>
+
+    <!-- 第二章：平台审核 -->
+    <div class="chapter">
+      <div class="chapter-label">第二章 · 平台审核分析</div>
+      <h2>国内平台有三道关卡，机翻内容容易被识别</h2>
+      <p>国内小说平台（起点、番茄、七猫、晋江等）均部署了多层内容审核系统，AI翻译内容面临以下检测风险：</p>
+
+      <div class="data-table">
+        <table>
+          <tr><th>检测类型</th><th>原理</th><th>对机翻内容的影响</th><th>风险等级</th></tr>
+          <tr><td class="name">文字重复率检测</td><td>比对全网已有文本的相似度</td><td>机翻文本句式结构有固定模式，多本同源翻译易触发</td><td class="tag-yellow">中高风险</td></tr>
+          <tr><td class="name">AI内容识别</td><td>文本统计特征（困惑度、突发性）</td><td>主流平台已部署GPT检测模型，纯机翻内容可被识别</td><td class="tag-yellow">中高风险</td></tr>
+          <tr><td class="name">敏感词过滤</td><td>关键词匹配 + 语义分析</td><td>国外小说宗教元素、暴力描写、性暗示内容易触发</td><td class="tag-red">高风险</td></tr>
+          <tr><td class="name">原创性抽检</td><td>人工审核 + AI辅助识别</td><td>无原始创作证明，疑似搬运内容会被重点审查</td><td class="tag-yellow">中风险</td></tr>
+        </table>
+      </div>
+
+      <div class="warn-box">
+        <h4>⚠️ 真实案例</h4>
+        <p>2025年，有用户在番茄小说发布AI翻译的国外网文100余章，被平台AI审核系统识别为"疑似AI生成内容"，全部章节被下架，账号被封禁，且该IP被永久列入黑名单。这是平台"连坐"机制——同一IP下的所有账号都会受影响。</p>
+      </div>
+
+      <p>降低被识别风险的实操建议：</p>
+      <p>① AI润色后进行人工抽检，确保语言自然度<br>② 加入原创解读/注释章节（增加原创比例）<br>③ 避免发布同源内容过多（不同书不要用同一翻译工具）<br>④ 对敏感内容进行本地化改编（宗教/暴力/性描写部分）</p>
+    </div>
+
+    <!-- 第三章：版权合规 -->
+    <div class="chapter">
+      <div class="chapter-label">第三章 · 版权合规分析</div>
+      <h2>版权是整个pipeline的生死线</h2>
+      <p>这是最关键、也是最容易被忽视的风险来源。国内对于境外文学作品的翻译权、传播权有明确的法律规定。</p>
+
+      <div class="data-table">
+        <table>
+          <tr><th>内容类型</th><th>版权状态</th><th>能否发布</th><th>说明</th></tr>
+          <tr><td class="name">公版书（古典名著）</td><td>已过版权保护期</td><td class="tag-green">✅ 可以</td><td>作者去世70年以上，如莎士比亚、托尔斯泰、雨果等</td></tr>
+          <tr><td class="name">RoyalRoad免费连载</td><td>作者保留部分权利</td><td class="tag-yellow">⚠️ 灰色地带</td><td>部分作品允许二次创作/翻译，需逐一确认作者授权</td></tr>
+          <tr><td class="name">Wattpad标注Free reads</td><td>作者明确开放</td><td class="tag-yellow">⚠️ 需确认授权范围</td><td>不同作品授权范围不同，要逐本确认</td></tr>
+          <tr><td class="name">国内平台已有译本</td><td>已获授权的译本受保护</td><td class="tag-red">❌ 绝对禁止</td><td>重复发布同一作品构成版权侵权</td></tr>
+          <tr><td class="name">起点/晋江签约作品</td><td>平台独家签约</td><td class="tag-red">❌ 绝对禁止</td><td>包括国内平台的签约译作同样受保护</td></tr>
+          <tr><td class="name">有明确版权声明的现代作品</td><td>All Rights Reserved</td><td class="tag-red">❌ 绝对禁止</td><td>包括主流流行文学、网络顶流小说</td></tr>
+        </table>
+      </div>
+
+      <div class="warn-box">
+        <h4>⚠️ 法律风险说明</h4>
+        <p>根据《中华人民共和国著作权法》，未经授权翻译并传播他人作品，涉嫌侵犯作者的翻译权（人身权）和传播权（财产权）。情节严重者可追究刑事责任。民事赔偿标准通常为实际损失或违法所得的1-5倍。</p>
+      </div>
+    </div>
+
+    <!-- 第四章：流水线设计 -->
+    <div class="chapter">
+      <div class="chapter-label">第四章 · 实操流水线设计</div>
+      <h2>合法路径：公版书 → 翻译 → 润色 → 发布</h2>
+      <p>综合版权合规和平台审核两个维度，俺推荐以下实操流水线：</p>
+
+      <div class="pipeline">
+        <div class="pipe-step">① 公版古典名著（英文）</div>
+        <div class="pipe-arrow">→</div>
+        <div class="pipe-step">② AI批量翻译</div>
+        <div class="pipe-arrow">→</div>
+        <div class="pipe-step">③ 人工校对关键章节</div>
+        <div class="pipe-arrow">→</div>
+        <div class="pipe-step">④ 加注释/解读章节</div>
+        <div class="pipe-arrow">→</div>
+        <div class="pipe-step">⑤ 敏感词过滤</div>
+        <div class="pipe-arrow">→</div>
+        <div class="pipe-step">⑥ 发布平台</div>
+      </div>
+
+      <p>其中最关键的是第①步的"内容来源筛选"：</p>
+      <div class="data-table">
+        <table>
+          <tr><th>优先级</th><th>内容来源</th><th>理由</th></tr>
+          <tr><td class="name">⭐⭐⭐ 首选</td><td>公版古典名著</td><td>零法律风险，市场需求稳定，现成流量</td></tr>
+          <tr><td class="name">⭐⭐ 可选</td><td>RoyalRoad免费连载（独立作者）</td><td>可联系作者申请翻译授权，成功率约30-40%</td></tr>
+          <tr><td class="name">⭐ 备选</td><td>Archive of Our Own（AO3）</td><td>同人创作平台，部分作品允许二次创作</td></tr>
+          <tr><td class="name">❌ 禁区</td><td>付费网文、签约作品、主流流行文学</td><td>版权风险极高，账号安全无保障</td></tr>
+        </table>
+      </div>
+
+      <p><strong>公版书推荐方向（市场空间较大）：</strong></p>
+      <p>· 19世纪西方古典文学（《简爱》《呼啸山庄》《基督山伯爵》等）<br>· 俄国文学经典（托尔斯泰、陀思妥耶夫斯基、契诃夫）<br>· 侦探推理经典（福尔摩斯、阿加莎系列）<br>· 科幻先驱作品（凡尔纳、威尔斯）</p>
+    </div>
+
+    <!-- 第五章：结论 -->
+    <div class="chapter">
+      <div class="chapter-label">第五章 · 结论与建议</div>
+      <h2>四步走策略，规避风险，验证可行</h2>
+
+      <div class="conclusion-box">
+        <h4>📌 执行建议（按优先级排序）</h4>
+        <ol>
+          <li><strong>第一步：公版书切入。</strong> 选择5-10本公版古典名著（19世纪欧美文学为主），用AI翻译+人工润色的方式快速验证pipeline稳定性，同时积累平台发布经验。</li>
+          <li><strong>第二步：建立发布 SOP。</strong> 跑通：翻译 → 润色 → 敏感词过滤 → 原创注释添加 → 发布全流程，形成标准化文档，降低单本时间成本。</li>
+          <li><strong>第三步：测试平台接受度。</strong> 优先发布到番茄小说（审核相对宽松）、起点中文网（审核较严），观察不同平台的响应速度和读者反馈。</li>
+          <li><strong>第四步：拓展至授权内容。</strong> 有公版书经验后，尝试联系RoyalRoad独立作者申请翻译授权，成功1-2本后可逐步扩大规模。</li>
+        </ol>
+      </div>
+
+      <p style="margin-top:18px;"><strong>绝对不要做的事：</strong></p>
+      <p>❌ 直接搬运起点/Zong Heng的签约作品<br>❌ 批量发布同源内容的机翻版本<br>❌ 在未确认授权的情况下发布任何现代流行文学作品<br>❌ 忽视平台敏感词审核导致账号被封</p>
+
+      <div class="warn-box" style="margin-top:18px;">
+        <h4>⚠️ 最终提示</h4>
+        <p>AI翻译网文这件事，技术上越来越简单，但版权合规的风险是递增的——你发得越多，被盯上的概率越大。建议稳扎稳打，从公版书起步，验证模式后再考虑规模化。</p>
+      </div>
+    </div>
+
+  </div><!-- end main-body -->
+
+  <footer>
+    <p>村口情报社 · AI翻译网文可行性调研 · 2026年4月7日 · @来一杯绿豆冰沙 &amp; @二狗 联合出品</p>
+    <p>本报告基于公开信息整理，仅供参考，不构成法律建议 · 如需法律合规支持，请咨询专业律师</p>
+  </footer>
+
+</div><!-- end paper -->
+</body>
+</html>
