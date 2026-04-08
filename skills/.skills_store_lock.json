@@ -36,6 +36,36 @@
       "zip_url": "https://lightmake.site/api/v1/download?slug=agent-browser",
       "source": "skillhub",
       "version": "0.2.0"
+    },
+    "excel-xlsx": {
+      "name": "Excel / XLSX",
+      "zip_url": "https://lightmake.site/api/v1/download?slug=excel-xlsx",
+      "source": "skillhub",
+      "version": "1.0.2"
+    },
+    "openclaw-tavily-search": {
+      "name": "Tavily 搜索",
+      "zip_url": "https://lightmake.site/api/v1/download?slug=openclaw-tavily-search",
+      "source": "skillhub",
+      "version": "0.1.0"
+    },
+    "multi-search-engine": {
+      "name": "Multi Search Engine",
+      "zip_url": "https://lightmake.site/api/v1/download?slug=multi-search-engine",
+      "source": "skillhub",
+      "version": "2.0.1"
+    },
+    "superdesign": {
+      "name": "SuperDesign",
+      "zip_url": "https://lightmake.site/api/v1/download?slug=superdesign",
+      "source": "skillhub",
+      "version": "1.0.0"
+    },
+    "marketing-mode": {
+      "name": "Marketing Mode",
+      "zip_url": "https://lightmake.site/api/v1/download?slug=marketing-mode",
+      "source": "skillhub",
+      "version": "1.0.0"
     }
   }
 }

@@ -1,44 +1,57 @@
 ---
 name: newsletter-email
-description: 将生成的 AI 日报 HTML 发送至 QQ 邮箱。支持完整报刊排版、UTF-8 规范编码、内联 CSS，适用于村口情报社日报发布流程。触发场景：(1) 用户要求"发邮件"、"发送日报" (2) 日报生成完毕后自动推送 (3) 重新发送或修订版邮件。
+description: 将生成的 AI 日报 HTML 发送至 QQ 邮箱，支持完整报刊排版、UTF-8 规范编码。触发场景：(1) 用户要求"发邮件"、"发送日报" (2) 日报生成完毕后自动推送 (3) 重新发送或修订版邮件。
 ---
 
 # Newsletter Email Skill
 
-将村口情报社日报 HTML 发送至 QQ 邮箱。
+将村口情报社日报 HTML 发送至 QQ 邮箱，**正文内嵌样式 + HTML 附件**。
 
-## 工作流程
+## 发送规则（必须遵守）
 
-1. 读取 HTML 文件
-2. 转换为邮件安全版本（移除 `<style>` 中的外部字体、保留布局结构）
-3. 使用 msmtp 发送，UTF-8 Base64 规范编码主题和发件人
+每次发送邮件必须同时包含：
+1. **邮件正文**：HTML 的 CSS 内联版本，渲染效果好看
+2. **附件**：原始 HTML 文件（保留 `<style>` 标签），下载后浏览器打开样式完整
 
 ## 发送脚本
 
-调用 `scripts/send_newsletter.py`，用法：
+调用 `send_email_with_attachment.py`，用法：
 
 ```bash
-python3 scripts/send_newsletter.py <html_file> [recipient_email]
+python3 skills/newsletter-email/scripts/send_email_with_attachment.py <html_file> [recipient_email]...
 ```
 
 - `html_file`: 日报 HTML 文件路径
-- `recipient_email`（可选）: 收件人邮箱，默认使用 `references/config.txt` 中配置
+- `recipient_email`（可选）: 收件人，默认使用配置中的三个邮箱
 
 ## 邮件配置
 
 - SMTP: smtp.qq.com:587 (STARTTLS)
-- 发件人: 2323831454@qq.com
-- 收件人: 179621078@qq.com
-- 发送工具: msmtp
-- 编码: UTF-8 Base64 RFC 2047
+- 发件人: 村口情报社 \<2323831454@qq.com\>
+- 收件人: 179621078@qq.com / hakusai22@qq.com / 536574781@qq.com
+- 编码: RFC 2047 标准（=?utf-8?B?...?=）
 
-## 邮件 HTML 处理规则
+## 邮件处理规则
 
-- 移除 Google Fonts `@import`（邮件客户端不支持外部字体）
-- 移除 `<link>` 字体引用
-- 移除 `<script>` 标签
-- **保留 `<style>` 内嵌 CSS**（邮件客户端通常支持）
-- body 添加基础内联 margin/padding
-- 主题和发件人显示名使用 `=?UTF-8?B?...?=` 格式编码
+### 正文处理
+- CSS 内联：通过 `inline_css()` 将 `<style>` 中的样式应用到各元素的 `style=""` 属性
+- 移除 `<script>` 标签（邮件不支持 JS）
+- 移除 Google Fonts `@import`（邮件客户端不支持）
+- 移除外部 `<link>` CSS 引用
 
-> ⚠️ 邮件不支持 JavaScript，tab 切换频道功能在邮件中无效，内容以五频道平铺形式展示。
+### 附件处理
+- 自动嵌入 `style.css` 到 `<style>` 标签（替换外部引用）
+- 移除 `@import` 确保附件 HTML 完全自包含
+- 文件名：`ai-daily-news-YYYY-MM-DD.html`
+
+## 主题格式
+
+```
+村口情报社 AI日报 YYYY年MM月DD日
+```
+
+## 注意事项
+
+- 邮件正文和附件是两套不同的 HTML：正文是内联版，附件是嵌入 CSS 版
+- Subject 和 From 头部使用 RFC 2047 编码，不使用 `=?UTF-8?B?...?=`
+- 正文 HTML 很长（~80KB），这是正常的（CSS 内联后体积变大）
