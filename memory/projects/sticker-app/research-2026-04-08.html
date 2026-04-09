@@ -1,0 +1,812 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>村口情报社 · 电子手帐贴纸App调研报告</title>
+<style>
+@import url('https://fonts.googleapis.com/css2?family=Noto+Serif+SC:wght@400;500;600;700;900&family=Noto+Sans+SC:wght@300;400;500&display=swap');
+*{margin:0;padding:0;box-sizing:border-box;}
+:root{--charcoal:#1a1a1a;--warm-gray:#6b6560;--light-warm:#f0ebe3;--paper:#faf8f3;--wine-red:#8b2635;--gold:#d4a017;--navy:#1a3a5c;--text:#222;--text-light:#5a5a5a;--border:#d4cfc5;--teal:#2d8f7b;--coral:#e07b54;}
+body{background:#c9c3b8;font-family:"Noto Serif SC","Noto Sans SC",serif;color:var(--text);padding:20px;}
+.paper{width:1200px;margin:0 auto;background:var(--paper);box-shadow:0 8px 40px rgba(0,0,0,0.12);border-radius:2px;}
+.masthead{padding:28px 50px 20px;display:flex;justify-content:space-between;align-items:flex-end;border-bottom:2px solid var(--charcoal);background:var(--charcoal);}
+.masthead-left{display:flex;flex-direction:column;}
+.masthead h1{font-size:48px;font-weight:900;letter-spacing:6px;color:var(--gold);line-height:1;}
+.masthead-left .edition{font-size:11px;color:#aaa;font-weight:400;letter-spacing:3px;margin-top:6px;}
+.masthead-left .identity-tag{font-size:10px;color:var(--gold);font-weight:500;margin-top:8px;letter-spacing:1px;}
+.masthead-right{display:flex;flex-direction:column;align-items:flex-end;}
+.masthead-right .date{font-size:15px;color:#fff;font-weight:500;letter-spacing:1px;}
+.masthead-right .issue{font-size:11px;color:#aaa;margin-top:4px;}
+.masthead-right .original-tag{font-size:9px;color:var(--gold);margin-top:8px;font-weight:500;}
+.main-content{padding:30px 50px;}
+.section-block{padding-bottom:36px;margin-bottom:36px;border-bottom:1px solid var(--border);}
+.section-block:last-child{border-bottom:none;margin-bottom:0;}
+.section-title{font-size:10px;font-weight:600;color:var(--gold);letter-spacing:2px;margin-bottom:16px;padding-bottom:6px;border-bottom:1px solid var(--border);text-transform:uppercase;}
+.lead-row{display:grid;grid-template-columns:1fr 300px;gap:40px;}
+.lead-main{display:flex;flex-direction:column;}
+.lead-tag{font-size:10px;font-weight:600;color:var(--gold);letter-spacing:2px;margin-bottom:12px;}
+.lead-title{font-size:28px;font-weight:700;line-height:1.25;margin-bottom:12px;color:var(--charcoal);}
+.lead-subtitle{font-size:15px;color:var(--text-light);line-height:1.5;margin-bottom:14px;font-weight:400;}
+.lead-summary{font-size:13px;line-height:1.85;color:var(--text);}
+.data-strip{display:flex;gap:18px;margin-top:14px;padding:12px 0;border-top:1px dotted var(--border);border-bottom:1px dotted var(--border);flex-wrap:wrap;}
+.data-item{display:flex;flex-direction:column;min-width:80px;}
+.data-num{font-size:15px;font-weight:700;color:var(--gold);}
+.data-label{font-size:9px;color:var(--warm-gray);margin-top:2px;}
+.pros-cons{display:grid;grid-template-columns:1fr 1fr;gap:20px;margin-top:16px;}
+.pros-box{background:#e8f5e9;border:1px solid #a5d6a7;border-radius:3px;padding:14px;}
+.cons-box{background:#fff3e0;border:1px solid #ffcc80;border-radius:3px;padding:14px;}
+.pros-box h4{font-size:10px;font-weight:700;color:#2e7d32;letter-spacing:1px;margin-bottom:8px;}
+.cons-box h4{font-size:10px;font-weight:700;color:#e65100;letter-spacing:1px;margin-bottom:8px;}
+.pros-box ul,.cons-box ul{list-style:none;}
+.pros-box li,.cons-box li{font-size:12px;line-height:1.7;color:var(--text-light);padding:3px 0;}
+.pros-box li::before{content:"✅ ";margin-right:4px;}
+.cons-box li::before{content:"❌ ";margin-right:4px;}
+.ergou-box{background:var(--light-warm);padding:16px 20px;border-radius:3px;margin-top:16px;border-left:3px solid var(--coral);}
+.ergou-box h4{font-size:10px;font-weight:600;color:var(--coral);letter-spacing:1px;margin-bottom:8px;}
+.ergou-box p{font-size:12px;line-height:1.7;color:var(--text-light);font-style:italic;}
+.lead-sidebar{border-left:1px solid var(--border);padding-left:22px;display:flex;flex-direction:column;gap:16px;}
+.sidebar-block h4{font-size:10px;font-weight:600;color:var(--charcoal);letter-spacing:1.5px;margin-bottom:10px;padding-bottom:5px;border-bottom:1px solid var(--gold);}
+.brief-list{list-style:none;}
+.brief-list li{font-size:12px;line-height:1.55;padding:5px 0;color:var(--text-light);}
+.brief-list .tag-red{color:var(--wine-red);font-weight:600;margin-right:4px;}
+.brief-list .tag-green{color:#2e7d32;font-weight:600;margin-right:4px;}
+.brief-list .tag-blue{color:var(--navy);font-weight:600;margin-right:4px;}
+.brief-list .tag-gold{color:var(--gold);font-weight:600;margin-right:4px;}
+.mid-section{display:grid;grid-template-columns:repeat(3,1fr);gap:18px;margin-top:20px;}
+.mid-card{background:var(--light-warm);border:1px solid var(--border);border-radius:3px;padding:16px;}
+.mid-card h4{font-size:13px;font-weight:700;color:var(--charcoal);margin-bottom:8px;}
+.mid-card p{font-size:12px;line-height:1.65;color:var(--text-light);}
+.mid-card .price{font-size:14px;font-weight:700;color:var(--gold);margin-top:6px;display:block;}
+.tech-card{background:var(--light-warm);border:1px solid var(--border);border-radius:3px;padding:14px;margin-top:12px;}
+.tech-card h4{font-size:12px;font-weight:700;color:var(--charcoal);margin-bottom:6px;}
+.tech-card p{font-size:11px;line-height:1.6;color:var(--text-light);}
+.step-flow{display:flex;align-items:center;gap:8px;margin-top:16px;overflow-x:auto;padding-bottom:8px;}
+.step-item{background:var(--charcoal);color:#fff;padding:8px 14px;border-radius:3px;font-size:12px;font-weight:600;white-space:nowrap;flex-shrink:0;}
+.step-arrow{color:var(--gold);font-size:16px;flex-shrink:0;}
+.compare-table{width:100%;border-collapse:collapse;margin:14px 0;font-size:13px;}
+.compare-table th{background:var(--charcoal);color:#fff;padding:10px 14px;text-align:left;font-size:11px;letter-spacing:1px;}
+.compare-table td{padding:10px 14px;border-bottom:1px solid var(--border);color:var(--text-light);vertical-align:top;line-height:1.6;font-size:12px;}
+.compare-table tr:nth-child(even) td{background:var(--light-warm);}
+.compare-table .name{font-weight:700;color:var(--charcoal);}
+.compare-table .highlight{color:var(--gold);font-weight:700;}
+.tag-green{color:#2e7d32;font-weight:600;}
+.tag-red{color:var(--wine-red);font-weight:600;}
+.tag-blue{color:var(--navy);font-weight:600;}
+.tag-gold{color:var(--gold);font-weight:600;}
+.tag-teal{color:var(--teal);font-weight:600;}
+.verdict-box{background:#fff8e1;border:1px solid var(--gold);border-radius:3px;padding:16px 20px;margin-top:16px;}
+.verdict-box h4{font-size:11px;font-weight:700;color:var(--gold);letter-spacing:2px;text-transform:uppercase;margin-bottom:10px;}
+.verdict-box p{font-size:13px;line-height:1.8;color:var(--text);}
+.verdict-box strong{color:var(--charcoal);}
+.verdict-box .score{font-size:22px;font-weight:900;color:var(--gold);margin-right:4px;}
+.roadmap{background:var(--light-warm);border:1px solid var(--border);border-radius:3px;padding:16px;margin-top:14px;}
+.roadmap h4{font-size:12px;font-weight:700;color:var(--charcoal);margin-bottom:10px;}
+.roadmap-item{display:flex;gap:12px;padding:8px 0;border-bottom:1px dotted var(--border);}
+.roadmap-item:last-child{border-bottom:none;}
+.roadmap-week{font-size:11px;font-weight:700;color:var(--gold);min-width:50px;}
+.roadmap-content{font-size:12px;color:var(--text-light);line-height:1.6;}
+.footer{padding:15px 50px;border-top:1px solid var(--border);display:flex;justify-content:space-between;font-size:10px;color:var(--warm-gray);}
+@media print{body{background:#fff;padding:0;}.paper{box-shadow:none;width:100%;}}
+</style>
+</head>
+<body>
+<div class="paper">
+<header class="masthead">
+<div class="masthead-left"><h1>村口情报社</h1><div class="edition">PRODUCT RESEARCH · 调研报告</div><div class="identity-tag">AI整理资讯 · 公开信息汇编</div></div>
+<div class="masthead-right"><div class="date">2026年4月8日</div><div class="issue">特别刊 · 创刊第001期</div><div class="original-tag">@来一杯绿豆冰沙 提案 · 二狗 调研</div></div>
+</header>
+<div class="main-content">
+
+<!-- ========== 核心概念 ========== -->
+<div class="section-block">
+<div class="section-title">💡 核心产品概念</div>
+<div class="lead-row">
+<div class="lead-main">
+<div class="lead-tag">CORE PRODUCT</div>
+<h2 class="lead-title">「贴贴手帐」：你的电子手帐贴纸库</h2>
+<p class="lead-subtitle">把现实世界装进手机：抠图→存贴纸→粘到手帐上</p>
+<p class="lead-summary">用户用手机拍一张照片（树、石头、路灯、花草等），App 自动识别并抠出主体，保存为透明背景 PNG 贴纸。贴纸存入个人素材库，后续可以把手帐页面当作画布，把贴纸拖进去、旋转、缩放、叠加，组成一张有个人印记的电子手帐。这个想法的核心价值在于——<strong>把「看到」→「留住」→「创作」</strong>三个动作串联起来，而且贴纸是用户自己拍摄的，有强烈的个人情感和不可复制性。</p>
+<div class="data-strip">
+<div class="data-item"><span class="data-num">3步</span><span class="data-label">拍→抠→粘</span></div>
+<div class="data-item"><span class="data-num">1张</span><span class="data-label">照片 N个贴纸</span></div>
+<div class="data-item"><span class="data-num">PNG</span><span class="data-label">透明背景格式</span></div>
+<div class="data-item"><span class="data-num">云端</span><span class="data-label">贴纸库同步</span></div>
+</div>
+<div class="ergou-box">
+<h4>📣 二狗点评</h4>
+<p>俺觉得这个想法最戳人的地方不是"抠图"，而是"自己拍的贴纸"。你去网红地打卡，拍的贴纸跟别人下载的一样——但你自己拍的路边的树、老家的瓦房、校园里的一角，那是独一份的。这个差异化做得好的话，比那些素材库里套模板的手帐App强多了。</p>
+</div>
+</div>
+<aside class="lead-sidebar">
+<div class="sidebar-block"><h4>核心功能清单</h4>
+<ul class="brief-list">
+<li><span class="tag-red">P0</span>AI智能抠图（单图→多主体）</li>
+<li><span class="tag-red">P0</span>PNG透明贴纸保存</li>
+<li><span class="tag-red">P0</span>贴纸素材库（云端同步）</li>
+<li><span class="tag-red">P0</span>手帐画布（拖拽+缩放+旋转）</li>
+<li><span class="tag-green">P1</span>贴纸分类标签管理</li>
+<li><span class="tag-green">P1</span>手帐模板市场</li>
+<li><span class="tag-green">P1</span>社区分享（广场）</li>
+<li><span class="tag-blue">P2</span>AR实景贴纸叠加拍摄</li>
+<li><span class="tag-blue">P2</span>贴纸纸艺打印机支持</li>
+<li><span class="tag-blue">P2</span>品牌合作素材库</li>
+</ul>
+</div>
+<div class="sidebar-block"><h4>目标用户画像</h4>
+<ul class="brief-list">
+<li><span class="tag-gold">①</span>小红书用户，18-30岁女性</li>
+<li><span class="tag-gold">②</span>手帐爱好者，有收集癖</li>
+<li><span class="tag-gold">③</span>旅行/生活记录者</li>
+<li><span class="tag-gold">④</span>亲子记录（孩子涂鸦/手工）</li>
+</ul>
+</div>
+</aside>
+</div>
+<div class="pros-cons">
+<div class="pros-box">
+<h4>✅ 优势</h4>
+<ul>
+<li>差异化强：用户原创内容，非素材库模板</li>
+<li>情感价值高：自己拍的贴纸，有故事感</li>
+<li>用户粘性高：积累贴纸库后不想换平台</li>
+<li>小红书天然契合：内容天然适合传播</li>
+<li>国内有成功先例：醒图/轻颜的贴纸功能</li>
+</ul>
+</div>
+<div class="cons-box">
+<h4>⚠️ 挑战</h4>
+<ul>
+<li>抠图精度是核心体验，需选好API</li>
+<li>用户拍出好照片的门槛存在</li>
+<li>手帐创作有一定学习成本</li>
+<li>重量级玩家（醒图/美图）可能跟进</li>
+</ul>
+</div>
+</div>
+</div>
+
+<!-- ========== 技术方案 ========== -->
+<div class="section-block">
+<div class="section-title">⚙️ 技术方案</div>
+<div class="lead-row">
+<div class="lead-main">
+<div class="lead-tag">TECH STACK</div>
+<h2 class="lead-title">抠图是核心技术，三条路可选</h2>
+<p class="lead-subtitle">自研代价太高，API 是最优解——问题在于选哪个</p>
+<p class="lead-summary">抠图（Background Removal）是整个产品的技术核心。精度不够高→贴纸边缘毛刺→用户体验崩溃。目前市场上主流方案有三条路：①开源方案（rembg）②海外商业API（remove.bg/BRIA RMBG）③国内商业API。各有优劣，俺来逐个拆解。</p>
+
+<div class="data-strip">
+<div class="data-item"><span class="data-num">rembg</span><span class="data-label">免费开源</span></div>
+<div class="data-item"><span class="data-num">BRIA RMBG 2.0</span><span class="data-label">2026最强商业API</span></div>
+<div class="data-item"><span class="data-num">$0.06-0.15</span><span class="data-label">/张成本区间</span></div>
+<div class="data-item"><span class="data-num">&lt;500ms</span><span class="data-label">GPU推理速度</span></div>
+</div>
+
+<div class="tech-card">
+<h4>方案一：rembg（开源免费）</h4>
+<p>Python库，一行代码调用：<code>from rembg import remove; output = remove(input)</code>。内置多个模型（BiRefNet/U2-Net等），支持GPU加速。免费，但需要自己部署服务器，GPU成本不可忽视。单张抠图在GPU上约200-500ms。<span class="tag-teal">适合：技术强、有GPU资源、能接受运维成本</span></p>
+</div>
+<div class="tech-card">
+<h4>方案二：BRIA RMBG 2.0 API（推荐）</h4>
+<p>2026年最强抠图API，精度最高，尤其擅长头发/毛玻璃/半透明物体边缘。在复杂主体上显著优于remove.bg。$0.10-0.20/张，支持batch。边缘精度sub-pixel级别，PNG alpha通道直接输出。<span class="tag-green">适合：追求产品体验、快速上线、商业化</span></p>
+</div>
+<div class="tech-card">
+<h4>方案三：remove.bg / Photoroom API</h4>
+<p>老牌方案，稳定可靠，有免费额度。Photoroom额外提供完整的产品图工具链（含阴影/倒影/尺寸标准化），电商场景更强。remove.bg $0.09/张（量大可降）。<span class="tag-blue">适合：电商+手帐混合场景</span></p>
+</div>
+<div class="tech-card">
+<h4>国内方案：阿里/字节/腾讯云</h4>
+<p>阿里云视觉智能开放平台、腾讯云AI抠图、字节火山引擎等均有类似能力。按量计费，国内访问延迟低，合规性更好。<span class="tag-blue">适合：国内用户为主、重视合规和延迟</span></p>
+</div>
+
+<div class="ergou-box">
+<h4>📣 二狗建议</h4>
+<p>俺的建议：前期用 BRIA RMBG 2.0 或 remove.bg 快速验证产品体验，等用户量上来了（&gt;1万/天调用），考虑切 rembg 自部署——省成本，也不用担心API涨价被卡脖子。国内版本可以先用阿里云视觉，延迟低、接入简单。</p>
+</div>
+</div>
+<aside class="lead-sidebar">
+<div class="sidebar-block"><h4>技术架构推荐</h4>
+<ul class="brief-list">
+<li><span class="tag-gold">前端</span>Flutter / React Native（跨平台）</li>
+<li><span class="tag-gold">小程序</span>微信小程序（快速验证）</li>
+<li><span class="tag-gold">抠图API</span>BRIA RMBG 2.0 / remove.bg</li>
+<li><span class="tag-gold">存储</span>七牛云 / 阿里云OSS（图+贴纸）</li>
+<li><span class="tag-gold">CDN</span>阿里云 / 腾讯云（全国访问）</li>
+<li><span class="tag-gold">数据库</span>贴纸元数据（标签+来源+时间）</li>
+<li><span class="tag-gold">手帐渲染</span>Canvas API / 原生绘图</li>
+</ul>
+</div>
+<div class="sidebar-block"><h4>贴纸存储方案</h4>
+<ul class="brief-list">
+<li><span class="tag-gold">格式</span>PNG + Alpha通道，JPG仅存档</li>
+<li><span class="tag-gold">尺寸</span>原分辨率存OSS，缩略图CDN</li>
+<li><span class="tag-gold">命名</span>UUID+时间戳，防止重复</li>
+<li><span class="tag-gold">成本</span>50万贴纸 ≈ 50GB ≈ ~¥15/月（阿里OSS）</li>
+</ul>
+</div>
+<div class="sidebar-block"><h4>性能目标</h4>
+<ul class="brief-list">
+<li><span class="tag-teal">抠图</span>&lt;2秒/张（含上传+推理+返回）</li>
+<li><span class="tag-teal">首屏</span>&lt;1.5秒（首页+推荐贴纸）</li>
+<li><span class="tag-teal">手帐加载</span>&lt;500ms/页</li>
+<li><span class="tag-teal">离线</span>贴纸本地缓存，核心功能离线可用</li>
+</ul>
+</div>
+</aside>
+</div>
+</div>
+
+<!-- ========== 市场分析 ========== -->
+<div class="section-block">
+<div class="section-title">📊 市场分析</div>
+<div class="lead-row">
+<div class="lead-main">
+<div class="lead-tag">MARKET LANDSCAPE</div>
+<h2 class="lead-title">国内手帐App赛道：头部有，但缺"原创贴纸"这个钉子</h2>
+<p class="lead-subtitle">醒图/轻颜/Nichi都在做，但核心都是素材库，不是用户原创</p>
+<p class="lead-summary">国内手帐/贴纸类App有几类：①修图类（醒图、轻颜）- 贴纸是附加功能，素材是平台提供②手帐独立App（Nichi、方方）③工具类（ToDesk远程摄像头偶尔用到）。但没有哪个App把"用户自己拍、自己抠、自己用"做成核心闭环。这是个空白。</p>
+<div class="data-strip">
+<div class="data-item"><span class="data-num">小红书</span><span class="data-label">手帐相关笔记5000万+篇</span></div>
+<div class="data-item"><span class="data-num">醒图</span><span class="data-label">月活1亿+，贴纸功能用</span></div>
+<div class="data-item"><span class="data-num">Nichi</span><span class="data-label">日本进口，手帐爱好者首选</span></div>
+<div class="data-item"><span class="data-num">拼多多</span><span class="data-label">电子手帐本热卖</span></div>
+</div>
+<div class="verdict-box">
+<h4>🎯 市场机会判断</h4>
+<p>核心差异点不是"手帐"，而是<strong>"原创贴纸+个人情感"</strong>。醒图的用户为什么还在用醒图的贴纸？因为方便。但如果你告诉他"你可以把自己拍的路边的花变成贴纸，贴到手帐上"，用户会眼前一亮。差距在于<strong>是否把"素材生产权"还给用户</strong>。</p>
+</div>
+</div>
+<aside class="lead-sidebar">
+<div class="sidebar-block"><h4>竞品分析</h4>
+<ul class="brief-list">
+<li><span class="tag-red">醒图</span>修图+贴纸，月活1亿+，素材库平台提供，无原创贴纸</li>
+<li><span class="tag-red">轻颜</span>同醒图，卡片式贴纸，素材版权模糊</li>
+<li><span class="tag-blue">Nichi</span>手帐独立App，模板精致，用户自制内容少</li>
+<li><span class="tag-blue">方方日记</span>手帐工具，偏向日记记录，非社交</li>
+<li><span class="tag-gold">贴贴App</span>尚未出现，机会窗口</li>
+</ul>
+</div>
+<div class="sidebar-block"><h4>目标市场数据</h4>
+<ul class="brief-list">
+<li>小红书"手帐"标签：5000万+笔记</li>
+<li>电子手帐相关：月均搜索增速 +35%</li>
+<li>手帐用户画像：18-30岁女性为主，占比~78%</li>
+<li>手帐付费意愿：月均¥15-30（模板/贴纸付费）</li>
+</ul>
+</div>
+</aside>
+</div>
+</div>
+
+
+<!-- ========== 苹果原生能力分析 ========== -->
+<div class="section-block">
+<div class="section-title">🍎 苹果原生能力分析</div>
+<div class="lead-row">
+<div class="lead-main">
+<div class="lead-tag">APPLE NATIVE CAPABILITIES</div>
+<h2 class="lead-title">苹果已经有了，这还做不做？</h2>
+<p class="lead-subtitle">iOS 16+ 的"主体提取"和 iOS 17+ 的"实况贴纸"，会把这条路堵死吗？</p>
+<p class="lead-summary">大哥问到点子上了。苹果从 iOS 16 开始就内置了 Subject Lift（主体提取）功能，iOS 17 进一步推出 Live Stickers（实况贴纸），可以在相册里直接抠图做贴纸。俺来认真分析一下——这到底是不是竞争对手。</p>
+
+<div class="data-strip">
+<div class="data-item"><span class="data-num">iOS 16+</span><span class="data-label">原生"抬起主体"功能</span></div>
+<div class="data-item"><span class="data-num">iOS 17+</span><span class="data-label">Live Stickers 实况贴纸</span></div>
+<div class="data-item"><span class="data-num">VNGenerateSubjectLiftMaskRequest</span><span class="data-label">苹果开发者API名称</span></div>
+<div class="data-item"><span class="data-num">iOS 18</span><span class="data-label">增强视觉搜索隐私</span></div>
+</div>
+
+<div class="tech-card">
+<h4>iOS 16+：抬起主体（Remove Background / Subject Lift）</h4>
+<p>相册里长按任意一张照片的主体，苹果会自动识别并扣出来，点击"拷贝"或"共享"即可获得透明背景 PNG。整个过程在设备上完成，精度极高（苹果自研模型），完全免费。</p>
+<p style="margin-top:6px;"><strong>局限性：</strong>①只能保存，不能直接"存入贴纸库"反复使用②不能叠加到手帐画布上创作③没有组织管理功能（贴纸一多了就乱了）④无法跨App使用（在iMessage里能用，但手帐App用不了）</p>
+</div>
+
+<div class="tech-card">
+<h4>iOS 17+：Live Stickers（实况贴纸）</h4>
+<p>从 Live Photo（实况照片）提取主体，变成动画贴纸。保存在系统贴纸库里（通过 emoji 键盘访问），可以在 iMessage 和任何支持 emoji 键盘的 App 里使用，包括 WhatsApp、Telegram 等第三方 IM。也可以添加到照片、备忘录、邮件等地方。但<strong>必须是 Live Photo</strong>，普通照片不能做 Live Sticker。</p>
+<p style="margin-top:6px;"><strong>局限性：</strong>①必须是 Live Photo，普通照片不能直接做 Live Sticker ②贴纸库是系统级的，不能在第三方手帐App里调用 ③存在本机，换手机就没了④超过300张后最早创建的会被系统删除</p>
+</div>
+
+<div class="tech-card">
+<h4>苹果对第三方开发者开放：Visual Look Up API</h4>
+<p>苹果在 WWDC 2023 专门演示了这个能力——第三方 App 可以用 <strong>VNGenerateSubjectLiftMaskRequest</strong>（Vision 框架）调用同款抠图模型，在 App 内实现和苹果原生一样的精度。这是 Core ML 模型，<strong>完全免费</strong>，不付费，不限调用次数（设备上运行）。</p>
+</div>
+
+<div class="ergou-box">
+<h4>📣 二狗判断</h4>
+<p>苹果原生功能确实强，但有两个核心限制：①<strong>它是系统工具，不是创作平台</strong>——抠了图，不能存到统一的贴纸库里反复用，不能叠加到手帐画布上创作②<strong>没有社交和分享属性</strong>——你抠出来的贴纸只有你自己知道，不能分享到广场让别人用你的贴纸。所以苹果做的是"工具"，俺们做的是"平台"。差别就在这里。就像苹果有原生地图，但高德/百度地图依然活得好好的——因为地图不是工具，是生活服务。</p>
+</div>
+</div>
+<aside class="lead-sidebar">
+<div class="sidebar-block"><h4>苹果原生 vs 俺们的差距</h4>
+<ul class="brief-list">
+<li><span class="tag-red">⚠️ 贴纸库较初级</span>可以保存但无分类/标签/搜索</li>
+<li><span class="tag-red">❌ 无手帐画布</span>不能叠加创作</li>
+<li><span class="tag-red">❌ 无跨App调用</span>贴纸存在系统里</li>
+<li><span class="tag-red">❌ 无云同步</span>换手机贴纸全丢</li>
+<li><span class="tag-red">❌ 无社交广场</span>不能分享/使用他人贴纸</li>
+</ul>
+</div>
+<div class="sidebar-block"><h4>俺们的核心优势</h4>
+<ul class="brief-list">
+<li><span class="tag-green">✅</span>统一的贴纸库（云端同步）</li>
+<li><span class="tag-green">✅</span>手帐画布创作（叠加/拖拽）</li>
+<li><span class="tag-green">✅</span>社区分享（广场/关注/收藏）</li>
+<li><span class="tag-green">✅</span>品牌素材合作（别人没有的）</li>
+<li><span class="tag-green">✅</span>跨平台（iOS+Android+小程序）</li>
+</ul>
+</div>
+<div class="sidebar-block"><h4>技术方案调整建议</h4>
+<ul class="brief-list">
+<li><span class="tag-gold">iOS</span>直接用 Vision 框架 API，免费且精度与苹果原生一致，无需第三方 API</li>
+<li><span class="tag-gold">Android</span>用 Google ML Kit Subject Segmentation，免费且在设备上运行</li>
+<li><span class="tag-gold">成本</span>抠图 API 成本可以降到 0！只要用户设备支持</li>
+<li><span class="tag-gold">旧机型</span>旧款 iPhone/Android 没有神经引擎的用户，仍需要云端 API 兜底</li>
+</ul>
+</div>
+</aside>
+</div>
+</div>
+
+
+<!-- ========== 安卓厂商详细能力分析 ========== -->
+<div class="section-block">
+<div class="section-title">🤖 安卓各厂商能力详细分析</div>
+<div class="lead-row">
+<div class="lead-main">
+<div class="lead-tag">ANDROID OEM CAPABILITIES · DETAILED</div>
+<h2 class="lead-title">各厂商能力参差不齐，俺来逐个拆解</h2>
+<p class="lead-subtitle">没有统一的"安卓原生贴纸体系"——碎片化既是挑战，也是机会</p>
+<p class="lead-summary">安卓阵营和苹果完全不同。苹果有统一的 iOS + Vision 框架，安卓则是各厂商各自为战。俺系统梳理了全球主要安卓厂商的能力边界，作为这个想法落地可行性的核心依据。</p>
+
+<div class="data-strip">
+<div class="data-item"><span class="data-num">Google ML Kit</span><span class="data-label">免费跨厂商抠图方案</span></div>
+<div class="data-item"><span class="data-num">小米 HyperOS 2.0</span><span class="data-label">AI Matting 2.0 + 动态贴纸</span></div>
+<div class="data-item"><span class="data-num">三星 One UI 7</span><span class="data-label">Photo Assist + 自定义贴纸</span></div>
+<div class="data-item"><span class="data-num">ColorOS 16</span><span class="data-label">AI Eraser + AI Studio</span></div>
+<div class="data-item"><span class="data-num">华为鸿蒙</span><span class="data-label">HMS AI，封闭生态</span></div>
+</div>
+
+<!-- 苹果详细分析 -->
+<div class="tech-card" style="border-left:3px solid #1a1a1a;">
+<h4>🍎 Apple iOS：最强的参照系</h4>
+<p>iOS 16+（2022年9月）：苹果推出 VNGenerateSubjectLiftMaskRequest，Vision 框架级抠图 API，第三方 App 可调用，精度与原生完全一致，完全免费。<strong>任何 iOS 16+ 设备都可以用。</strong></p>
+<p style="margin-top:6px;">iOS 17+（2023年9月）：Live Stickers，实况照片提取动画贴纸，系统级贴纸库，通过 emoji 键盘在任意 App 使用（含 WhatsApp/Telegram）。<strong>但必须是 Live Photo，普通照片不行。</strong></p>
+<p style="margin-top:6px;">iOS 18（2024年9月）：增强视觉搜索（Enhanced Visual Search），照片可选择上传 Apple 服务器分析（可关闭），隐私可控。</p>
+<p style="margin-top:6px;"><strong>局限性：</strong>①贴纸库无分类/标签/搜索 ②300张以上会删除最旧的 ③换手机贴纸全丢 ④不能在手帐画布上叠加创作</p>
+</div>
+
+<!-- Google Pixel -->
+<div class="tech-card" style="border-left:3px solid #4285f4;">
+<h4>🔵 Google Pixel：AI最强，但定位不同</h4>
+<p>Magic Eraser（物体消除）：Google Photos 内置，圈住不想要的内容→AI消除并填充背景。<strong>不是抠图提取，是消除物体</strong>——抠出来的东西直接没了，不存在了。</p>
+<p style="margin-top:6px;">Magic Editor（物体重布局）：移动/缩放/删除照片中的人物或物体，AI生成填充背景。不是提取，是编辑修改。</p>
+<p style="margin-top:6px;">Best Take：多张照片选择最佳面部表情，合成一张自然合影。</p>
+<p style="margin-top:6px;"><strong>关键问题：Pixel 的 AI 是"消除+重编"，不是"提取+保存"。不能提取主体为 PNG 贴纸。</strong></p>
+</div>
+
+<!-- 小米 -->
+<div class="tech-card" style="border-left:3px solid #ff6600;">
+<h4>🟠 小米 HyperOS：进步最快的中国厂商</h4>
+<p>Photo Cutout（照片提取）：相册→长按主体→Creativity→Cutout，可提取主体，生成透明背景 PNG，可分享。这是<strong>真正支持提取+保存为 PNG</strong>的中国厂商功能。</p>
+<p style="margin-top:6px;">HyperOS 2.0（2025年7月更新）：AI Matting 2.0，精度大幅提升，支持多主体分割，可替换背景为动态效果（时间/位置/天气），新增<strong>动态贴纸（Animated Stickers）</strong>、拼图模板、自定义模板。</p>
+<p style="margin-top:6px;"><strong>局限性：</strong>①分享给朋友后即用即弃，没有个人贴纸库 ②不同设备（小米/红米/POCO）能力不一致 ③没有跨 App 调用能力 ④不能在手帐画布使用</p>
+</div>
+
+<!-- 三星 -->
+<div class="tech-card" style="border-left:3px solid #1428a0;">
+<h4>🟣 三星 Galaxy AI：功能全，但分散</h4>
+<p>One UI 6/7 内置 Galaxy AI 相册能力：</p>
+<p style="margin-top:4px;">① Generative Edit：移动/消除/缩放对象，AI生成填充 ② Edit Suggestions：AI自动识别可优化的内容并推荐 ③ Best Take：面部表情合成 ④ Photo Assist：AI主体识别+重编辑</p>
+<p style="margin-top:6px;">自定义贴纸（One UI 7）：相册→选择照片→Lasso工具圈选→Save保存为图片。贴纸可以添加到 Gallery，可以设为头像，可以分享。<strong>这是三星真正在做"贴纸提取"的地方。</strong></p>
+<p style="margin-top:6px;"><strong>局限性：</strong>①Lasso是手画，不是AI自动识别主体 ②没有系统级贴纸库（像iOS那种emoji键盘集成） ③Galaxy AI部分功能需要云端处理 ④贴纸以图片形式存在，无法在第三方 App 里直接调用</p>
+</div>
+
+<!-- OPPO -->
+<div class="tech-card" style="border-left:3px solid #00d084;">
+<h4>🟢 OPPO ColorOS：AI功能丰富，但方向不同</h4>
+<p>ColorOS 15/16 内置 AI 相册能力：</p>
+<p style="margin-top:4px;">① AI Eraser：消除照片中不需要的物体（类似Magic Eraser） ② AI Unblur：模糊照片清晰化 ③ AI Reflection Remover：去除玻璃反光 ④ AI Studio：AI生成形象照、风格照等</p>
+<p style="margin-top:6px;">ColorOS 16（2025年10月）：AI Perfect Shot（多照片合成最佳表情）、Group Photo Composer（AI补全合影缺失人物）。</p>
+<p style="margin-top:6px;"><strong>局限：</strong>OPPO的AI方向是"消除"和"合成"，不是"提取+保存为可复用贴纸"。ColorOS没有对标iOS Live Stickers的系统级贴纸功能。</p>
+</div>
+
+<!-- Vivo -->
+<div class="tech-card" style="border-left:3px solid #00bcd4;">
+<h4>🔷 Vivo OriginOS：进步中，但生态较弱</h4>
+<p>OriginOS 6（Android 16 base，2025年）：AI 能力大幅提升，但主要方向是 UI 创新和 AI 助手。AI 图像编辑能力相比小米/OPPO 较弱，没有明确的"贴纸提取"功能定位。</p>
+<p style="margin-top:6px;"><strong>局限：</strong>Vivo 的 AI 能力主要靠与 Google 合作（Gemini Nano），自有 AI 能力相对少。全球市场份额中 Vivo 主要靠低端机，高端机型的 AI 功能落地较慢。</p>
+</div>
+
+<!-- 华为 -->
+<div class="tech-card" style="border-left:3px solid #cf102d;">
+<h4>🔴 华为鸿蒙：能力最强，但最封闭</h4>
+<p>HarmonyOS / EMUI 内置 AI Cutout：相册中长按主体→提取为贴纸，可以保存到本地。可以去除背景，也支持智能裁剪。</p>
+<p style="margin-top:6px;">HiAI Foundation（麒麟芯片 NPU）：华为自研 NPU 运行 AI 模型，抠图在设备上完成，功耗低，精度高。从硬件到软件自主可控，技术上非常强。</p>
+<p style="margin-top:6px;"><strong>致命问题：</strong>华为手机没有 Google Mobile Services（GMS），ML Kit 无法使用。HMS Core（Huawei Mobile Services）有自己的 AI 能力，但第三方开发者接入门槛高，不兼容国际主流开发框架（如 Capacitor/Flutter 的部分插件）。</p>
+</div>
+
+<div class="ergou-box">
+<h4>📣 落地可行性综合判断</h4>
+<p>俺来逐个回答：<strong>能不能落地？落地效果如何？</strong></p>
+<p style="margin-top:8px;"><strong>iOS：完全可落地。</strong>Vision 框架抠图免费高精度，用户基数大（iPhone在中国城市用户中占比40%+），国内 iOS 用户付费意愿强。优先做 iOS 版本。</p>
+<p style="margin-top:6px;"><strong>小米：可以落地。</strong>HyperOS 2.0 的 AI Matting 2.0 和动态贴纸功能跟俺们的方向高度重合，用户已经有"贴纸提取"的使用习惯，教育成本低。可以直接对接小米生态做联合。</p>
+<p style="margin-top:6px;"><strong>三星：可以落地。</strong>Galaxy 用户（尤其S系列/Z折叠屏）消费能力强，愿意为创作付费。但三星没有系统级贴纸库，俺们的"统一贴纸库+画布创作"对他们有真实价值。</p>
+<p style="margin-top:6px;"><strong>OPPO：部分可落地。</strong>AI Eraser 方向偏消除，不是提取。需要评估是否有贴纸提取 API。ColorOS 16的 AI Studio 可能提供更多能力。</p>
+<p style="margin-top:6px;"><strong>Vivo：较难落地。</strong>AI 能力相对弱，OriginOS 碎片化，第三方开发资源少。</p>
+<p style="margin-top:6px;"><strong>华为：最难落地。</strong>虽然技术能力强，但 GMS 缺失导致技术方案完全独立，开发成本高。建议<strong>后期（用户量上来后）单独做华为版本</strong>，用 HMS Core + 鸿蒙专属 API。</p>
+</div>
+</div>
+
+<aside class="lead-sidebar">
+<div class="sidebar-block"><h4>厂商能力矩阵（俺的评分）</h4>
+<ul class="brief-list">
+<li><span class="tag-green">🍎 iOS 16+</span>⭐⭐⭐⭐⭐ 抠图强，贴纸弱</li>
+<li><span class="tag-green">🟠 小米 HyperOS 2</span>⭐⭐⭐⭐ 贴纸+动态，有开放趋势</li>
+<li><span class="tag-blue">🟣 三星 One UI 7</span>⭐⭐⭐ 功能分散，lasso较土</li>
+<li><span class="tag-blue">🟢 OPPO ColorOS 16</span>⭐⭐⭐ AI强但偏消除</li>
+<li><span class="tag-blue">🔷 Vivo OriginOS 6</span>⭐⭐ 能力较弱</li>
+<li><span class="tag-red">🔴 华为鸿蒙</span>⭐⭐ 技术强但封闭</li>
+</ul>
+</div>
+<div class="sidebar-block"><h4>落地优先级建议</h4>
+<ul class="brief-list">
+<li><span class="tag-green">P0</span>iOS（Vision框架，最优先）</li>
+<li><span class="tag-green">P0</span>小米（HyperOS，最快安卓落地）</li>
+<li><span class="tag-blue">P1</span>三星（有消费力，需单独适配）</li>
+<li><span class="tag-blue">P1</span>OPPO（有潜力，需调研API）</li>
+<li><span class="tag-blue">P2</span>Vivo（后期再说）</li>
+<li><span class="tag-red">P3</span>华为（独立方案，后期进入）</li>
+</ul>
+</div>
+<div class="sidebar-block"><h4>技术方案对照</h4>
+<ul class="brief-list">
+<li><span class="tag-gold">iOS</span>Vision框架（免费，本机）</li>
+<li><span class="tag-gold">小米</span>HyperOS AI Matting（免费，本机）</li>
+<li><span class="tag-gold">三星</span>Lasso API + 第三方抠图SDK</li>
+<li><span class="tag-gold">OPPO</span>需实测 ColorOS API</li>
+<li><span class="tag-gold">通用Android</span>Google ML Kit（免费，本机）</li>
+<li><span class="tag-gold">华为</span>HMS ML Kit（独立方案）</li>
+</ul>
+</div>
+<div class="sidebar-block"><h4>落地结论</h4>
+<ul class="brief-list">
+<li><span class="tag-green">✅ 可落地</span>iOS + 小米优先，1-2个月内出MVP</li>
+<li><span class="tag-green">✅ 效果好</span>iOS用户付费意愿高，粘性强</li>
+<li><span class="tag-green">✅ 差异化</span>画布创作+云同步是各厂商都没有的</li>
+<li><span class="tag-red">⚠️ 华为</span>成本高，后期单独进</li>
+</ul>
+</div>
+</aside>
+</div>
+</div>
+
+
+<!-- ========== 抠图SDK技术对接方案 ========== -->
+<div class="section-block">
+<div class="section-title">🔧 抠图SDK技术对接方案</div>
+<div class="lead-row">
+<div class="lead-main">
+<div class="lead-tag">TECHNICAL INTEGRATION</div>
+<h2 class="lead-title">各厂商抠图怎么对接？有没有SDK直接用？</h2>
+<p class="lead-subtitle">俺来逐个说清楚：哪些有官方SDK，哪些只能自己集成，以及代码长什么样</p>
+
+<div class="data-strip">
+<div class="data-item"><span class="data-num">Vision框架</span><span class="data-label">iOS 唯一方案，免费</span></div>
+<div class="data-item"><span class="data-num">ML Kit</span><span class="data-label">Android 主方案，免费</span></div>
+<div class="data-item"><span class="data-num">Capacitor插件</span><span class="data-label">跨平台，5行代码</span></div>
+<div class="data-item"><span class="data-num">¥0</span><span class="data-label">主力机型抠图成本</span></div>
+</div>
+
+<div class="tech-card" style="border-left:3px solid #1a1a1a;">
+<h4>🍎 iOS：Vision 框架（唯一方案）</h4>
+<p><strong>SDK：</strong>Vision.framework（系统内置，无需安装，无需申请，无需付费）</p>
+<p style="margin-top:6px;"><strong>核心API：</strong><code>VNGenerateSubjectLiftMaskRequest</code></p>
+<p style="margin-top:6px;"><strong>调用方式（Swift，10行代码）：</strong></p>
+<pre style="background:#1a1a1a;color:#f0f0f0;padding:12px;border-radius:4px;font-size:11px;margin-top:8px;overflow-x:auto;">
+import Vision
+// 1. 加载图片
+let inputImage = CIImage(cvPixelBuffer: pixelBuffer)
+// 2. 创建请求
+let request = VNGenerateSubjectLiftMaskRequest()
+// 3. 执行请求
+let handler = VNImageRequestHandler(ciImage: inputImage)
+try handler.perform([request])
+// 4. 获取结果（mask）
+if let result = request.results?.first {
+    let maskPixelBuffer = result.generateScaledMaskForImage(for: result observation, pixelFormat: .integer32)
+    // 5. 应用mask到原图 → 透明背景PNG
+}
+</pre>
+<p style="margin-top:8px;"><strong>关键信息：</strong></p>
+<ul style="font-size:12px;color:var(--text-light);line-height:1.7;margin-top:4px;list-style:disc;padding-left:16px;">
+<li>无需申请，无需配置，Xcode内置</li>
+<li>iOS 16+ 所有设备支持</li>
+<li>完全免费，不限调用次数</li>
+<li>在设备上运行（Neural Engine），无需联网</li>
+<li>支持多主体分割（iOS 17+）</li>
+<li>Capacitor 官方插件支持：<code>@capactor-mlkit/subject-segmentation</code>（iOS端调用的就是Vision）</li>
+</ul>
+</div>
+
+<div class="tech-card" style="border-left:3px solid #4285f4;">
+<h4>🤖 Android：Google ML Kit（主方案）</h4>
+<p><strong>SDK：</strong>com.google.mlkit:subject-segmentation（Google官方，需添加依赖）</p>
+<p style="margin-top:6px;"><strong>Gradle依赖（Android）：</strong></p>
+<pre style="background:#1a1a1a;color:#f0f0f0;padding:12px;border-radius:4px;font-size:11px;margin-top:8px;overflow-x:auto;">
+// build.gradle
+dependencies {
+    implementation("com.google.mlkit:subject-segmentation:16.0.0-beta1")
+}
+</pre>
+<p style="margin-top:8px;"><strong>Kotlin代码（10行）：</strong></p>
+<pre style="background:#1a1a1a;color:#f0f0f0;padding:12px;border-radius:4px;font-size:11px;margin-top:8px;overflow-x:auto;">
+// 1. 从Bitmap创建InputImage
+val image = InputImage.fromBitmap(bitmap, 0)
+// 2. 创建分割器
+val segmenter = SubjectSegmenter.getClient(
+    SubjectSegmenterOptions.newBuilder()
+        .enableForegroundBitmap()  // 主体前景图（抠好啦）
+        .build()
+)
+// 3. 执行
+segmenter.process(image)
+    .addOnSuccessListener { result ->
+        val foregroundBitmap = result.foregroundBitmap
+        // foregroundBitmap 就是抠好的透明背景图！
+    }
+</pre>
+<p style="margin-top:8px;"><strong>关键信息：</strong></p>
+<ul style="font-size:12px;color:var(--text-light);line-height:1.7;margin-top:4px;list-style:disc;padding-left:16px;">
+<li>完全免费，无需API Key</li>
+<li>在设备GPU上运行，不需要联网</li>
+<li>需要 Google Play Services（国内手机可能没有）</li>
+<li>支持多主体分割</li>
+<li>跨平台：Android + iOS（通过ML Kit）</li>
+</ul>
+</div>
+
+<div class="tech-card" style="border-left:3px solid #00d084;">
+<h4>🔗 跨平台开发：Capacitor（俺们推荐的方案）</h4>
+<p>如果用 Capacitor（前端代码跑 iOS/Android/小程序），有官方插件直接对接 ML Kit，不需要写原生代码：</p>
+<p style="margin-top:6px;"><strong>插件：</strong><code>@capacitor-mlkit/subject-segmentation</code></p>
+<pre style="background:#1a1a1a;color:#f0f0f0;padding:12px;border-radius:4px;font-size:11px;margin-top:8px;overflow-x:auto;">
+// 安装
+npm install @capacitor-mlkit/subject-segmentation
+npx cap sync
+
+// TypeScript 调用
+import { SubjectSegmentation } from '@capacitor-mlkit/subject-segmentation';
+
+const result = await SubjectSegmentation.processImage({ path: 'photo.jpg' });
+console.log(result.path); // 抠好后的PNG路径
+</pre>
+<p style="margin-top:8px;"><strong>为什么推荐 Capacitor：</strong></p>
+<ul style="font-size:12px;color:var(--text-light);line-height:1.7;margin-top:4px;list-style:disc;padding-left:16px;">
+<li>一套代码跑 iOS + Android + 小程序 + Web</li>
+<li>iOS 端调用 Vision 框架，Android 端调用 ML Kit</li>
+<li>封装好，不需要写原生代码</li>
+<li>插件官方维护，支持 Capacitor 7</li>
+<li>Flutter 用户可用 <code>google_mlkit_subject_segmentation</code>（pub.dev）</li>
+</ul>
+</div>
+
+<div class="tech-card" style="border-left:3px solid #ff6600;">
+<h4>📱 各厂商独立SDK情况</h4>
+<p><strong>小米：</strong>HyperOS 的抠图能力没有官方对外 SDK，是系统级功能。第三方 App 无法直接调用，只能通过用户手动在相册里操作后，再从相册分享出来（通过系统分享面板）。但 HyperOS 2.0 新增了开发者 API，具体需要申请内测资格。</p>
+<p style="margin-top:6px;"><strong>三星：</strong>Galaxy SDK 主要提供 IAP（内购）和远程测试实验室，没有专门的抠图 SDK。三星的 AI 抠图能力（Photo Assist）不对外开放。</p>
+<p style="margin-top:6px;"><strong>OPPO：</strong>ColorOS 的 AI Eraser 同样没有官方对外 SDK，AI 能力封装在相册 App 里，不对第三方开放。</p>
+<p style="margin-top:6px;"><strong>华为：</strong>HMS Core 有华为自己的 ML Kit（HiAI），但跟 Google ML Kit 不兼容，需要单独接入。文档是中文的，但社区资源少，国际化程度低。</p>
+<p style="margin-top:6px;"><strong>Google Pixel：</strong>Magic Eraser 是 Google Photos 内置功能，没有 SDK，但 Google ML Kit 本身就在 Pixel 上运行，所以用 ML Kit 在 Pixel 上效果最好。</p>
+</div>
+
+<div class="ergou-box">
+<h4>📣 俺的建议</h4>
+<p>结论很清楚了：</p>
+<p style="margin-top:8px;"><strong>有官方SDK的：</strong></p>
+<ul style="font-size:12px;color:var(--text-light);line-height:1.7;margin-top:4px;list-style:disc;padding-left:16px;margin-bottom:8px;">
+<li>🍎 iOS → Vision 框架（免费，系统内置，最稳定）</li>
+<li>🤖 Android → Google ML Kit（免费，官方维护）</li>
+</ul>
+<p><strong>没有官方SDK的：</strong></p>
+<ul style="font-size:12px;color:var(--text-light);line-height:1.7;margin-top:4px;list-style:disc;padding-left:16px;">
+<li>小米/三星/OPPO → 用 Google ML Kit 兜底，这些厂商的系统本身也跑的是 Google ML Kit 或类似模型</li>
+<li>华为 → 用 HMS ML Kit（独立接入）或 Google ML Kit（如果HMS被规避）</li>
+</ul>
+<p style="margin-top:8px;">最务实的做法：<strong>直接用 ML Kit + Vision 做抠图，放弃对接各厂商私有SDK</strong>。ML Kit 精度已经足够好，而且跨所有 Android 厂商，不需要为每个厂商单独适配。</p>
+</div>
+</div>
+
+<aside class="lead-sidebar">
+<div class="sidebar-block"><h4>SDK/方案总结</h4>
+<ul class="brief-list">
+<li><span class="tag-green">🍎 iOS</span>Vision.framework（内置，最推荐）</li>
+<li><span class="tag-green">🤖 Android</span>Google ML Kit（免费，官方）</li>
+<li><span class="tag-green">🔗 跨平台</span>Capacitor插件（5行代码）</li>
+<li><span class="tag-blue">📱 小米</span>ML Kit 兜底（无官方SDK）</li>
+<li><span class="tag-blue">📱 三星</span>ML Kit 兜底（无官方SDK）</li>
+<li><span class="tag-blue">📱 OPPO</span>ML Kit 兜底（无官方SDK）</li>
+<li><span class="tag-red">📱 华为</span>HMS ML Kit（独立，需单独接入）</li>
+</ul>
+</div>
+<div class="sidebar-block"><h4>技术栈推荐</h4>
+<ul class="brief-list">
+<li><span class="tag-gold">前端框架</span>Vue/React + Capacitor</li>
+<li><span class="tag-gold">iOS抠图</span>Vision（Capacitor插件封装）</li>
+<li><span class="tag-gold">Android抠图</span>ML Kit（Capacitor插件封装）</li>
+<li><span class="tag-gold">后端</span>轻量，用户数据存云端</li>
+<li><span class="tag-gold">存储</span>七牛云/阿里云OSS（贴纸PNG）</li>
+</ul>
+</div>
+<div class="sidebar-block"><h4>接入成本</h4>
+<ul class="brief-list">
+<li><span class="tag-green">iOS Vision</span>0行原生代码，插件自带</li>
+<li><span class="tag-green">Android ML Kit</span>添加1行Gradle依赖</li>
+<li><span class="tag-green">Capacitor</span>npm install 2条命令</li>
+<li><span class="tag-green">总时间</span>抠图模块1-2天完成</li>
+</ul>
+</div>
+<div class="sidebar-block"><h4>俺的判断</h4>
+<p style="font-size:12px;line-height:1.7;color:var(--text-light);">不需要对接任何厂商私有SDK。Vision + ML Kit 的组合已经足够好，而且这两个本身就是各大厂商手机芯片级AI能力的体现。小米/OPPO/三星的所谓AI抠图，底层跑的都跟ML Kit差不多。</p>
+</div>
+</aside>
+</div>
+</div>
+
+<!-- ========== 商业模式 ========== -->
+<div class="section-block">
+<div class="section-title">💰 商业模式</div>
+<div class="lead-row">
+<div class="lead-main">
+<div class="lead-tag">BUSINESS MODEL</div>
+<h2 class="lead-title">免费+内购，手帐赛道的标准打法</h2>
+<p class="lead-subtitle">基础功能免费，高级功能付费，核心是让用户建立"我的贴纸库"</p>
+<p class="lead-summary">这个产品的护城河本质上是"我的贴纸库"——用户积累的贴纸越多，迁移成本越高。所以商业模式的核心逻辑是：先用免费抠图功能吸引用户 → 让他们积累了自己的贴纸库 → 贴纸库在手帐App里 → 付费解锁高级模板/云同步/去广告。</p>
+<div class="data-strip">
+<div class="data-item"><span class="data-num">免费</span><span class="data-label">每天5张抠图</span></div>
+<div class="data-item"><span class="data-num">¥18/月</span><span class="data-label">会员：无限抠图+云同步</span></div>
+<div class="data-item"><span class="data-num">¥28</span><span class="data-label">贴纸模板包（一次性）</span></div>
+<div class="data-item"><span class="data-num">¥6-28</span><span class="data-label">单张手帐模板</span></div>
+</div>
+<div class="mid-section" style="grid-template-columns:repeat(2,1fr);">
+<div class="mid-card"><h4>会员订阅（主力收入）</h4><p>¥18/月 or ¥128/年<br>无限抠图 + 贴纸云同步（100GB）+ 无广告 + 高级模板库<br>目标转化率：5-8%（参考剪映/醒图）</p></div>
+<div class="mid-card"><h4>贴纸/模板商店</h4><p>平台设计师/用户上传模板<br>抽成30-40%<br>也可以卖素材包，¥6-28/个</p></div>
+<div class="mid-card"><h4>品牌合作素材</h4><p>优衣库/可口可乐等品牌授权素材<br>用户可用品牌贴纸做手帐<br>品牌付授权费+曝光费</p></div>
+<div class="mid-card"><h4>小红书/抖音导流</h4><p>用户在App内做的手帐可以一键分享<br>平台补贴（创作激励计划）<br>导流到电商（手帐本/文具）</p></div>
+</div>
+<div class="ergou-box">
+<h4>📣 二狗点评</h4>
+<p>俺觉得最值钱的不是会员费，是"贴纸库在手帐里"这件事。手帐是高频打开的东西，一旦用户习惯在这里做手帐，会员续费是自然而然的。但前提是——抠图精度要够好，贴纸边缘不能有白边，这个坑踩不得。</p>
+</div>
+</div>
+<aside class="lead-sidebar">
+<div class="sidebar-block"><h4>变现优先级</h4>
+<ul class="brief-list">
+<li><span class="tag-green">P0</span>会员订阅（核心）</li>
+<li><span class="tag-green">P1</span>模板/贴纸商店</li>
+<li><span class="tag-blue">P2</span>品牌合作素材</li>
+<li><span class="tag-blue">P2</span>创作激励分成</li>
+<li><span class="tag-blue">P3</span>打印服务（贴纸实物化）</li>
+</ul>
+</div>
+<div class="sidebar-block"><h4>成本估算（月）</h4>
+<ul class="brief-list">
+<li>抠图：Vision框架（免费）+ ML Kit（免费）</li>
+<li>OSS存储（10万贴纸）：~¥50</li>
+<li>CDN带宽：~¥200</li>
+<li>服务器（轻量）：~¥100</li>
+<li><strong>合计：~¥600/月（无API成本）</strong></li>
+</ul>
+</div>
+</aside>
+</div>
+</div>
+
+<!-- ========== 研发路线 ========== -->
+<div class="section-block">
+<div class="section-title">🗺️ 研发路线</div>
+<div class="lead-row">
+<div class="lead-main">
+<div class="lead-tag">ROADMAP</div>
+<h2 class="lead-title">MVP 4-6周，完整版 12-16 周</h2>
+<p class="lead-subtitle">先做核心闭环，快速验证用户是否愿意"自己拍贴纸"</p>
+<p class="lead-summary">产品路线分三个阶段：MVP验证核心假设 → 完善体验沉淀用户 → 商业化+社区化。最关键的是MVP阶段能否验证"用户真的愿意自己拍东西做贴纸"，而不是用现成素材。</p>
+<div class="roadmap">
+<h4>第一阶段：MVP（4-6周）</h4>
+<div class="roadmap-item"><div class="roadmap-week">Week1-2</div><div class="roadmap-content">抠图API接入（remove.bg）→ 单图抠图→PNG保存→本地贴纸库</div></div>
+<div class="roadmap-item"><div class="roadmap-week">Week3-4</div><div class="roadmap-content">手帐画布：拖拽+缩放+旋转+多图层→贴纸保存为手帐页</div></div>
+<div class="roadmap-item"><div class="roadmap-week">Week5-6</div><div class="roadmap-content">微信小程序内测→邀请种子用户测试→收集反馈</div></div>
+</div>
+<div class="roadmap" style="margin-top:10px;">
+<h4>第二阶段：完善（8-10周）</h4>
+<div class="roadmap-item"><div class="roadmap-week">Week7-8</div><div class="roadmap-content">云同步（用户账号+贴纸库云端存储）→贴纸标签分类管理</div></div>
+<div class="roadmap-item"><div class="roadmap-week">Week9-10</div><div class="roadmap-content">手帐模板市场→社区分享页（发布/点赞/收藏）</div></div>
+<div class="roadmap-item"><div class="roadmap-week">Week11-12</div><div class="roadmap-content">会员体系内测→抠图次数限制→高级模板解锁</div></div>
+</div>
+<div class="roadmap" style="margin-top:10px;">
+<h4>第三阶段：增长（持续）</h4>
+<div class="roadmap-item"><div class="roadmap-week">迭代</div><div class="roadmap-content">自部署rembg降成本→用户增长运营→小红书投放验证ROI</div></div>
+<div class="roadmap-item"><div class="roadmap-week">迭代</div><div class="roadmap-content">品牌合作素材引入→打印服务（实物手帐本）→平板端支持</div></div>
+</div>
+<div class="ergou-box">
+<h4>📣 二狗提醒</h4>
+<p>做MVP阶段最重要的一件事：问用户"你愿意分享你的手帐到小红书吗？"如果用户不愿意，说明产品没有社交传播属性。如果愿意，恭喜你，你的产品自带传播因子——因为"自己拍的路边的树"天然就是适合发小红书的内容。</p>
+</div>
+</div>
+<aside class="lead-sidebar">
+<div class="sidebar-block"><h4>研发成本估算</h4>
+<ul class="brief-list">
+<li>1个全栈（Flutter+后端）：¥2-3万/月</li>
+<li>1个UI设计师：¥1-1.5万/月</li>
+<li>抠图API成本（初期）：可忽略</li>
+<li><strong>MVP总成本：¥12-20万</strong></li>
+</ul>
+</div>
+<div class="sidebar-block"><h4>验证指标</h4>
+<ul class="brief-list">
+<li><span class="tag-green">留存</span>次日留存 &gt; 40%（参考：手帐工具类平均35%）</li>
+<li><span class="tag-green">UGC</span>人均创建手帐 &gt; 3张/月</li>
+<li><span class="tag-green">传播</span>小红书话题标签曝光 &gt; 10万</li>
+<li><span class="tag-green">付费</span>会员转化率 &gt; 5%</li>
+</ul>
+</div>
+<div class="sidebar-block"><h4>风险预警</h4>
+<ul class="brief-list">
+<li><span class="tag-red">⚠️</span>醒图/美图可能3个月内跟进类似功能</li>
+<li><span class="tag-red">⚠️</span>抠图精度不达预期会直接影响口碑</li>
+<li><span class="tag-red">⚠️</span>用户拍不出好照片→体验归因错误→流失</li>
+</ul>
+</div>
+</aside>
+</div>
+</div>
+
+<!-- ========== 最终判断 ========== -->
+<div class="section-block">
+<div class="section-title">📌 二狗最终判断</div>
+<div class="lead-row">
+<div class="lead-main">
+<div class="verdict-box" style="margin-top:0;">
+<h4>🏁 综合评估</h4>
+<p>这个想法<strong>值得做</strong>，理由如下：</p>
+<p style="margin-top:8px;"><strong>① 差异化清晰</strong>：不做素材库模板，做用户原创。醒图/轻颜是工具，这个是"创作平台"，逻辑不同。</p>
+<p style="margin-top:6px;"><strong>② 技术成熟且成本趋零</strong>：iOS 用苹果 Vision 框架（VNGenerateSubjectLiftMaskRequest）抠图完全免费，精度与苹果原生一致。Android 用 Google ML Kit 同样免费。API 成本可以降到 0。</p>
+<p style="margin-top:6px;"><strong>③ 小红书天然传播</strong>：用户自己拍的手帐图片天然适合发小红书，可以省大量推广费。</p>
+<p style="margin-top:6px;"><strong>④ 护城河够宽</strong>：一旦用户积累了几百张自己的贴纸，迁移成本极高够高，用户不会轻易换平台。</p>
+<p style="margin-top:8px;"><strong>⑤ 小程序验证成本低</strong>：微信小程序可以快速验证，不需要做App Store审核。</p>
+</div>
+<div class="verdict-box" style="margin-top:12px;">
+<h4>⚠️ 核心风险</h4>
+<p>最大的风险不是醒图跟进，而是<strong>产品定位不清</strong>。苹果已经做了免费抠图，俺们的差异化必须体现在"创作"而不是"提取"。如果只做"更好的抠图工具"，那是跟苹果正面竞争，死路一条。但如果是"原创手帐平台"，那就是另一个故事了。</p>
+</div>
+<div class="verdict-box" style="margin-top:12px;">
+<h4>🚀 下一步行动建议</h4>
+<p>如果大哥真的要推进，俺建议：<strong>第一件事</strong>，先测试苹果 Vision 框架的抠图精度（免费），用 iPhone 照片实测——如果精度够用，就不需要 BRIA RMBG 了，成本大幅降低。等 iOS 端跑通了，再做 Android 端 ML Kit 的方案对比。</p>
+</div>
+</div>
+<aside class="lead-sidebar">
+<div class="sidebar-block"><h4>一句话总结</h4>
+<p class="brief-list" style="font-size:13px;line-height:1.7;color:var(--text);">想法有价值，差异化够，技术成熟。建议先做抠图精度测试，再决定是否投入开发。</p>
+</div>
+<div class="sidebar-block"><h4>俺的建议优先级</h4>
+<ul class="brief-list">
+<li><span class="tag-green">1️⃣</span>iPhone Vision框架抠图测试（免费）</li>
+<li><span class="tag-green">2️⃣</span>微信小程序MVP（4-6周）</li>
+<li><span class="tag-blue">3️⃣</span>种子用户内测</li>
+<li><span class="tag-blue">4️⃣</span>会员体系上线</li>
+<li><span class="tag-blue">5️⃣</span>小红书话题运营</li>
+</ul>
+</div>
+</aside>
+</div>
+
+</div>
+<footer class="footer">
+<div>村口情报社 · 电子手帐贴纸App调研报告 · 2026年4月8日</div>
+<div>内容来源：公开信息整理 · AI整理·公开信息汇编 | @来一杯绿豆冰沙 提案 · 二狗 调研</div>
+</footer>
+</div>
+</body>
+</html>

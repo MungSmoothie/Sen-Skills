@@ -54,56 +54,64 @@ python3 /home/claw/.openclaw/workspace/scripts/send_html_email_with_attachment.p
 - 179621078@qq.com
 - hakusai22@qq.com
 - 536574781@qq.com
+- 1435161527hls@gmail.com
+- kano520lmy@gmail.com
 
 ### 编码注意
 - Subject 和 From 头部使用 RFC 2047 标准格式：`=?utf-8?B?<base64>?=`
 - From 格式：`=?utf-8?B?<村口情报社>?= <2323831454@qq.com>`
+
+## 群聊回复规范（重要，必须遵守）
+
+**回复任何消息之前，必须先查 AGENTS.md 确认 sender_id 与用户名的映射关系，再决定如何称呼。绝不能不查就回复。**
+
+### 成员映射表
+- `8652589172` = 开哥
+- `7917279907` = 大哥 (森哥)
+- `1245445176` = 群主大人
+
+### 回复流程
+1. 收到消息 → 从 metadata 提取 sender_id
+2. 查 AGENTS.md → 找到对应称呼
+3. 用正确称呼回复
+
+### 禁止事项
+- 不查映射表就直接回复
+- 凭名字/语气/头像判断身份（sender_id 才是唯一依据）
 
 ## 真实性要求
 - 必须有2个以上来源交叉验证
 - 不得虚构新闻、数据、股价
 - 不得输出"整理中""待补充"等占位文本
 
----
 
-## 小动物科研培训平台（2026-03-27）
 
-### 知识库
-- GitHub repo: `MungSmoothie/xkjt-knowledge`
-- GitHub Pages: `https://mungsmoothie.github.io/xkjt-knowledge/`
-- 知识库根目录: `/home/claw/.openclaw/workspace/knowledge-base/`
-- 16个HTML页面，涵盖12个调研模块
+## 电子手帐贴纸App项目（2026-04-08）
 
-### 关键文档
-- 功能树状图 v4: `tree.html`
-- 概要设计: `概要设计.html`（10章节，系统架构/技术选型/功能/数据库/接口/安全/部署/计划/成本）
-- Phase 1 详细设计: `一期功能详细设计.html`（8章节，含设备码管理详细规则）
-- 三期开发规划 Excel: `小动物科研培训平台_三期开发规划.xlsx`
-- 全流程开发规划 Excel: `小动物科研培训平台_全流程开发规划.xlsx`
+### 调研结论
+大哥的想法：做一个电子手帐App，用户拍照片→AI抠图→存为PNG贴纸→粘到手帐画布上创作。
 
-### 核心业务规则（袁开琳确认）
-- **设备码仅支持手动单个添加 + Excel批量导入，不提供自动生成功能**
-- 设备码格式：`XK-{类型}-{日期(YYYYMMDD)}-{序号(4位)}`，如 `XK-US-20260327-0001`
-- 设备码类型：US（超声类）、IC（设备操作类）、MX（混合全解锁）
-- Phase 1 先不做自动生成
+### 核心结论
+- **可以做** ✅，差异化在"用户原创贴纸"而非素材库
+- **技术可行**：iOS Vision框架 + Android ML Kit 抠图完全免费（0 API成本）
+- **落地优先级**：iOS P0 > 小米 HyperOS P0 > 三星/OPPO P1 > 华为 P3
+- **不需要对接厂商私有SDK**，ML Kit + Vision 足够
 
-### 技术栈
-- 前端: Next.js + 微信小程序（Phase 2）
-- 后端: NestJS / Go
-- 数据库: MySQL + Redis
-- 视频: 腾讯云VOD + flv.js/HLS
-- 直播: 腾讯云CSS（Phase 2）
-- CDN: Cloudflare + 腾讯云
-- 支付: 微信/支付宝聚合支付
+### 技术方案
+- 前端：Vue/React + Capacitor（一套代码跑iOS/Android/小程序）
+- iOS抠图：Vision框架（Capacitor插件封装）
+- Android抠图：Google ML Kit（Capacitor插件）
+- 存储：七牛云/阿里云OSS（贴纸PNG）
+- 成本：主力机型¥0（无API费用）
 
-### 开发计划
-- 调研准备: 15天 ¥17,600
-- Phase 1: 26天 ¥30,400（核心功能：视频点播+会员+支付+设备码管理）
-- Phase 2: 30天 ¥24,000（直播+社区+B端+CMS）
-- Phase 3: 23天 ¥18,400（搜索+设备SDK+报表）
-- 上线发布: 6天 ¥4,800
-- 合计: ~100天 ¥95,200
+### 竞品分析
+- 苹果iOS：有贴纸库但无分类/无创作画布/无云同步
+- 安卓：碎片化，无统一贴纸体系，竞争弱
+- 醒图/轻颜：工具，不是平台
 
-### 联系人
-- 袁开琳 (8652589172): 产品/需求方
-- 绿豆冰沙/大哥 (7917279907): 社长
+### 商业化
+- 免费+内购（会员订阅+模板商店）
+- 护城河：用户积累的贴纸库，迁移成本高
+
+### 存档位置
+- 完整调研报告：memory/projects/sticker-app/research-2026-04-08.html
