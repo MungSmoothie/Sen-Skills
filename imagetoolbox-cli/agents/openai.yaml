@@ -1,0 +1,4 @@
+interface:
+  display_name: "ImageToolBox CLI"
+  short_description: "Portable CLI image processing"
+  default_prompt: "Use $imagetoolbox-cli to split assets, remove backgrounds, or normalize image exports."
