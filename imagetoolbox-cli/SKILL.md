@@ -10,8 +10,8 @@ Use this skill to call the bundled ImageToolBox CLI from the shell without start
 ## Core Workflow
 
 1. Choose the mode from the user request:
-   - `split`: split sticker/icon/asset sheets into separate images.
-   - `remove`: remove a background and produce transparent output.
+   - `split`: split sticker/icon/asset sheets into separate images. Transparent sheets use alpha-aware grouping so nearby separated strokes can stay together while low-alpha bridges are ignored.
+   - `remove`: remove a background and produce transparent output. Existing transparent PNGs are passed through; solid-color material backgrounds are auto-detected from the outer 5px border before fallback.
    - `dual`: use black/white background versions or a left/right dual-background image.
    - `normalize`: trim and standardize transparent asset exports.
    - `crop-boxes`: crop explicit pixel boxes supplied by another tool or user.
@@ -60,11 +60,15 @@ python3 $HOME/.codex/skills/imagetoolbox-cli/scripts/run_imagetoolbox.py --valid
 
 If `--output_dir` is omitted, the wrapper writes to `./imagetoolbox_outputs/<command>-<id>/` in the current directory.
 
+For black/white dual-background sheets, run `dual` first and then run `split` on the transparent output. The transparent split path uses strong-alpha seeds plus nearby-fragment grouping, which is usually better than splitting the original combined image directly.
+
 Remove background:
 
 ```bash
-python3 $HOME/.codex/skills/imagetoolbox-cli/scripts/run_imagetoolbox.py --validate-json process ./product.jpg --mode=remove --sample_color=#ffffff --tolerance=50
+python3 $HOME/.codex/skills/imagetoolbox-cli/scripts/run_imagetoolbox.py --validate-json process ./product.jpg --mode=remove
 ```
+
+For UI icons, sprites, and illustrations on white/green/blue/black/gray or other solid backgrounds, omit `--sample_color` first so the CLI can use the color-key fast path. Use `--sample_color` only when forcing a specific background color.
 
 Dual-background cutout:
 

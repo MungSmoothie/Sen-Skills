@@ -13,8 +13,8 @@
 
 ## Modes
 
-- `split`: split sticker/icon/asset sheets.
-- `remove`: remove background.
+- `split`: split sticker/icon/asset sheets. Transparent inputs use alpha-aware grouping to keep close separated strokes together and avoid low-alpha bridges merging unrelated items.
+- `remove`: remove background. Existing transparent PNGs are passed through; solid-color material backgrounds are auto-detected from the outer 5px border, color-keyed in HSV, and cleaned with close/open morphology before fallback.
 - `dual`: black/white dual-background cutout from one left/right image or two matched images.
 - `normalize`: trim and standardize transparent asset exports.
 - `crop-boxes`: crop explicit pixel boxes.
@@ -27,7 +27,7 @@ On a new machine, install dependencies from the bundled runtime:
 python3 $HOME/.codex/skills/imagetoolbox-cli/scripts/run_imagetoolbox.py --install-deps
 ```
 
-This installs Flask, Pillow, rembg, and fire. The CLI does not require the Flask web server to run.
+This installs Flask, Pillow, numpy, OpenCV headless, rembg, and fire. The CLI does not require the Flask web server to run.
 
 Run a small health check:
 
@@ -59,6 +59,10 @@ Parameters:
 - `--cutout_engine=edge|ai`
 - `--split_profile=standard|sticker|icon`
 - `--sample_color=#ffffff`
+
+For `remove`, omit `--sample_color` first on UI icons, game sprites, and illustrations with solid white/green/blue/black/gray or other pure-color backgrounds. Passing `--sample_color` bypasses auto color-key detection and forces the explicit-color path.
+
+For black/white dual-background sheets, call `process --mode=dual` first, then call `process --mode=split` on the generated transparent PNG. Splitting the original combined image directly is unreliable because the left and right halves contain different background colors.
 
 ## Crop Boxes Command
 

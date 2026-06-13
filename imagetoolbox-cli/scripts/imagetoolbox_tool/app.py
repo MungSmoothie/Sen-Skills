@@ -10,6 +10,13 @@ from collections import deque
 from pathlib import Path
 from typing import Iterable
 
+try:
+    import cv2
+    import numpy as np
+except ImportError:
+    cv2 = None
+    np = None
+
 from flask import Flask, jsonify, request, send_file, send_from_directory
 from PIL import Image, ImageChops, ImageDraw, ImageFilter, ImageOps
 from werkzeug.utils import secure_filename
@@ -685,7 +692,10 @@ def unique_output_path(job_dir: Path, download_name: str, original_path: Path | 
 
 
 def remove_background_image(image: Image.Image, filename: str, job_dir: Path, params: dict):
-    if params["cutout_engine"] == "ai":
+    if image.getchannel("A").getextrema()[0] < 255:
+        transparent = image.copy()
+        mask = transparent.getchannel("A")
+    elif params["cutout_engine"] == "ai":
         transparent = professional_cutout(image)
         mask = transparent.getchannel("A")
     else:
@@ -926,10 +936,13 @@ def dual_background_cutout(black_image: Image.Image, white_image: Image.Image, p
 
 def split_image(image: Image.Image, filename: str, job_dir: Path, params: dict):
     mask = split_mask(image, params)
-    detection_mask = split_detection_mask(mask, params)
-    boxes = connected_boxes(detection_mask, split_min_area(params), diagonal=split_uses_diagonal(params))
-    if params["merge_distance"] > 0:
-        boxes = merge_split_boxes(boxes, params["merge_distance"])
+    if image.getchannel("A").getextrema()[0] < 255:
+        boxes = alpha_split_boxes(image, mask, params)
+    else:
+        detection_mask = split_detection_mask(mask, params)
+        boxes = connected_boxes(detection_mask, split_min_area(params), diagonal=split_uses_diagonal(params))
+        if params["merge_distance"] > 0:
+            boxes = merge_split_boxes(boxes, params["merge_distance"])
     boxes = [expand_box(box, image.size, params["padding"]) for box in boxes]
     boxes = filter_boxes(boxes, image.size)
     boxes = sort_boxes_in_rows(boxes)
@@ -1127,6 +1140,109 @@ def sanitize_box_payloads(payloads, size):
     return clean
 
 
+def alpha_split_boxes(image: Image.Image, visible_mask: Image.Image, params: dict):
+    alpha = image.getchannel("A")
+    core_threshold = alpha_core_threshold(params)
+    core_mask = alpha.point(lambda value: 255 if value >= core_threshold else 0)
+    min_area = max(4, min(split_min_area(params), 48))
+    core_boxes = connected_boxes(core_mask, min_area, diagonal=True)
+    if not core_boxes:
+        detection_mask = split_detection_mask(visible_mask, params)
+        return connected_boxes(detection_mask, split_min_area(params), diagonal=split_uses_diagonal(params))
+
+    groups = group_alpha_components(core_boxes, params)
+    boxes = [union_many(group) for group in groups]
+    boxes = attach_visible_alpha_haloes(boxes, visible_mask, params)
+    return merge_overlapping_boxes(boxes)
+
+
+def alpha_core_threshold(params: dict) -> int:
+    return max(64, min(160, 56 + int(params["tolerance"] * 0.45)))
+
+
+def group_alpha_components(boxes, params: dict):
+    groups = [[box] for box in boxes]
+    radius = alpha_group_radius(params)
+    changed = True
+    while changed:
+        changed = False
+        for left_index in range(len(groups)):
+            if changed:
+                break
+            left_box = union_many(groups[left_index])
+            for right_index in range(left_index + 1, len(groups)):
+                right_box = union_many(groups[right_index])
+                if alpha_components_belong_together(left_box, right_box, radius):
+                    groups[left_index].extend(groups.pop(right_index))
+                    changed = True
+                    break
+    return groups
+
+
+def alpha_group_radius(params: dict) -> int:
+    return max(14, min(28, 8 + params["merge_distance"] * 2))
+
+
+def alpha_components_belong_together(a, b, radius: int) -> bool:
+    gap_x, gap_y = box_gap(a, b)
+    distance = max(gap_x, gap_y)
+    if distance == 0:
+        return True
+    merged = union_box(a, b)
+    if not compact_alpha_group(merged):
+        return False
+    if tiny_alpha_fragment(a) or tiny_alpha_fragment(b):
+        return distance <= radius
+    return False
+
+
+def tiny_alpha_fragment(box) -> bool:
+    width = box[2] - box[0]
+    height = box[3] - box[1]
+    return width * height <= 700 or width <= 18 or height <= 18
+
+
+def compact_alpha_group(box) -> bool:
+    width = box[2] - box[0]
+    height = box[3] - box[1]
+    return width <= 128 and height <= 128
+
+
+def attach_visible_alpha_haloes(boxes, visible_mask: Image.Image, params: dict):
+    visible_boxes = connected_boxes(visible_mask, max(4, min(split_min_area(params), 32)), diagonal=True)
+    if not visible_boxes:
+        return boxes
+
+    attached = list(boxes)
+    radius = max(4, min(12, params["padding"] + 4))
+    for visible_box in visible_boxes:
+        matches = [
+            index
+            for index, box in enumerate(attached)
+            if boxes_touch(expand_box(box, visible_mask.size, radius), visible_box, 0)
+        ]
+        if len(matches) == 1 and visible_halo_belongs_to_box(visible_box, attached[matches[0]]):
+            attached[matches[0]] = union_box(attached[matches[0]], visible_box)
+    return attached
+
+
+def visible_halo_belongs_to_box(visible_box, core_box) -> bool:
+    if boxes_overlap(visible_box, core_box):
+        return True
+    if not tiny_alpha_fragment(visible_box):
+        return False
+    gap_x, gap_y = box_gap(visible_box, core_box)
+    return max(gap_x, gap_y) <= 10
+
+
+def union_many(boxes):
+    iterator = iter(boxes)
+    merged = next(iterator)
+    for box in iterator:
+        merged = union_box(merged, box)
+    return merged
+
+
 def split_mask(image: Image.Image, params: dict) -> Image.Image:
     alpha = image.getchannel("A")
     if alpha.getextrema()[0] < 255:
@@ -1191,39 +1307,192 @@ def split_min_area(params: dict) -> int:
     return params["min_area"]
 
 
+def solid_color_key_foreground_mask(image: Image.Image):
+    if cv2 is None or np is None:
+        return None
+
+    rgba = np.array(image.convert("RGBA"))
+    rgb = rgba[:, :, :3]
+    profile = solid_edge_background_profile(rgb)
+    if profile is None:
+        return None
+
+    hsv = cv2.cvtColor(rgb, cv2.COLOR_RGB2HSV)
+    background_mask = hsv_background_mask(hsv, profile)
+    kernel = np.ones((3, 3), np.uint8)
+    foreground = cv2.bitwise_not(background_mask)
+    foreground = cv2.morphologyEx(foreground, cv2.MORPH_CLOSE, kernel)
+    foreground = cv2.morphologyEx(foreground, cv2.MORPH_OPEN, kernel)
+
+    foreground_ratio = float(np.count_nonzero(foreground)) / foreground.size
+    if foreground_ratio < 0.01 or foreground_ratio > 0.99:
+        return None
+
+    return Image.fromarray(foreground), profile["rgb"]
+
+
+def solid_edge_background_profile(rgb):
+    height, width, _ = rgb.shape
+    band = max(1, min(5, width, height))
+    samples = np.concatenate(
+        [
+            rgb[:band, :, :].reshape(-1, 3),
+            rgb[height - band :, :, :].reshape(-1, 3),
+            rgb[:, :band, :].reshape(-1, 3),
+            rgb[:, width - band :, :].reshape(-1, 3),
+        ],
+        axis=0,
+    )
+    hsv_samples = cv2.cvtColor(samples.reshape(-1, 1, 3), cv2.COLOR_RGB2HSV).reshape(-1, 3).astype(np.float32)
+    hue = circular_hue_mean(hsv_samples[:, 0])
+    hue_std = circular_hue_std(hsv_samples[:, 0], hue)
+    sat_mean = float(np.mean(hsv_samples[:, 1]))
+    val_mean = float(np.mean(hsv_samples[:, 2]))
+    sat_std = float(np.std(hsv_samples[:, 1]))
+    val_std = float(np.std(hsv_samples[:, 2]))
+    color_type = classify_background_color(hue, sat_mean, val_mean)
+    if color_type is None:
+        return None
+
+    rgb_std = float(np.max(np.std(samples.astype(np.float32), axis=0)))
+    if color_type in {"white", "black", "gray"}:
+        if rgb_std > 10 or sat_std > 10 or val_std > 10:
+            return None
+    elif hue_std > 6 or sat_std > 18 or val_std > 18:
+        return None
+
+    rgb_median = np.median(samples, axis=0)
+    return {
+        "type": color_type,
+        "hue": hue,
+        "hue_std": hue_std,
+        "sat": sat_mean,
+        "sat_std": sat_std,
+        "val": val_mean,
+        "val_std": val_std,
+        "rgb": tuple(int(round(value)) for value in rgb_median),
+    }
+
+
+def classify_background_color(hue: float, sat: float, val: float):
+    if val >= 230 and sat <= 35:
+        return "white"
+    if val <= 35:
+        return "black"
+    if sat <= 30:
+        return "gray"
+    if 35 <= hue <= 95:
+        return "green"
+    if 90 <= hue <= 135:
+        return "blue"
+    if sat >= 45 and val >= 35:
+        return "color"
+    return None
+
+
+def hsv_background_mask(hsv, profile: dict):
+    color_type = profile["type"]
+    hue = int(round(profile["hue"]))
+    sat = int(round(profile["sat"]))
+    val = int(round(profile["val"]))
+
+    if color_type == "white":
+        sat_max = min(255, max(45, sat + 30))
+        val_min = max(0, min(245, val - 30))
+        return cv2.inRange(hsv, np.array([0, 0, val_min]), np.array([179, sat_max, 255]))
+    if color_type == "black":
+        val_max = min(255, max(55, val + 30))
+        return cv2.inRange(hsv, np.array([0, 0, 0]), np.array([179, 255, val_max]))
+    if color_type == "gray":
+        sat_max = min(255, max(45, sat + 30))
+        val_delta = max(30, int(round(profile["val_std"] * 3 + 20)))
+        return cv2.inRange(
+            hsv,
+            np.array([0, 0, max(0, val - val_delta)]),
+            np.array([179, sat_max, min(255, val + val_delta)]),
+        )
+
+    hue_delta = max(6, int(round(profile["hue_std"] * 3 + 2)))
+    sat_delta = max(35, int(round(profile["sat_std"] * 3 + 18)))
+    val_delta = max(35, int(round(profile["val_std"] * 3 + 18)))
+    sat_min = max(0, sat - sat_delta)
+    sat_max = min(255, sat + sat_delta)
+    val_min = max(0, val - val_delta)
+    val_max = min(255, val + val_delta)
+    return hue_wrapped_in_range(hsv, hue, hue_delta, sat_min, sat_max, val_min, val_max)
+
+
+def hue_wrapped_in_range(hsv, hue: int, delta: int, sat_min: int, sat_max: int, val_min: int, val_max: int):
+    lower_hue = hue - delta
+    upper_hue = hue + delta
+    if lower_hue >= 0 and upper_hue <= 179:
+        return cv2.inRange(hsv, np.array([lower_hue, sat_min, val_min]), np.array([upper_hue, sat_max, val_max]))
+
+    low_mask = cv2.inRange(
+        hsv,
+        np.array([(lower_hue + 180) % 180, sat_min, val_min]),
+        np.array([179, sat_max, val_max]),
+    )
+    high_mask = cv2.inRange(
+        hsv,
+        np.array([0, sat_min, val_min]),
+        np.array([upper_hue % 180, sat_max, val_max]),
+    )
+    return cv2.bitwise_or(low_mask, high_mask)
+
+
+def circular_hue_mean(hues) -> float:
+    angles = hues.astype(np.float32) / 180 * 2 * math.pi
+    mean_angle = math.atan2(float(np.mean(np.sin(angles))), float(np.mean(np.cos(angles))))
+    if mean_angle < 0:
+        mean_angle += 2 * math.pi
+    return mean_angle / (2 * math.pi) * 180
+
+
+def circular_hue_std(hues, mean_hue: float) -> float:
+    distances = np.abs(((hues - mean_hue + 90) % 180) - 90)
+    return float(np.std(distances))
+
+
 def foreground_mask(image: Image.Image, params: dict) -> Image.Image:
     alpha = image.getchannel("A")
     background = None
     tolerance = 0
     transition = 0
+    used_color_key = False
     if alpha.getextrema()[0] < 255:
         threshold = max(4, int(params["tolerance"] * 2.4))
         mask = alpha.point(lambda value: 255 if value > threshold else 0)
     else:
-        background = params.get("sample_color") or estimate_background(image)
-        tolerance = 8 + int(params["tolerance"] * 1.75)
-        transition = 18 + int((100 - params["smooth"]) * 0.45)
-
-        def pixel_alpha(pixel):
-            red, green, blue, _ = pixel
-            distance = math.sqrt(
-                (red - background[0]) ** 2
-                + (green - background[1]) ** 2
-                + (blue - background[2]) ** 2
-            )
-            if distance <= tolerance:
-                return 0
-            if distance >= tolerance + transition:
-                return 255
-            return int((distance - tolerance) / transition * 255)
-
-        if params["remove_scope"] == "global":
-            mask = Image.new("L", image.size)
-            mask.putdata([pixel_alpha(pixel) for pixel in image.getdata()])
+        color_key = None if params.get("sample_color") else solid_color_key_foreground_mask(image)
+        if color_key is not None:
+            mask, background = color_key
+            used_color_key = True
         else:
-            background_mask = edge_connected_background_mask(image, background, tolerance + transition)
-            mask = Image.new("L", image.size, 255)
-            mask.putdata([0 if value else 255 for value in background_mask])
+            background = params.get("sample_color") or estimate_background(image)
+            tolerance = 8 + int(params["tolerance"] * 1.75)
+            transition = 18 + int((100 - params["smooth"]) * 0.45)
+
+            def pixel_alpha(pixel):
+                red, green, blue, _ = pixel
+                distance = math.sqrt(
+                    (red - background[0]) ** 2
+                    + (green - background[1]) ** 2
+                    + (blue - background[2]) ** 2
+                )
+                if distance <= tolerance:
+                    return 0
+                if distance >= tolerance + transition:
+                    return 255
+                return int((distance - tolerance) / transition * 255)
+
+            if params["remove_scope"] == "global":
+                mask = Image.new("L", image.size)
+                mask.putdata([pixel_alpha(pixel) for pixel in image.getdata()])
+            else:
+                background_mask = edge_connected_background_mask(image, background, tolerance + transition)
+                mask = Image.new("L", image.size, 255)
+                mask.putdata([0 if value else 255 for value in background_mask])
 
     noise_area = params["noise"] * 4
     if noise_area > 0:
@@ -1239,7 +1508,7 @@ def foreground_mask(image: Image.Image, params: dict) -> Image.Image:
     if feather:
         mask = mask.filter(ImageFilter.GaussianBlur(feather / 3))
 
-    if background is not None:
+    if background is not None and not used_color_key:
         mask = suppress_background_edge_alpha(image, mask, background, tolerance, transition)
 
     return mask
